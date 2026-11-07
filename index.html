@@ -1563,6 +1563,573 @@ button { font-family: inherit; }
 }
 
 </style>
+
+
+/* ====================================================================
+   TOUCHSCREEN KIOSK INPUT & VIRTUAL KEYBOARD STYLES
+   ==================================================================== */
+
+.input-touch-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 2px solid var(--slate-border);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 4px 6px 4px 16px;
+  margin-top: 4px;
+}
+
+.input-touch-wrapper:focus-within,
+.input-touch-wrapper.active-kbd-focus {
+  border-color: var(--blue-primary);
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.18), 0 4px 12px rgba(2, 132, 199, 0.12);
+}
+
+.player-card-panel.green-team .input-touch-wrapper:focus-within,
+.player-card-panel.green-team .input-touch-wrapper.active-kbd-focus {
+  border-color: var(--green-energy);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18), 0 4px 12px rgba(16, 185, 129, 0.12);
+}
+
+.input-touch-wrapper input {
+  flex: 1;
+  border: none !important;
+  background: transparent !important;
+  padding: 10px 4px !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--navy-deep) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  min-width: 0;
+}
+
+.input-touch-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-touch-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid #CBD5E1;
+  background: #F8FAFC;
+  color: #334155;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.btn-touch-action:hover {
+  background: #F1F5F9;
+  border-color: var(--blue-primary);
+  color: var(--blue-primary);
+  transform: translateY(-1px);
+}
+
+.btn-touch-action:active {
+  transform: scale(0.96);
+}
+
+.btn-voice-trigger {
+  background: linear-gradient(180deg, #EFF6FF 0%, #DBEAFE 100%);
+  border-color: #93C5FD;
+  color: #1D4ED8;
+}
+
+.btn-voice-trigger:hover {
+  background: linear-gradient(180deg, #DBEAFE 0%, #BFDBFE 100%);
+  border-color: #3B82F6;
+  color: #1E40AF;
+}
+
+.touch-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Virtual Touch Keyboard Drawer */
+.virtual-keyboard-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 980px;
+  margin: 0 auto;
+  background: #0F172A;
+  border: 2px solid #334155;
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.5), 0 -2px 12px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+  padding: 12px 16px 20px;
+  box-sizing: border-box;
+  transform: translateY(105%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.virtual-keyboard-drawer.active {
+  transform: translateY(0);
+}
+
+/* Keyboard Header Bar */
+.kbd-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+}
+
+.kbd-target-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #E2E8F0;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.kbd-target-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #38BDF8;
+  box-shadow: 0 0 10px #38BDF8;
+}
+
+.kbd-target-indicator.p2 .kbd-target-dot {
+  background: #34D399;
+  box-shadow: 0 0 10px #34D399;
+}
+
+.kbd-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-kbd-header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1E293B;
+  border: 1px solid #475569;
+  color: #CBD5E1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-kbd-header-action:hover {
+  background: #334155;
+  color: #FFFFFF;
+}
+
+.btn-kbd-header-close {
+  background: #EF4444;
+  border: none;
+  color: #FFFFFF;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-kbd-header-close:hover {
+  background: #DC2626;
+  transform: translateY(-1px);
+}
+
+/* Key Grid */
+.kbd-rows-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kbd-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.kbd-key {
+  flex: 1;
+  min-width: 0;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1E293B;
+  color: #FFFFFF;
+  border: 1.5px solid #334155;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: inherit;
+  box-shadow: 0 3px 0 #0F172A;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.08s ease, box-shadow 0.08s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kbd-key:hover {
+  background: #334155;
+  border-color: #64748B;
+}
+
+.kbd-key:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #0F172A;
+  background: #475569;
+}
+
+.kbd-key.key-wide {
+  flex: 1.5;
+  background: #334155;
+  border-color: #475569;
+  font-size: 0.90rem;
+  font-weight: 800;
+}
+
+.kbd-key.key-space {
+  flex: 4;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.kbd-key.key-caps.active {
+  background: #2563EB;
+  border-color: #60A5FA;
+  box-shadow: 0 3px 0 #1D4ED8;
+}
+
+.kbd-key.key-action-next {
+  flex: 2;
+  background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%);
+  border-color: #60A5FA;
+  color: #FFFFFF;
+  font-size: 0.92rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  box-shadow: 0 3px 0 #1E40AF;
+}
+
+.kbd-key.key-action-next:hover {
+  background: linear-gradient(180deg, #3B82F6 0%, #2563EB 100%);
+}
+
+.kbd-key.key-voice {
+  flex: 1.6;
+  background: linear-gradient(180deg, #0D9488 0%, #0F766E 100%);
+  border-color: #2DD4BF;
+  color: #FFFFFF;
+  font-size: 0.86rem;
+  font-weight: 800;
+  box-shadow: 0 3px 0 #115E59;
+}
+
+/* Voice Assistant Modal */
+.voice-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  z-index: 10500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: voiceFadeIn 0.25s ease-out forwards;
+}
+
+.voice-modal-backdrop.active {
+  display: flex !important;
+}
+
+@keyframes voiceFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.voice-assistant-card {
+  width: min(500px, 92vw);
+  background: #FFFFFF;
+  border: 2px solid #E2E8F0;
+  border-radius: 28px;
+  padding: 24px 28px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+  animation: voiceCardPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes voiceCardPop {
+  0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.voice-card-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.voice-ai-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #EEF2FF 100%);
+  border: 1.5px solid #C7D2FE;
+  color: #4338CA;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.05em;
+}
+
+.btn-voice-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  border: none;
+  color: #64748B;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-voice-close:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+/* Mic Wave Visualizer */
+.voice-mic-visualizer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0;
+}
+
+.mic-wave-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid #38BDF8;
+  opacity: 0;
+  animation: micRingPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.mic-wave-ring.wave-2 {
+  animation-delay: 0.6s;
+}
+
+.mic-wave-ring.wave-3 {
+  animation-delay: 1.2s;
+}
+
+@keyframes micRingPulse {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.voice-mic-core {
+  position: relative;
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0284C7 0%, #2563EB 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+  animation: micCoreGlow 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes micCoreGlow {
+  0% { transform: scale(1); box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45); }
+  100% { transform: scale(1.06); box-shadow: 0 12px 32px rgba(37, 99, 235, 0.7); }
+}
+
+.voice-status-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--navy-deep);
+  margin: 0;
+}
+
+.voice-status-sub {
+  font-size: 0.90rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.voice-transcript-box {
+  width: 100%;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 12px 16px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.voice-transcript-label {
+  font-size: 0.70rem;
+  font-weight: 800;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.voice-live-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1E293B;
+  min-height: 24px;
+  font-style: italic;
+}
+
+.voice-ai-banner {
+  width: 100%;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  border: 2px solid #6EE7B7;
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  box-sizing: border-box;
+  animation: bannerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes bannerSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-sparkle {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.ai-result-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ai-result-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #065F46;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ai-result-value {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #047857;
+}
+
+.voice-card-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btn-voice-confirm {
+  width: 100%;
+  height: 46px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  font-weight: 900;
+  font-size: 0.98rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.15s ease;
+}
+
+.btn-voice-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+}
+
+.btn-voice-retry {
+  width: 100%;
+  height: 40px;
+  border-radius: 9999px;
+  background: #F1F5F9;
+  border: 1.5px solid #CBD5E1;
+  color: #334155;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-voice-retry:hover {
+  background: #E2E8F0;
+}
+
+.btn-voice-cancel {
+  background: transparent;
+  border: none;
+  color: #64748B;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px;
+  text-decoration: underline;
+}
+
+</style>
 </head>
 <body>
 
@@ -1850,7 +2417,19 @@ button { font-family: inherit; }
 
             <div class="form-group" style="margin-bottom:0;">
               <label for="reg-p1-name" data-i18n="lblName1" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Player 1 *</label>
-              <input type="text" id="reg-p1-name" value="Budi Pratama" placeholder="Ketik nama Player 1..." style="font-size:1.1rem; padding:14px 16px;">
+              <div class="input-touch-wrapper" id="wrap-reg-p1">
+                <input type="text" id="reg-p1-name" value="Budi Pratama" placeholder="Ketik nama Player 1..." autocomplete="off">
+                <div class="input-touch-actions">
+                  <button type="button" class="btn-touch-action btn-voice-trigger" onclick="startVoiceInput('reg-p1-name')" title="Isi dengan Suara (AI Voice)">
+                    <span class="touch-icon">🎙️</span>
+                    <span class="touch-action-txt">Suara</span>
+                  </button>
+                  <button type="button" class="btn-touch-action btn-kbd-trigger" onclick="openVirtualKeyboard('reg-p1-name')" title="Buka Keyboard Sentuh">
+                    <span class="touch-icon">⌨️</span>
+                    <span class="touch-action-txt">Ketik</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1863,7 +2442,19 @@ button { font-family: inherit; }
 
             <div class="form-group" style="margin-bottom:0;">
               <label for="reg-p2-name" data-i18n="lblName2" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Player 2 *</label>
-              <input type="text" id="reg-p2-name" value="Siti Rahma" placeholder="Ketik nama Player 2..." style="font-size:1.1rem; padding:14px 16px;">
+              <div class="input-touch-wrapper" id="wrap-reg-p2">
+                <input type="text" id="reg-p2-name" value="Siti Rahma" placeholder="Ketik nama Player 2..." autocomplete="off">
+                <div class="input-touch-actions">
+                  <button type="button" class="btn-touch-action btn-voice-trigger" onclick="startVoiceInput('reg-p2-name')" title="Isi dengan Suara (AI Voice)">
+                    <span class="touch-icon">🎙️</span>
+                    <span class="touch-action-txt">Suara</span>
+                  </button>
+                  <button type="button" class="btn-touch-action btn-kbd-trigger" onclick="openVirtualKeyboard('reg-p2-name')" title="Buka Keyboard Sentuh">
+                    <span class="touch-icon">⌨️</span>
+                    <span class="touch-action-txt">Ketik</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2147,6 +2738,85 @@ button { font-family: inherit; }
 
       </div>
 
+    </div>
+  </div>
+
+
+  <!-- ====================================================================
+       TOUCHSCREEN VIRTUAL KEYBOARD DRAWER
+       ==================================================================== -->
+  <div id="virtual-keyboard-drawer" class="virtual-keyboard-drawer">
+    <div class="kbd-header-bar">
+      <div class="kbd-target-indicator">
+        <span class="kbd-target-dot"></span>
+        <span id="kbd-target-title">Mengetik: <strong style="color:#38BDF8;">PLAYER 1</strong></span>
+      </div>
+      <div class="kbd-header-actions">
+        <button type="button" class="btn-kbd-header-action" onclick="triggerVoiceFromKeyboard()">
+          🎙️ <span>AI Voice</span>
+        </button>
+        <button type="button" class="btn-kbd-header-action btn-kbd-clear" onclick="clearActiveInput()">
+          🗑️ <span>Hapus</span>
+        </button>
+        <button type="button" class="btn-kbd-header-close" onclick="closeVirtualKeyboard()">
+          ✕ <span>Tutup</span>
+        </button>
+      </div>
+    </div>
+    <div class="kbd-keys-container" id="kbd-keys-body"></div>
+  </div>
+
+  <!-- ====================================================================
+       AI VOICE INPUT ASSISTANT MODAL (SPEECH TO TEXT + AI CLEANSER)
+       ==================================================================== -->
+  <div id="voice-input-modal" class="voice-modal-backdrop">
+    <div class="voice-assistant-card">
+      <div class="voice-card-header">
+        <span class="voice-ai-pill">✨ KCE AI VOICE ASSISTANT</span>
+        <button type="button" class="btn-voice-close" onclick="closeVoiceInput()">✕</button>
+      </div>
+
+      <div class="voice-mic-visualizer">
+        <div class="mic-wave-ring wave-1"></div>
+        <div class="mic-wave-ring wave-2"></div>
+        <div class="mic-wave-ring wave-3"></div>
+        <div class="voice-mic-core" id="voice-mic-core">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+          </svg>
+        </div>
+      </div>
+
+      <h3 id="voice-status-title" class="voice-status-title">Mendengarkan Suara...</h3>
+      <p id="voice-status-subtitle" class="voice-status-sub">
+        Sebutkan nama Anda (contoh: <em>"Budi Pratama"</em> atau <em>"Halo nama saya Siti"</em>)
+      </p>
+
+      <div class="voice-transcript-box">
+        <div class="voice-transcript-label">Ucapan Terdeteksi:</div>
+        <div id="voice-live-transcript" class="voice-live-text">"..."</div>
+      </div>
+
+      <div id="voice-ai-result-banner" class="voice-ai-banner" style="display:none;">
+        <span class="ai-sparkle">✨</span>
+        <div class="ai-result-info">
+          <span class="ai-result-label">Nama Bersih Hasil AI:</span>
+          <strong id="voice-clean-name-result" class="ai-result-value">-</strong>
+        </div>
+      </div>
+
+      <div class="voice-card-actions">
+        <button type="button" id="btn-voice-apply" class="btn-voice-confirm" onclick="applyVoiceName()" style="display:none;">
+          ✔ Gunakan Nama Ini
+        </button>
+        <button type="button" id="btn-voice-retry" class="btn-voice-retry" onclick="retryVoiceInput()">
+          🔄 Coba Bicara Lagi
+        </button>
+        <button type="button" class="btn-voice-cancel" onclick="closeVoiceInput()">
+          Batal / Ketik Manual
+        </button>
+      </div>
     </div>
   </div>
 
@@ -3224,6 +3894,8 @@ function drawBattlefield() {
 
 function showScreen(screenId) {
   SFX.click();
+  closeVirtualKeyboard();
+  closeVoiceInput();
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
   const target = document.getElementById(screenId);
   if (target) {
@@ -4532,6 +5204,402 @@ if (document.readyState === 'loading') {
 } else {
   initApp();
 }
+  </script>
+
+// ==========================================================================
+// ==========================================================================
+// TOUCHSCREEN VIRTUAL KEYBOARD & AI VOICE ASSISTANT CONTROLLERS
+// ==========================================================================
+
+let activeKeyboardTargetId = 'reg-p1-name';
+let isKeyboardOpen = false;
+let isCapsLock = true;
+let isSymbolsMode = false;
+
+function openVirtualKeyboard(targetInputId) {
+  activeKeyboardTargetId = targetInputId || 'reg-p1-name';
+  isKeyboardOpen = true;
+
+  const drawer = document.getElementById('virtual-keyboard-drawer');
+  if (drawer) drawer.classList.add('active');
+
+  updateKeyboardHeader();
+
+  document.querySelectorAll('.input-touch-wrapper').forEach(w => w.classList.remove('active-kbd-focus'));
+  const activeInput = document.getElementById(activeKeyboardTargetId);
+  if (activeInput) {
+    const parent = activeInput.closest('.input-touch-wrapper');
+    if (parent) parent.classList.add('active-kbd-focus');
+    activeInput.focus();
+  }
+
+  renderVirtualKeyboard();
+  SFX.click();
+}
+
+function closeVirtualKeyboard() {
+  isKeyboardOpen = false;
+  const drawer = document.getElementById('virtual-keyboard-drawer');
+  if (drawer) drawer.classList.remove('active');
+  document.querySelectorAll('.input-touch-wrapper').forEach(w => w.classList.remove('active-kbd-focus'));
+}
+
+function updateKeyboardHeader() {
+  const title = document.getElementById('kbd-target-title');
+  const indicator = document.querySelector('.kbd-target-indicator');
+  const isP2 = (activeKeyboardTargetId === 'reg-p2-name');
+
+  if (title) {
+    title.innerHTML = isP2 
+      ? 'Mengetik: <strong style="color:#34D399;">PLAYER 2</strong>' 
+      : 'Mengetik: <strong style="color:#38BDF8;">PLAYER 1</strong>';
+  }
+  if (indicator) {
+    if (isP2) indicator.classList.add('p2');
+    else indicator.classList.remove('p2');
+  }
+}
+
+function renderVirtualKeyboard() {
+  const container = document.getElementById('kbd-keys-body');
+  if (!container) return;
+
+  const isP2 = (activeKeyboardTargetId === 'reg-p2-name');
+  const nextLabel = isP2 ? 'SELESAI ✔' : 'LANJUT ➔';
+
+  if (!isSymbolsMode) {
+    const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+    const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+    const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+
+    container.innerHTML = `
+      <div class="kbd-rows-wrapper">
+        <div class="kbd-row">
+          ${row1.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+        </div>
+        <div class="kbd-row" style="padding: 0 16px;">
+          ${row2.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide key-caps ${isCapsLock ? 'active' : ''}" onclick="toggleCapsLock()">⇧ CAPS</button>
+          ${row3.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+          <button type="button" class="kbd-key key-wide" onclick="handleVirtualBackspace()">⌫ HAPUS</button>
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">?123</button>
+          <button type="button" class="kbd-key key-voice" onclick="triggerVoiceFromKeyboard()">🎙️ SUARA</button>
+          <button type="button" class="kbd-key key-space" onclick="handleVirtualKey(' ')">SPASI</button>
+          <button type="button" class="kbd-key" style="flex:0.8;" onclick="handleVirtualKey('.')">.</button>
+          <button type="button" class="kbd-key key-action-next" onclick="handleVirtualNext()">${nextLabel}</button>
+        </div>
+      </div>
+    `;
+  } else {
+    const row1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+    const row2 = ['@', '#', '$', '%', '&', '*', '-', '+', '(', ')'];
+    const row3 = ['!', '"', "'", ':', ';', '/', '?', ','];
+
+    container.innerHTML = `
+      <div class="kbd-rows-wrapper">
+        <div class="kbd-row">
+          ${row1.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          ${row2.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">ABC</button>
+          ${row3.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+          <button type="button" class="kbd-key key-wide" onclick="handleVirtualBackspace()">⌫ HAPUS</button>
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">ABC</button>
+          <button type="button" class="kbd-key key-voice" onclick="triggerVoiceFromKeyboard()">🎙️ SUARA</button>
+          <button type="button" class="kbd-key key-space" onclick="handleVirtualKey(' ')">SPASI</button>
+          <button type="button" class="kbd-key" style="flex:0.8;" onclick="handleVirtualKey('.')">.</button>
+          <button type="button" class="kbd-key key-action-next" onclick="handleVirtualNext()">${nextLabel}</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function handleVirtualKey(char) {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (!input) return;
+
+  input.value += char;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+
+  if (isCapsLock && input.value.length === 1) {
+    isCapsLock = false;
+    renderVirtualKeyboard();
+  }
+}
+
+function handleVirtualBackspace() {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (!input || !input.value) return;
+
+  input.value = input.value.slice(0, -1);
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+
+  if (input.value.length === 0) {
+    isCapsLock = true;
+    renderVirtualKeyboard();
+  }
+}
+
+function toggleCapsLock() {
+  SFX.click();
+  isCapsLock = !isCapsLock;
+  renderVirtualKeyboard();
+}
+
+function toggleKeyboardMode() {
+  SFX.click();
+  isSymbolsMode = !isSymbolsMode;
+  renderVirtualKeyboard();
+}
+
+function clearActiveInput() {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (input) {
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  isCapsLock = true;
+  renderVirtualKeyboard();
+}
+
+function handleVirtualNext() {
+  SFX.click();
+  if (activeKeyboardTargetId === 'reg-p1-name') {
+    openVirtualKeyboard('reg-p2-name');
+  } else {
+    closeVirtualKeyboard();
+  }
+}
+
+function triggerVoiceFromKeyboard() {
+  closeVirtualKeyboard();
+  startVoiceInput(activeKeyboardTargetId);
+}
+
+// -------------------------------------------------------------
+// AI SPEECH-TO-TEXT & NATURAL LANGUAGE NAME EXTRACTION
+// -------------------------------------------------------------
+
+function extractCleanNameFromVoice(rawSpeech) {
+  if (!rawSpeech || typeof rawSpeech !== 'string') return '';
+
+  let text = rawSpeech.trim();
+
+  // Strip common Indonesian & English conversational prefixes
+  const prefixPatterns = [
+    /^(halo|hai|hey|hello|hi)\s*(semuanya|teman-teman|kawan)?\s*[,.]?\s*/i,
+    /^(selamat\s+(pagi|siang|sore|malam))\s*[,.]?\s*/i,
+    /^(assalamu'?alaikum(\s+wr\s+wb)?)\s*[,.]?\s*/i,
+    /^(perkenalkan\s+)?(nama\s+saya\s+adalah|nama\s+saya|namaku\s+adalah|namaku|nama\s+ku\s+adalah|nama\s+ku)\s*[:=]?\s*/i,
+    /^(my\s+name\s+is|i\s+am|i'm|this\s+is)\s*/i,
+    /^(saya\s+adalah|saya|aku\s+adalah|aku)\s*/i,
+    /^(panggil\s+saja|panggil\s+aku|bisa\s+dipanggil|biasa\s+dipanggil)\s*/i,
+    /^(masukkan\s+nama|ketik\s+nama|tulis\s+nama|daftarkan\s+nama|daftarkan)\s*/i
+  ];
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pat of prefixPatterns) {
+      if (pat.test(text)) {
+        text = text.replace(pat, '').trim();
+        changed = true;
+      }
+    }
+  }
+
+  // Strip trailing conversational suffixes
+  const suffixPatterns = [
+    /\s+(dari\s+tim|dari\s+divisi|dari\s+kce|kce|chandra\s+asri).*$/i,
+    /\s+(ya|yaa|dong|deh|nih|saja|aja|kok|lah|please|terima\s+kasih|makasih)[.!?]*$/i
+  ];
+  for (const pat of suffixPatterns) {
+    text = text.replace(pat, '').trim();
+  }
+
+  // Remove punctuation
+  text = text.replace(/[,.?!:;"'“”]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // Filter filler words
+  const fillerWords = new Set(['eee', 'ee', 'e', 'uhm', 'umm', 'um', 'hmm', 'anu', 'apa']);
+  let words = text.split(' ').filter(w => w.length > 0 && !fillerWords.has(w.toLowerCase()));
+
+  // Remove duplicate adjacent words
+  const deduped = [];
+  for (let i = 0; words.length > i; i++) {
+    if (i === 0 || words[i].toLowerCase() !== words[i - 1].toLowerCase()) {
+      deduped.push(words[i]);
+    }
+  }
+
+  if (deduped.length === 0) return '';
+
+  // Title case proper names
+  const titleCased = deduped.map(w => {
+    if (2 >= w.length && !w.includes('.')) return w.toUpperCase();
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }).join(' ');
+
+  return titleCased.slice(0, 24).trim();
+}
+
+let speechRecognitionInstance = null;
+let activeVoiceTargetId = 'reg-p1-name';
+let currentVoiceTranscript = '';
+let currentExtractedName = '';
+let voiceAutoApplyTimeout = null;
+
+function startVoiceInput(targetInputId) {
+  activeVoiceTargetId = targetInputId || 'reg-p1-name';
+  closeVirtualKeyboard();
+
+  const modal = document.getElementById('voice-input-modal');
+  if (modal) modal.classList.add('active');
+
+  const title = document.getElementById('voice-status-title');
+  const sub = document.getElementById('voice-status-subtitle');
+  const live = document.getElementById('voice-live-transcript');
+  const aiBanner = document.getElementById('voice-ai-result-banner');
+  const applyBtn = document.getElementById('btn-voice-apply');
+
+  if (title) title.innerText = 'Mendengarkan Suara...';
+  if (sub) {
+    const isP2 = (activeVoiceTargetId === 'reg-p2-name');
+    sub.innerHTML = `Sebutkan nama <strong>${isP2 ? 'Player 2' : 'Player 1'}</strong> (contoh: <em>"Budi Pratama"</em> atau <em>"Halo nama saya Siti"</em>)`;
+  }
+  if (live) live.innerText = '"..."';
+  if (aiBanner) aiBanner.style.display = 'none';
+  if (applyBtn) applyBtn.style.display = 'none';
+
+  currentVoiceTranscript = '';
+  currentExtractedName = '';
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    if (title) title.innerText = 'Browser Tidak Mendukung Mic';
+    if (sub) sub.innerText = 'Browser ini belum mendukung Web Speech API secara langsung. Silakan gunakan Keyboard Virtual di layar.';
+    return;
+  }
+
+  try {
+    if (speechRecognitionInstance) {
+      try { speechRecognitionInstance.abort(); } catch(e) {}
+    }
+    speechRecognitionInstance = new SpeechRecognition();
+    speechRecognitionInstance.lang = (GAME.lang === 'EN') ? 'en-US' : 'id-ID';
+    speechRecognitionInstance.continuous = false;
+    speechRecognitionInstance.interimResults = true;
+    speechRecognitionInstance.maxAlternatives = 1;
+
+    speechRecognitionInstance.onresult = (event) => {
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; event.results.length > i; ++i) {
+        if (event.results[i].isFinal) {
+          final += event.results[i][0].transcript;
+        } else {
+          interim += event.results[i][0].transcript;
+        }
+      }
+
+      const heard = (final || interim).trim();
+      if (live && heard) live.innerText = `"${heard}"`;
+
+      if (heard) {
+        const cleaned = extractCleanNameFromVoice(heard);
+        if (cleaned) {
+          currentExtractedName = cleaned;
+          const cleanEl = document.getElementById('voice-clean-name-result');
+          if (cleanEl) cleanEl.innerText = cleaned;
+          if (aiBanner) aiBanner.style.display = 'flex';
+          if (applyBtn) applyBtn.style.display = 'block';
+        }
+      }
+
+      if (final) {
+        clearTimeout(voiceAutoApplyTimeout);
+        voiceAutoApplyTimeout = setTimeout(() => {
+          applyVoiceName();
+        }, 900);
+      }
+    };
+
+    speechRecognitionInstance.onerror = (event) => {
+      console.warn('Speech recognition error:', event.error);
+      if (event.error === 'not-allowed') {
+        if (title) title.innerText = 'Izin Mikrofon Ditolak';
+        if (sub) sub.innerText = 'Mohon izinkan akses mikrofon di browser, atau gunakan Keyboard Layar.';
+      } else if (event.error === 'no-speech') {
+        if (title) title.innerText = 'Suara Tidak Terdengar';
+        if (sub) sub.innerText = 'Belum ada suara yang terdengar. Silakan klik tombol Coba Lagi untuk mengulang.';
+      }
+    };
+
+    speechRecognitionInstance.onend = () => {
+      if (currentExtractedName && applyBtn) {
+        applyBtn.style.display = 'block';
+      }
+    };
+
+    speechRecognitionInstance.start();
+  } catch (err) {
+    console.error('Failed to start speech recognition:', err);
+  }
+}
+
+function closeVoiceInput() {
+  clearTimeout(voiceAutoApplyTimeout);
+  if (speechRecognitionInstance) {
+    try { speechRecognitionInstance.stop(); } catch(e) {}
+  }
+  const modal = document.getElementById('voice-input-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function retryVoiceInput() {
+  startVoiceInput(activeVoiceTargetId);
+}
+
+function applyVoiceName() {
+  clearTimeout(voiceAutoApplyTimeout);
+  if (currentExtractedName) {
+    const input = document.getElementById(activeVoiceTargetId);
+    if (input) {
+      input.value = currentExtractedName;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    SFX.correct();
+  }
+  closeVoiceInput();
+}
+
+// Auto-bind touch listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  ['reg-p1-name', 'reg-p2-name'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('focus', () => openVirtualKeyboard(id));
+      el.addEventListener('click', () => openVirtualKeyboard(id));
+    }
+  });
+});
 </script>
 </body>
 </html>

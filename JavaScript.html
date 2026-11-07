@@ -1071,6 +1071,8 @@ function drawBattlefield() {
 
 function showScreen(screenId) {
   SFX.click();
+  closeVirtualKeyboard();
+  closeVoiceInput();
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
   const target = document.getElementById(screenId);
   if (target) {
@@ -2380,3 +2382,398 @@ if (document.readyState === 'loading') {
   initApp();
 }
   </script>
+
+// ==========================================================================
+// ==========================================================================
+// TOUCHSCREEN VIRTUAL KEYBOARD & AI VOICE ASSISTANT CONTROLLERS
+// ==========================================================================
+
+let activeKeyboardTargetId = 'reg-p1-name';
+let isKeyboardOpen = false;
+let isCapsLock = true;
+let isSymbolsMode = false;
+
+function openVirtualKeyboard(targetInputId) {
+  activeKeyboardTargetId = targetInputId || 'reg-p1-name';
+  isKeyboardOpen = true;
+
+  const drawer = document.getElementById('virtual-keyboard-drawer');
+  if (drawer) drawer.classList.add('active');
+
+  updateKeyboardHeader();
+
+  document.querySelectorAll('.input-touch-wrapper').forEach(w => w.classList.remove('active-kbd-focus'));
+  const activeInput = document.getElementById(activeKeyboardTargetId);
+  if (activeInput) {
+    const parent = activeInput.closest('.input-touch-wrapper');
+    if (parent) parent.classList.add('active-kbd-focus');
+    activeInput.focus();
+  }
+
+  renderVirtualKeyboard();
+  SFX.click();
+}
+
+function closeVirtualKeyboard() {
+  isKeyboardOpen = false;
+  const drawer = document.getElementById('virtual-keyboard-drawer');
+  if (drawer) drawer.classList.remove('active');
+  document.querySelectorAll('.input-touch-wrapper').forEach(w => w.classList.remove('active-kbd-focus'));
+}
+
+function updateKeyboardHeader() {
+  const title = document.getElementById('kbd-target-title');
+  const indicator = document.querySelector('.kbd-target-indicator');
+  const isP2 = (activeKeyboardTargetId === 'reg-p2-name');
+
+  if (title) {
+    title.innerHTML = isP2 
+      ? 'Mengetik: <strong style="color:#34D399;">PLAYER 2</strong>' 
+      : 'Mengetik: <strong style="color:#38BDF8;">PLAYER 1</strong>';
+  }
+  if (indicator) {
+    if (isP2) indicator.classList.add('p2');
+    else indicator.classList.remove('p2');
+  }
+}
+
+function renderVirtualKeyboard() {
+  const container = document.getElementById('kbd-keys-body');
+  if (!container) return;
+
+  const isP2 = (activeKeyboardTargetId === 'reg-p2-name');
+  const nextLabel = isP2 ? 'SELESAI ✔' : 'LANJUT ➔';
+
+  if (!isSymbolsMode) {
+    const row1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+    const row2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+    const row3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+
+    container.innerHTML = `
+      <div class="kbd-rows-wrapper">
+        <div class="kbd-row">
+          ${row1.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+        </div>
+        <div class="kbd-row" style="padding: 0 16px;">
+          ${row2.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide key-caps ${isCapsLock ? 'active' : ''}" onclick="toggleCapsLock()">⇧ CAPS</button>
+          ${row3.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${isCapsLock ? k : k.toLowerCase()}')">${isCapsLock ? k : k.toLowerCase()}</button>`).join('')}
+          <button type="button" class="kbd-key key-wide" onclick="handleVirtualBackspace()">⌫ HAPUS</button>
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">?123</button>
+          <button type="button" class="kbd-key key-voice" onclick="triggerVoiceFromKeyboard()">🎙️ SUARA</button>
+          <button type="button" class="kbd-key key-space" onclick="handleVirtualKey(' ')">SPASI</button>
+          <button type="button" class="kbd-key" style="flex:0.8;" onclick="handleVirtualKey('.')">.</button>
+          <button type="button" class="kbd-key key-action-next" onclick="handleVirtualNext()">${nextLabel}</button>
+        </div>
+      </div>
+    `;
+  } else {
+    const row1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+    const row2 = ['@', '#', '$', '%', '&', '*', '-', '+', '(', ')'];
+    const row3 = ['!', '"', "'", ':', ';', '/', '?', ','];
+
+    container.innerHTML = `
+      <div class="kbd-rows-wrapper">
+        <div class="kbd-row">
+          ${row1.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          ${row2.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">ABC</button>
+          ${row3.map(k => `<button type="button" class="kbd-key" onclick="handleVirtualKey('${k}')">${k}</button>`).join('')}
+          <button type="button" class="kbd-key key-wide" onclick="handleVirtualBackspace()">⌫ HAPUS</button>
+        </div>
+        <div class="kbd-row">
+          <button type="button" class="kbd-key key-wide" onclick="toggleKeyboardMode()">ABC</button>
+          <button type="button" class="kbd-key key-voice" onclick="triggerVoiceFromKeyboard()">🎙️ SUARA</button>
+          <button type="button" class="kbd-key key-space" onclick="handleVirtualKey(' ')">SPASI</button>
+          <button type="button" class="kbd-key" style="flex:0.8;" onclick="handleVirtualKey('.')">.</button>
+          <button type="button" class="kbd-key key-action-next" onclick="handleVirtualNext()">${nextLabel}</button>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function handleVirtualKey(char) {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (!input) return;
+
+  input.value += char;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+
+  if (isCapsLock && input.value.length === 1) {
+    isCapsLock = false;
+    renderVirtualKeyboard();
+  }
+}
+
+function handleVirtualBackspace() {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (!input || !input.value) return;
+
+  input.value = input.value.slice(0, -1);
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.dispatchEvent(new Event('change', { bubbles: true }));
+
+  if (input.value.length === 0) {
+    isCapsLock = true;
+    renderVirtualKeyboard();
+  }
+}
+
+function toggleCapsLock() {
+  SFX.click();
+  isCapsLock = !isCapsLock;
+  renderVirtualKeyboard();
+}
+
+function toggleKeyboardMode() {
+  SFX.click();
+  isSymbolsMode = !isSymbolsMode;
+  renderVirtualKeyboard();
+}
+
+function clearActiveInput() {
+  SFX.click();
+  const input = document.getElementById(activeKeyboardTargetId);
+  if (input) {
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  isCapsLock = true;
+  renderVirtualKeyboard();
+}
+
+function handleVirtualNext() {
+  SFX.click();
+  if (activeKeyboardTargetId === 'reg-p1-name') {
+    openVirtualKeyboard('reg-p2-name');
+  } else {
+    closeVirtualKeyboard();
+  }
+}
+
+function triggerVoiceFromKeyboard() {
+  closeVirtualKeyboard();
+  startVoiceInput(activeKeyboardTargetId);
+}
+
+// -------------------------------------------------------------
+// AI SPEECH-TO-TEXT & NATURAL LANGUAGE NAME EXTRACTION
+// -------------------------------------------------------------
+
+function extractCleanNameFromVoice(rawSpeech) {
+  if (!rawSpeech || typeof rawSpeech !== 'string') return '';
+
+  let text = rawSpeech.trim();
+
+  // Strip common Indonesian & English conversational prefixes
+  const prefixPatterns = [
+    /^(halo|hai|hey|hello|hi)\s*(semuanya|teman-teman|kawan)?\s*[,.]?\s*/i,
+    /^(selamat\s+(pagi|siang|sore|malam))\s*[,.]?\s*/i,
+    /^(assalamu'?alaikum(\s+wr\s+wb)?)\s*[,.]?\s*/i,
+    /^(perkenalkan\s+)?(nama\s+saya\s+adalah|nama\s+saya|namaku\s+adalah|namaku|nama\s+ku\s+adalah|nama\s+ku)\s*[:=]?\s*/i,
+    /^(my\s+name\s+is|i\s+am|i'm|this\s+is)\s*/i,
+    /^(saya\s+adalah|saya|aku\s+adalah|aku)\s*/i,
+    /^(panggil\s+saja|panggil\s+aku|bisa\s+dipanggil|biasa\s+dipanggil)\s*/i,
+    /^(masukkan\s+nama|ketik\s+nama|tulis\s+nama|daftarkan\s+nama|daftarkan)\s*/i
+  ];
+
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pat of prefixPatterns) {
+      if (pat.test(text)) {
+        text = text.replace(pat, '').trim();
+        changed = true;
+      }
+    }
+  }
+
+  // Strip trailing conversational suffixes
+  const suffixPatterns = [
+    /\s+(dari\s+tim|dari\s+divisi|dari\s+kce|kce|chandra\s+asri).*$/i,
+    /\s+(ya|yaa|dong|deh|nih|saja|aja|kok|lah|please|terima\s+kasih|makasih)[.!?]*$/i
+  ];
+  for (const pat of suffixPatterns) {
+    text = text.replace(pat, '').trim();
+  }
+
+  // Remove punctuation
+  text = text.replace(/[,.?!:;"'“”]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  // Filter filler words
+  const fillerWords = new Set(['eee', 'ee', 'e', 'uhm', 'umm', 'um', 'hmm', 'anu', 'apa']);
+  let words = text.split(' ').filter(w => w.length > 0 && !fillerWords.has(w.toLowerCase()));
+
+  // Remove duplicate adjacent words
+  const deduped = [];
+  for (let i = 0; words.length > i; i++) {
+    if (i === 0 || words[i].toLowerCase() !== words[i - 1].toLowerCase()) {
+      deduped.push(words[i]);
+    }
+  }
+
+  if (deduped.length === 0) return '';
+
+  // Title case proper names
+  const titleCased = deduped.map(w => {
+    if (2 >= w.length && !w.includes('.')) return w.toUpperCase();
+    return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+  }).join(' ');
+
+  return titleCased.slice(0, 24).trim();
+}
+
+let speechRecognitionInstance = null;
+let activeVoiceTargetId = 'reg-p1-name';
+let currentVoiceTranscript = '';
+let currentExtractedName = '';
+let voiceAutoApplyTimeout = null;
+
+function startVoiceInput(targetInputId) {
+  activeVoiceTargetId = targetInputId || 'reg-p1-name';
+  closeVirtualKeyboard();
+
+  const modal = document.getElementById('voice-input-modal');
+  if (modal) modal.classList.add('active');
+
+  const title = document.getElementById('voice-status-title');
+  const sub = document.getElementById('voice-status-subtitle');
+  const live = document.getElementById('voice-live-transcript');
+  const aiBanner = document.getElementById('voice-ai-result-banner');
+  const applyBtn = document.getElementById('btn-voice-apply');
+
+  if (title) title.innerText = 'Mendengarkan Suara...';
+  if (sub) {
+    const isP2 = (activeVoiceTargetId === 'reg-p2-name');
+    sub.innerHTML = `Sebutkan nama <strong>${isP2 ? 'Player 2' : 'Player 1'}</strong> (contoh: <em>"Budi Pratama"</em> atau <em>"Halo nama saya Siti"</em>)`;
+  }
+  if (live) live.innerText = '"..."';
+  if (aiBanner) aiBanner.style.display = 'none';
+  if (applyBtn) applyBtn.style.display = 'none';
+
+  currentVoiceTranscript = '';
+  currentExtractedName = '';
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    if (title) title.innerText = 'Browser Tidak Mendukung Mic';
+    if (sub) sub.innerText = 'Browser ini belum mendukung Web Speech API secara langsung. Silakan gunakan Keyboard Virtual di layar.';
+    return;
+  }
+
+  try {
+    if (speechRecognitionInstance) {
+      try { speechRecognitionInstance.abort(); } catch(e) {}
+    }
+    speechRecognitionInstance = new SpeechRecognition();
+    speechRecognitionInstance.lang = (GAME.lang === 'EN') ? 'en-US' : 'id-ID';
+    speechRecognitionInstance.continuous = false;
+    speechRecognitionInstance.interimResults = true;
+    speechRecognitionInstance.maxAlternatives = 1;
+
+    speechRecognitionInstance.onresult = (event) => {
+      let interim = '';
+      let final = '';
+      for (let i = event.resultIndex; event.results.length > i; ++i) {
+        if (event.results[i].isFinal) {
+          final += event.results[i][0].transcript;
+        } else {
+          interim += event.results[i][0].transcript;
+        }
+      }
+
+      const heard = (final || interim).trim();
+      if (live && heard) live.innerText = `"${heard}"`;
+
+      if (heard) {
+        const cleaned = extractCleanNameFromVoice(heard);
+        if (cleaned) {
+          currentExtractedName = cleaned;
+          const cleanEl = document.getElementById('voice-clean-name-result');
+          if (cleanEl) cleanEl.innerText = cleaned;
+          if (aiBanner) aiBanner.style.display = 'flex';
+          if (applyBtn) applyBtn.style.display = 'block';
+        }
+      }
+
+      if (final) {
+        clearTimeout(voiceAutoApplyTimeout);
+        voiceAutoApplyTimeout = setTimeout(() => {
+          applyVoiceName();
+        }, 900);
+      }
+    };
+
+    speechRecognitionInstance.onerror = (event) => {
+      console.warn('Speech recognition error:', event.error);
+      if (event.error === 'not-allowed') {
+        if (title) title.innerText = 'Izin Mikrofon Ditolak';
+        if (sub) sub.innerText = 'Mohon izinkan akses mikrofon di browser, atau gunakan Keyboard Layar.';
+      } else if (event.error === 'no-speech') {
+        if (title) title.innerText = 'Suara Tidak Terdengar';
+        if (sub) sub.innerText = 'Belum ada suara yang terdengar. Silakan klik tombol Coba Lagi untuk mengulang.';
+      }
+    };
+
+    speechRecognitionInstance.onend = () => {
+      if (currentExtractedName && applyBtn) {
+        applyBtn.style.display = 'block';
+      }
+    };
+
+    speechRecognitionInstance.start();
+  } catch (err) {
+    console.error('Failed to start speech recognition:', err);
+  }
+}
+
+function closeVoiceInput() {
+  clearTimeout(voiceAutoApplyTimeout);
+  if (speechRecognitionInstance) {
+    try { speechRecognitionInstance.stop(); } catch(e) {}
+  }
+  const modal = document.getElementById('voice-input-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function retryVoiceInput() {
+  startVoiceInput(activeVoiceTargetId);
+}
+
+function applyVoiceName() {
+  clearTimeout(voiceAutoApplyTimeout);
+  if (currentExtractedName) {
+    const input = document.getElementById(activeVoiceTargetId);
+    if (input) {
+      input.value = currentExtractedName;
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    SFX.correct();
+  }
+  closeVoiceInput();
+}
+
+// Auto-bind touch listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  ['reg-p1-name', 'reg-p2-name'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('focus', () => openVirtualKeyboard(id));
+      el.addEventListener('click', () => openVirtualKeyboard(id));
+    }
+  });
+});
