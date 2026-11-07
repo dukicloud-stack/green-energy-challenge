@@ -1105,83 +1105,77 @@ button { font-family: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   background: #FFFFFF;
   border: 2px solid #E2E8F0;
-  border-radius: 20px;
-  padding: 14px 18px 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  border-radius: 22px;
+  padding: 18px 20px 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
   box-sizing: border-box;
+  animation: hubSoftEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.result-status-pill {
+@keyframes hubSoftEnter {
+  0% { opacity: 0; transform: translateY(12px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.victory-hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.hub-kpi-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #334155;
-  border: 2.5px solid #FFFFFF;
-  border-radius: 9999px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  margin: 0 auto;
-  max-width: 100%;
-}
-
-.result-status-pill .pill-winner {
-  background: #10B981;
-  color: #FFFFFF;
-  font-weight: 900;
-  font-size: 0.80rem;
-  padding: 5px 14px;
-  display: inline-flex;
-  align-items: center;
   gap: 6px;
-  border-right: 2px solid #FFFFFF;
-  white-space: nowrap;
-  letter-spacing: 0.02em;
-}
-.celebration-box.blue-theme .result-status-pill .pill-winner {
-  background: var(--blue-primary);
-}
-
-.result-status-pill .pill-loser {
-  background: #475569;
-  color: #FFFFFF;
+  background: #F1F5F9;
+  border: 1.5px solid #CBD5E1;
+  color: #334155;
   font-weight: 800;
-  font-size: 0.80rem;
-  padding: 5px 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  letter-spacing: 0.02em;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
 }
 
 .match-stats-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
 }
 
 .match-metric-card {
-  background: #FFFFFF;
-  border: 1.5px solid var(--slate-border);
-  border-radius: 12px;
-  padding: 8px 12px;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 10px 14px;
   text-align: left;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-metric-card:hover {
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
 }
 
 .match-metric-card h5 {
-  font-size: 0.68rem;
-  color: var(--text-muted);
+  font-size: 0.70rem;
+  color: #64748B;
   font-weight: 800;
   text-transform: uppercase;
-  margin: 0 0 2px;
+  letter-spacing: 0.04em;
+  margin: 0 0 3px;
 }
 
 .match-metric-card p {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 900;
   color: var(--navy-deep);
   margin: 0;
@@ -1191,46 +1185,65 @@ button { font-family: inherit; }
 /* Action Buttons Row */
 .victory-actions-row {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .victory-actions-row .btn-start-tug {
   width: 100%;
-  flex: 1 1 100%;
-  height: 42px;
-  min-height: 42px;
-  padding: 0 16px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
   color: #FFFFFF !important;
   font-weight: 900;
-  font-size: 0.96rem;
-  letter-spacing: 0.03em;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
   border: 2px solid #FFFFFF;
   border-radius: 9999px;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   white-space: nowrap;
+  animation: ctaBtnPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes ctaBtnPulse {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4);
+  }
+  50% {
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.65), 0 0 12px rgba(251, 191, 36, 0.35);
+  }
 }
 
 .victory-actions-row .btn-start-tug:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.45);
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.55);
 }
 
-.victory-actions-row .btn-compact {
+.victory-actions-row .btn-start-tug:active {
+  transform: scale(0.98);
+}
+
+.victory-actions-secondary-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.victory-actions-secondary-row .btn-compact {
   flex: 1;
-  height: 36px;
-  min-height: 36px;
-  padding: 0 10px !important;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 12px !important;
   font-size: 0.82rem !important;
   font-weight: 800;
   white-space: nowrap;
@@ -1241,15 +1254,115 @@ button { font-family: inherit; }
   background: #FFFFFF;
   border: 1.5px solid #CBD5E1;
   color: var(--navy-deep);
-  transition: all 0.15s ease;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 0 !important;
+  cursor: pointer;
 }
 
-.victory-actions-row .btn-compact:hover {
+.victory-actions-secondary-row .btn-compact:hover {
   background: #F1F5F9;
   border-color: var(--blue-primary);
   color: var(--blue-primary);
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.victory-actions-secondary-row .btn-compact:active {
+  transform: scale(0.97);
+}
+
+/* Micro-Animations & Atmospheric Polish */
+.overlay-modal.active .celebration-box {
+  animation: victoryModalZoomIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes victoryModalZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.victory-trophy-badge {
+  animation: trophyGentleFloat 3s ease-in-out infinite;
+}
+
+@keyframes trophyGentleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+.avatar-result-slot.winner-card-slot {
+  animation: winnerAuraBlue 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes winnerAuraBlue {
+  0% {
+    box-shadow: 0 12px 32px rgba(2, 132, 199, 0.28), 0 0 0 1px rgba(2, 132, 199, 0.2);
+  }
+  100% {
+    box-shadow: 0 16px 42px rgba(2, 132, 199, 0.45), 0 0 18px rgba(56, 189, 248, 0.35);
+  }
+}
+
+.celebration-box.green-theme .avatar-result-slot.winner-card-slot {
+  animation: winnerAuraGreen 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes winnerAuraGreen {
+  0% {
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.28), 0 0 0 1px rgba(16, 185, 129, 0.2);
+  }
+  100% {
+    box-shadow: 0 16px 42px rgba(16, 185, 129, 0.45), 0 0 18px rgba(52, 211, 153, 0.35);
+  }
+}
+
+.avatar-result-slot.winner-card-slot svg {
+  animation: avatarWinBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes avatarWinBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.avatar-result-slot.loser-card-slot svg {
+  animation: avatarSadBreath 3s ease-in-out infinite;
+}
+
+@keyframes avatarSadBreath {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+.result-stamp.winner {
+  animation: stampJuaraPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes stampJuaraPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* Screen Transition Animation */
+.game-screen.active {
+  animation: screenFadeSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes screenFadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive for narrow screens / mobile portrait */
@@ -1984,10 +2097,9 @@ button { font-family: inherit; }
 
         <!-- Center: Stadium Hub (Pill + 2x2 Stats Grid + Actions) -->
         <div class="victory-center-hub">
-          <!-- Dual Result Status Pill -->
-          <div id="victory-status-pill" class="result-status-pill">
-            <span id="pill-winner-name" class="pill-winner">Player 1 (JUARA 🏆)</span>
-            <span id="pill-loser-name" class="pill-loser">Player 2 (NICE TRY! 👍)</span>
+          <!-- Match Overview Header Badge -->
+          <div class="victory-hub-header">
+            <span class="hub-kpi-badge">⚡ HASIL PERTANDINGAN</span>
           </div>
 
           <!-- 4 Stats Cards (2x2 Grid) -->
@@ -2015,12 +2127,14 @@ button { font-family: inherit; }
             <button class="btn-start-tug" onclick="closeVictoryModal(); confirmAndStartMatch();">
               <span data-i18n="rematch">⚔️ TANDING ULANG</span>
             </button>
-            <button class="btn-secondary btn-compact" onclick="closeVictoryModal(); showScreen('char-screen');">
-              <span data-i18n="changeHero">GANTI KARAKTER</span>
-            </button>
-            <button class="btn-secondary btn-compact" onclick="closeVictoryModal(); openLeaderboard();">
-              <span data-i18n="leaderboard">PAPAN PERINGKAT</span>
-            </button>
+            <div class="victory-actions-secondary-row">
+              <button class="btn-secondary btn-compact" onclick="closeVictoryModal(); showScreen('char-screen');">
+                <span data-i18n="changeHero">GANTI KARAKTER</span>
+              </button>
+              <button class="btn-secondary btn-compact" onclick="closeVictoryModal(); openLeaderboard();">
+                <span data-i18n="leaderboard">PAPAN PERINGKAT</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -3722,8 +3836,6 @@ function showVictoryModal(winner) {
   const loserAvatar = document.getElementById('victory-loser-avatar');
   const winnerStamp = document.getElementById('victory-winner-stamp');
   const loserStamp = document.getElementById('victory-loser-stamp');
-  const pillWinner = document.getElementById('pill-winner-name');
-  const pillLoser = document.getElementById('pill-loser-name');
 
   const hero1 = HERO_ROSTER.find(h => h.id === GAME.p1.charId) || HERO_ROSTER[0];
   const hero2 = HERO_ROSTER.find(h => h.id === GAME.p2.charId) || HERO_ROSTER[1];
@@ -3749,8 +3861,6 @@ function showVictoryModal(winner) {
     const lTitle = document.getElementById('victory-loser-name'); if (lTitle) lTitle.innerText = `${GAME.p2.name} (Player 2)`;
     loserStamp.innerText = 'NICE TRY! 👍';
 
-    if (pillWinner) pillWinner.innerText = 'PLAYER 1 (JUARA 🏆)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 2 (NICE TRY! 👍)';
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
     title.innerText = 'PLAYER 2 JUARA!';
@@ -3767,8 +3877,6 @@ function showVictoryModal(winner) {
     const lTitle2 = document.getElementById('victory-loser-name'); if (lTitle2) lTitle2.innerText = `${GAME.p1.name} (Player 1)`;
     loserStamp.innerText = 'NICE TRY! 👍';
 
-    if (pillWinner) pillWinner.innerText = 'PLAYER 2 (JUARA 🏆)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 1 (NICE TRY! 👍)';
   } else {
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
@@ -3779,8 +3887,6 @@ function showVictoryModal(winner) {
     loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
     winnerStamp.innerText = `${GAME.p1.name} (SERI)`;
     loserStamp.innerText = `${GAME.p2.name} (SERI)`;
-    if (pillWinner) pillWinner.innerText = 'PLAYER 1 (SERI 🤝)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 2 (SERI 🤝)';
   }
 
   if (modal) modal.classList.add('active');

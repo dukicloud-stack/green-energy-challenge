@@ -1683,8 +1683,6 @@ function showVictoryModal(winner) {
   const loserAvatar = document.getElementById('victory-loser-avatar');
   const winnerStamp = document.getElementById('victory-winner-stamp');
   const loserStamp = document.getElementById('victory-loser-stamp');
-  const pillWinner = document.getElementById('pill-winner-name');
-  const pillLoser = document.getElementById('pill-loser-name');
 
   const hero1 = HERO_ROSTER.find(h => h.id === GAME.p1.charId) || HERO_ROSTER[0];
   const hero2 = HERO_ROSTER.find(h => h.id === GAME.p2.charId) || HERO_ROSTER[1];
@@ -1710,8 +1708,6 @@ function showVictoryModal(winner) {
     const lTitle = document.getElementById('victory-loser-name'); if (lTitle) lTitle.innerText = `${GAME.p2.name} (Player 2)`;
     loserStamp.innerText = 'NICE TRY! 👍';
 
-    if (pillWinner) pillWinner.innerText = 'PLAYER 1 (JUARA 🏆)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 2 (NICE TRY! 👍)';
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
     title.innerText = 'PLAYER 2 JUARA!';
@@ -1728,8 +1724,6 @@ function showVictoryModal(winner) {
     const lTitle2 = document.getElementById('victory-loser-name'); if (lTitle2) lTitle2.innerText = `${GAME.p1.name} (Player 1)`;
     loserStamp.innerText = 'NICE TRY! 👍';
 
-    if (pillWinner) pillWinner.innerText = 'PLAYER 2 (JUARA 🏆)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 1 (NICE TRY! 👍)';
   } else {
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
@@ -1740,8 +1734,6 @@ function showVictoryModal(winner) {
     loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
     winnerStamp.innerText = `${GAME.p1.name} (SERI)`;
     loserStamp.innerText = `${GAME.p2.name} (SERI)`;
-    if (pillWinner) pillWinner.innerText = 'PLAYER 1 (SERI 🤝)';
-    if (pillLoser) pillLoser.innerText = 'PLAYER 2 (SERI 🤝)';
   }
 
   if (modal) modal.classList.add('active');
