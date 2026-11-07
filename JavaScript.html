@@ -528,32 +528,32 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     <polygon points="0,8 12,14 4,19" fill="#FFFFFF" stroke="${stroke}" stroke-width="1.8" stroke-linejoin="round"/>
   `;
 
-  // 3. ARMS & HANDS
+  // 3. REFINED ARMS & HANDS
   let arms = '';
   if (pose === 'idle') {
     arms = `
       <!-- Left Sleeve tucking behind back -->
-      <path d="M -21 10 C -30 18, -30 28, -21 37 L -17 36 C -23 28, -23 18, -15 12 Z" 
+      <path d="M -21 10 C -29 16, -29 27, -21 35 L -17 34 C -23 27, -23 17, -15 12 Z" 
             fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <path d="M -20 20 Q -23 27 -18 34" stroke="${stroke}" stroke-width="1.5" fill="none"/>
+      <path d="M -20 20 Q -23 27 -18 33" stroke="${stroke}" stroke-width="1.5" fill="none"/>
 
       <!-- Right Sleeve tucking behind back -->
-      <path d="M 21 10 C 30 18, 30 28, 21 37 L 17 36 C 23 28, 23 18, 15 12 Z" 
+      <path d="M 21 10 C 29 16, 29 27, 21 35 L 17 34 C 23 27, 23 17, 15 12 Z" 
             fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <path d="M 20 20 Q 23 27 18 34" stroke="${stroke}" stroke-width="1.5" fill="none"/>
+      <path d="M 20 20 Q 23 27 18 33" stroke="${stroke}" stroke-width="1.5" fill="none"/>
     `;
   } else if (pose === 'pull') {
     arms = `
-      <!-- Back Arm (Darker sleeve shadow) -->
       <path d="M -10 10 L 22 34 L 22 42 L -10 20 Z" fill="${shirtShadow}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <circle cx="26" cy="38" r="6.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-
-      <!-- Front Arm (Reaching forward) -->
+      <circle cx="26" cy="38" r="6" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
       <path d="M 12 10 L 44 34 L 44 42 L 10 20 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
       <line x1="38" y1="31" x2="38" y2="41" stroke="${stroke}" stroke-width="1.8"/>
-      <rect x="42" y="32" width="14" height="13" rx="4" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-      <line x1="47" y1="33" x2="47" y2="44" stroke="${stroke}" stroke-width="1.5"/>
-      <path d="M 42 33 Q 47 29 52 33" stroke="${stroke}" stroke-width="${sw}" fill="none"/>
+      <!-- Clean gripping hand -->
+      <g transform="translate(42, 33)">
+        <rect x="0" y="0" width="14" height="12" rx="4.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+        <line x1="5" y1="1" x2="5" y2="11" stroke="${stroke}" stroke-width="1.4"/>
+        <line x1="9" y1="1" x2="9" y2="11" stroke="${stroke}" stroke-width="1.4"/>
+      </g>
     `;
   } else if (pose === 'stumble') {
     arms = `
@@ -563,34 +563,58 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
       <rect x="42" y="17" width="13" height="12" rx="4" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
     `;
   } else if (pose === 'celebrate') {
-    // Both arms raised high and wide in joyful celebration (\ o /)
+    // Joyful raised arms with proper anatomical fists rotated along the arm angle!
     arms = `
-      <!-- Left Arm: Diagonal Up-Outward Cheer -->
-      <path d="M -16 12 L -42 -12 L -35 -17 L -10 9 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <line x1="-42" y1="-12" x2="-35" y2="-17" stroke="${stroke}" stroke-width="1.8"/>
-      <!-- Left Victory Hand -->
-      <circle cx="-42" cy="-22" r="7.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-      <circle cx="-35" cy="-20" r="3.2" fill="${skin}" stroke="${stroke}" stroke-width="1.5"/>
-      <path d="M -46 -24 Q -42 -28 -38 -24" stroke="${stroke}" stroke-width="1.5" fill="none"/>
+      <!-- Left Arm -->
+      <path d="M -16 11 L -38 -10 L -32 -15 L -10 8 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <!-- Left Shirt Cuff -->
+      <line x1="-38" y1="-10" x2="-32" y2="-15" stroke="${stroke}" stroke-width="2.2"/>
+      <!-- Left Victory Fist (Rotated -38 deg along arm axis) -->
+      <g transform="translate(-39, -17) rotate(-38)">
+        <rect x="-6" y="-7" width="12" height="11" rx="4.5" fill="${skin}" stroke="${stroke}" stroke-width="2.4"/>
+        <path d="M -3 -2 L 3 -2" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M -3 1.5 L 2 1.5" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M -5 -3 Q -2 -6 2 -4" stroke="${stroke}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </g>
 
-      <!-- Right Arm: Diagonal Up-Outward Cheer -->
-      <path d="M 16 12 L 42 -12 L 35 -17 L 10 9 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <line x1="42" y1="-12" x2="35" y2="-17" stroke="${stroke}" stroke-width="1.8"/>
-      <!-- Right Victory Hand -->
-      <circle cx="42" cy="-22" r="7.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-      <circle cx="35" cy="-20" r="3.2" fill="${skin}" stroke="${stroke}" stroke-width="1.5"/>
-      <path d="M 38 -24 Q 42 -28 46 -24" stroke="${stroke}" stroke-width="1.5" fill="none"/>
+      <!-- Right Arm -->
+      <path d="M 16 11 L 38 -10 L 32 -15 L 10 8 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <!-- Right Shirt Cuff -->
+      <line x1="38" y1="-10" x2="32" y2="-15" stroke="${stroke}" stroke-width="2.2"/>
+      <!-- Right Victory Fist (Rotated +38 deg along arm axis) -->
+      <g transform="translate(39, -17) rotate(38)">
+        <rect x="-6" y="-7" width="12" height="11" rx="4.5" fill="${skin}" stroke="${stroke}" stroke-width="2.4"/>
+        <path d="M -3 -2 L 3 -2" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M -2 1.5 L 3 1.5" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M 5 -3 Q 2 -6 -2 -4" stroke="${stroke}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </g>
     `;
   } else if (pose === 'sad') {
-    // Both arms drooping limp at sides, dejected posture
+    // Dejected drooping arms with clean relaxed chibi hands (no awkward thick black nub balls!)
     arms = `
-      <!-- Left Arm drooping limp -->
-      <path d="M -16 12 C -23 24, -22 40, -18 52 L -12 50 C -15 39, -16 24, -10 12 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <circle cx="-15" cy="55" r="5.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <!-- Left Sleeve hanging down -->
+      <path d="M -16 11 C -23 20, -22 30, -17 38 L -11 38 C -15 30, -15 20, -9 11 Z" 
+            fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <!-- Left Cuff -->
+      <line x1="-17" y1="38" x2="-11" y2="38" stroke="${stroke}" stroke-width="2"/>
+      <!-- Left Hand -->
+      <g transform="translate(-14, 39)">
+        <path d="M -3.5 0 L -3.5 8 C -3.5 11, 2.5 11, 2.5 8 L 2.5 0 Z" 
+              fill="${skin}" stroke="${stroke}" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M 1 3 Q 3 5.5 1 7" stroke="${stroke}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </g>
 
-      <!-- Right Arm drooping limp -->
-      <path d="M 16 12 C 23 24, 22 40, 18 52 L 12 50 C 15 39, 16 24, 10 12 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <circle cx="15" cy="55" r="5.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <!-- Right Sleeve hanging down -->
+      <path d="M 16 11 C 23 20, 22 30, 17 38 L 11 38 C 15 30, 15 20, 9 11 Z" 
+            fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <!-- Right Cuff -->
+      <line x1="17" y1="38" x2="11" y2="38" stroke="${stroke}" stroke-width="2"/>
+      <!-- Right Hand -->
+      <g transform="translate(14, 39)">
+        <path d="M -2.5 0 L -2.5 8 C -2.5 11, 3.5 11, 3.5 8 L 3.5 0 Z" 
+              fill="${skin}" stroke="${stroke}" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M -1 3 Q -3 5.5 -1 7" stroke="${stroke}" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </g>
     `;
   } else if (pose === 'fall') {
     arms = `
@@ -599,49 +623,64 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     `;
   }
 
-  // 4. HAIRSTYLES (2 FEMALE & 2 MALE CHARACTERS MATCHING REFERENCE SHEETS 100%)
+  // 4. HAIRSTYLES (2 DISTINCT FEMALES & 2 DISTINCT MALES)
   let hairBack = '';
   let hairFront = '';
 
   if (isDewi) {
     // =============================================================
-    // FEMALE 2 (Dewi): Soft Wavy Bob with Golden Headband (Ref 1, Bottom-Right)
+    // FEMALE 2 (Dewi): Cute Side Ponytail with Big Yellow Bow Ribbon (User Ref Image 2)
     // =============================================================
     hairBack = `
-      <!-- Shoulder-level soft wavy bob -->
-      <path d="M -26 -12
-               C -36 4, -36 18, -26 26
-               L 26 26
-               C 36 18, 36 4, 26 -12
+      <!-- Flowing side ponytail cascading on the left -->
+      <path d="M -20 -10
+               C -28 0, -36 12, -34 24
+               C -33 32, -26 34, -20 28
+               C -16 23, -17 14, -18 4
+               C -18 -2, -18 -8, -17 -14
                Z"
             fill="${hairDark}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <path d="M -24 16 Q -27 22 -20 25" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M 24 16 Q 27 22 20 25" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M -29 10 C -31 18, -27 26, -21 27" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
     `;
 
     hairFront = `
-      <!-- Front Hair with Golden Headband -->
+      <!-- Front Hair: Cute crown & sweeping bangs -->
       <path d="M -28 -12
                C -34 -48, -20 -53, 0 -53
                C 20 -53, 34 -48, 28 -12
-               C 28 2, 26 12, 22 18
-               C 18 18, 18 6, 18 0
-               C 17 -14, 14 -21, 9 -21
+               C 28 0, 26 8, 22 14
+               C 18 14, 18 4, 18 -2
+               C 17 -14, 14 -20, 9 -21
                C 5 -21, 2 -18, -2 -18
-               C -6 -18, -10 -22, -15 -22
-               C -17 -22, -18 -14, -18 0
-               C -18 6, -18 18, -22 18
-               C -26 12, -28 2, -28 -12
+               C -7 -18, -10 -23, -15 -23
+               C -18 -23, -18 -14, -18 0
+               C -18 6, -18 16, -22 16
+               C -26 10, -28 0, -28 -12
                Z"
             fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
 
-      <!-- Golden Headband across the crown -->
-      <path d="M -27 -24 C -28 -42, 28 -42, 27 -24" stroke="#F59E0B" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path d="M -25 -25 C -26 -40, 26 -40, 25 -25" stroke="#FCD34D" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- Highlights on crown -->
+      <line x1="-18" y1="-42" x2="-18" y2="-34" stroke="${hairLight}" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="-13" y1="-45" x2="-13" y2="-38" stroke="${hairLight}" stroke-width="2.4" stroke-linecap="round"/>
+      <line x1="18" y1="-42" x2="18" y2="-34" stroke="${hairLight}" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="13" y1="-45" x2="13" y2="-38" stroke="${hairLight}" stroke-width="2.4" stroke-linecap="round"/>
 
-      <!-- Highlights -->
-      <path d="M -14 -44 Q 0 -48 14 -44" stroke="${hairLight}" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-      <path d="M -8 -46 Q 0 -49 8 -46" stroke="${hairGlint}" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <!-- BIG GOLDEN-YELLOW BOW RIBBON ON TOP (User Ref Image 2) -->
+      <g transform="translate(0, -52)">
+        <!-- Left Wing -->
+        <path d="M -4 -3 C -12 -14, -26 -12, -24 0 C -22 6, -12 2, -4 0 Z" 
+              fill="#F59E0B" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+        <path d="M -7 0 Q -15 -2 -18 0" stroke="#D97706" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+        <!-- Right Wing -->
+        <path d="M 4 -3 C 12 -14, 26 -12, 24 0 C 22 6, 12 2, 4 0 Z" 
+              fill="#F59E0B" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+        <path d="M 7 0 Q 15 -2 18 0" stroke="#D97706" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+        <!-- Center Knot -->
+        <rect x="-5.5" y="-5" width="11" height="8" rx="3.5" fill="#FBBF24" stroke="${stroke}" stroke-width="2.2"/>
+        <circle cx="0" cy="-1" r="1.3" fill="#FEF08A"/>
+      </g>
     `;
   } else if (isFemale) {
     // =============================================================
@@ -790,15 +829,12 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     <ellipse cx="0" cy="-10" rx="26" ry="22.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
   `;
 
-  // 5. FACIAL EXPRESSIONS (ORIGINAL FACES PRESERVED PER USER REQUEST)
+  // 5. NO EYEBROWS PER USER REQUEST ("karakternya jangan pakai alis")
   let faceDetails = '';
   if (pose === 'idle') {
     if (isFemale) {
       faceDetails = `
-        <path d="M -16 -21 Q -11 -25 -5 -21" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-        <path d="M 5 -21 Q 11 -25 16 -21" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-
-        <!-- Eyes with delicate feminine eyelashes -->
+        <!-- Female Eyes (NO EYEBROWS!) -->
         <circle cx="-11" cy="-12" r="8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.4"/>
         <ellipse cx="-11" cy="-12" rx="4" ry="5.8" fill="#181C24"/>
         <circle cx="-9.2" cy="-14" r="1.8" fill="#FFFFFF"/>
@@ -820,11 +856,7 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
       `;
     } else {
       faceDetails = `
-        <!-- Friendly Brown Eyebrows -->
-        <path d="M -16 -21 Q -10 -24 -4 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M 4 -21 Q 10 -24 16 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-
-        <!-- Large Round Boy Eyes (Original Icon Look) -->
+        <!-- Male Eyes (NO EYEBROWS!) -->
         <circle cx="-11" cy="-12" r="8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.4"/>
         <ellipse cx="-11" cy="-12" rx="4" ry="5.8" fill="#181C24"/>
         <circle cx="-9.2" cy="-14" r="1.8" fill="#FFFFFF"/>
@@ -843,9 +875,6 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     }
   } else if (pose === 'pull') {
     faceDetails = `
-      <line x1="-16" y1="-21" x2="-6" y2="-25" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="6" y1="-25" x2="16" y2="-21" stroke="${stroke}" stroke-width="2.5" stroke-linecap="round"/>
-
       <circle cx="-11" cy="-14" r="6.8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
       <circle cx="-9.5" cy="-14" r="3.8" fill="#181C24"/>
       <circle cx="11" cy="-14" r="6.8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
@@ -861,8 +890,6 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     `;
   } else if (pose === 'stumble') {
     faceDetails = `
-      <path d="M -16 -25 Q -11 -29 -6 -25" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <path d="M 6 -25 Q 11 -29 16 -25" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
       <circle cx="-11" cy="-14" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
       <circle cx="-11" cy="-14" r="2.6" fill="#181C24"/>
       <circle cx="11" cy="-14" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
@@ -878,8 +905,8 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
       <!-- Soft Cheek Blushes -->
       <ellipse cx="-18" cy="-5" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
       <ellipse cx="18" cy="-5" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
-      <!-- Royal Gold Crown with Jewels (Resting gracefully atop the hair crown) -->
-      <g transform="translate(0, -61)">
+      <!-- Royal Gold Crown with Jewels -->
+      <g transform="translate(0, -60)">
         <polygon points="-14,8 -10,0 -4,6 0,-2 4,6 10,0 14,8" fill="#F59E0B" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>
         <circle cx="-10" cy="0" r="1.5" fill="#EF4444"/>
         <circle cx="0" cy="-2" r="1.8" fill="#3B82F6"/>
@@ -889,11 +916,7 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     `;
   } else if (pose === 'sad') {
     faceDetails = `
-      <!-- Sad curved eyebrows slanting up towards center -->
-      <path d="M -16 -21 Q -10 -26 -5 -22" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <path d="M 5 -22 Q 10 -26 16 -21" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-
-      <!-- Big Sad Weeping Puppy Eyes -->
+      <!-- Big Sad Weeping Puppy Eyes (NO EYEBROWS!) -->
       <circle cx="-11" cy="-12" r="6" fill="#1E293B"/>
       <circle cx="-12.5" cy="-13.5" r="2.2" fill="#FFFFFF"/>
       <circle cx="-9" cy="-10" r="1.2" fill="#FFFFFF"/>
@@ -1138,8 +1161,7 @@ function renderCharacterGrids() {
     c1.className = `char-card-mini ${isP1 ? 'active-p1' : ''}`;
     c1.innerHTML = `
       <div class="avatar-mini-box">${renderHeroAvatarHTML(hero.id, 'right')}</div>
-      <h4>${hero.name}</h4>
-      <p>${hero.title}</p>
+      <h4 class="char-card-name">${hero.name}</h4>
     `;
     c1.onclick = () => {
       SFX.click();
@@ -1153,8 +1175,7 @@ function renderCharacterGrids() {
     c2.className = `char-card-mini ${isP2 ? 'active-p2' : ''}`;
     c2.innerHTML = `
       <div class="avatar-mini-box">${renderHeroAvatarHTML(hero.id, 'left')}</div>
-      <h4>${hero.name}</h4>
-      <p>${hero.title}</p>
+      <h4 class="char-card-name">${hero.name}</h4>
     `;
     c2.onclick = () => {
       SFX.click();
