@@ -4,10 +4,8 @@
   "workspaces": {
     "": {
       "name": "green-energy-challenge",
-      "dependencies": {
-        "sharp": "^0.35.5",
-      },
       "devDependencies": {
+        "sharp": "^0.35.5",
         "vite": "^8.3.6",
       },
     },
