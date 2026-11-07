@@ -1696,8 +1696,9 @@ function showVictoryModal(winner) {
   if (winner === 1) {
     box.className = 'celebration-box blue-theme';
     title.innerText = 'PLAYER 1 JUARA!';
-    title.style.color = 'var(--blue-primary)';
+    title.style.color = '#38BDF8';
     sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
+    sub.style.color = '#E2E8F0';
 
     winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'celebrate', 'right');
     const wTitle = document.getElementById('victory-winner-name'); if (wTitle) wTitle.innerText = `${GAME.p1.name} (Player 1)`;
@@ -1713,8 +1714,9 @@ function showVictoryModal(winner) {
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
     title.innerText = 'PLAYER 2 JUARA!';
-    title.style.color = 'var(--green-energy)';
+    title.style.color = '#34D399';
     sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
+    sub.style.color = '#E2E8F0';
 
     winnerAvatar.innerHTML = renderHeroSVG(hero2.id, 'celebrate', 'left');
     const wTitle2 = document.getElementById('victory-winner-name'); if (wTitle2) wTitle2.innerText = `${GAME.p2.name} (Player 2)`;
@@ -1730,7 +1732,9 @@ function showVictoryModal(winner) {
   } else {
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
+    title.style.color = '#FBBF24';
     sub.innerText = 'Kedua tim memiliki kekuatan energi yang seimbang!';
+    sub.style.color = '#E2E8F0';
     winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'idle', 'right');
     loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
     winnerStamp.innerText = `${GAME.p1.name} (SERI)`;

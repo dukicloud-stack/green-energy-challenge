@@ -931,24 +931,25 @@ button { font-family: inherit; }
 .overlay-modal.active { display: flex; }
 
 .celebration-box {
-  background: #FFFFFF;
-  border: 3.5px solid var(--slate-border);
-  border-radius: 26px;
-  padding: 18px 24px 22px;
-  width: min(940px, 95vw);
-  max-width: 960px;
-  max-height: 94vh;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 8px 12px;
+  width: min(920px, 98vw);
+  max-width: 940px;
+  max-height: 96vh;
   text-align: center;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.38);
   margin: auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
-.celebration-box.blue-theme { border-color: var(--blue-primary); }
-.celebration-box.green-theme { border-color: var(--green-energy); }
+.celebration-box.blue-theme,
+.celebration-box.green-theme {
+  border: none !important;
+}
 
 /* Header Banner (Horizontal Trophy + Title + Subtitle) */
 .victory-header-banner {
@@ -956,7 +957,7 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   gap: 14px;
-  text-align: left;
+  text-align: center;
   margin-bottom: 2px;
 }
 
@@ -964,6 +965,7 @@ button { font-family: inherit; }
   width: 48px;
   height: 48px;
   flex-shrink: 0;
+  filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.4));
 }
 .victory-trophy-badge svg {
   width: 100%;
@@ -974,34 +976,46 @@ button { font-family: inherit; }
 .victory-title-wrap {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .victory-title-wrap h2 {
-  font-size: 1.65rem;
+  font-size: 2.1rem;
   font-weight: 900;
   line-height: 1.15;
   margin: 0;
-  color: var(--navy-deep);
+  color: #38BDF8;
+  letter-spacing: 0.03em;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+}
+
+.celebration-box.green-theme .victory-title-wrap h2 {
+  color: #34D399;
 }
 
 .victory-title-wrap p {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: #E2E8F0;
+  margin: 4px 0 0;
   font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* 3-Column Landscape Grid (Winner Left | Center Hub | Loser Right) */
+/* 3-Column Landscape Layout (Winner Left | Center Hub | Loser Right) */
 .victory-landscape-grid {
-  display: grid;
-  grid-template-columns: 200px 1fr 200px;
-  gap: 16px;
+  display: flex;
+  justify-content: center;
   align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Character Slots */
 .avatar-result-slot {
-  background: var(--light-grey);
+  flex: 0 0 190px;
+  width: 190px;
+  background: #FFFFFF;
   border: 2.5px solid var(--slate-border);
   border-radius: 20px;
   display: flex;
@@ -1009,22 +1023,31 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: space-between;
   padding: 12px 10px 14px;
-  box-shadow: 0 4px 16px rgba(47, 64, 126, 0.08);
-  min-height: 270px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  min-height: 280px;
+  box-sizing: border-box;
 }
 
 .avatar-result-slot.winner-card-slot {
-  background: linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%);
-  border-color: #10B981;
+  background: #FFFFFF;
+  border: 3px solid var(--blue-primary);
+  box-shadow: 0 12px 36px rgba(2, 132, 199, 0.35);
 }
 .celebration-box.blue-theme .avatar-result-slot.winner-card-slot {
-  background: linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 100%);
+  background: #FFFFFF;
   border-color: var(--blue-primary);
+  box-shadow: 0 12px 36px rgba(2, 132, 199, 0.35);
+}
+.celebration-box.green-theme .avatar-result-slot.winner-card-slot {
+  background: #FFFFFF;
+  border-color: var(--green-energy);
+  box-shadow: 0 12px 36px rgba(16, 185, 129, 0.35);
 }
 
 .avatar-result-slot.loser-card-slot {
-  background: #F8FAFC;
-  border-color: #CBD5E1;
+  background: #FFFFFF;
+  border: 2.5px solid #CBD5E1;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
 }
 
 .avatar-result-slot svg {
@@ -1076,14 +1099,19 @@ button { font-family: inherit; }
 
 /* Center Hub */
 .victory-center-hub {
+  flex: 1 1 420px;
+  max-width: 460px;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 12px;
-  background: #F8FAFC;
+  background: #FFFFFF;
   border: 2px solid #E2E8F0;
   border-radius: 20px;
-  padding: 12px 16px 14px;
+  padding: 14px 18px 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
 }
 
 .result-status-pill {
@@ -1225,15 +1253,23 @@ button { font-family: inherit; }
 /* Responsive for narrow screens / mobile portrait */
 @media (max-width: 768px) {
   .celebration-box {
-    padding: 14px 14px 18px;
-    max-height: 94vh;
+    padding: 10px;
+    max-height: 96vh;
     overflow-y: auto !important;
   }
   .victory-landscape-grid {
-    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .avatar-result-slot {
+    flex: 1 1 calc(50% - 8px);
+    width: auto;
+    min-height: 240px;
   }
   .victory-center-hub {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
+    max-width: 100%;
+    order: 3;
   }
   .victory-actions-row {
     flex-wrap: wrap;
@@ -3697,8 +3733,9 @@ function showVictoryModal(winner) {
   if (winner === 1) {
     box.className = 'celebration-box blue-theme';
     title.innerText = 'PLAYER 1 JUARA!';
-    title.style.color = 'var(--blue-primary)';
+    title.style.color = '#38BDF8';
     sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
+    sub.style.color = '#E2E8F0';
 
     winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'celebrate', 'right');
     const wTitle = document.getElementById('victory-winner-name'); if (wTitle) wTitle.innerText = `${GAME.p1.name} (Player 1)`;
@@ -3714,8 +3751,9 @@ function showVictoryModal(winner) {
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
     title.innerText = 'PLAYER 2 JUARA!';
-    title.style.color = 'var(--green-energy)';
+    title.style.color = '#34D399';
     sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
+    sub.style.color = '#E2E8F0';
 
     winnerAvatar.innerHTML = renderHeroSVG(hero2.id, 'celebrate', 'left');
     const wTitle2 = document.getElementById('victory-winner-name'); if (wTitle2) wTitle2.innerText = `${GAME.p2.name} (Player 2)`;
@@ -3731,7 +3769,9 @@ function showVictoryModal(winner) {
   } else {
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
+    title.style.color = '#FBBF24';
     sub.innerText = 'Kedua tim memiliki kekuatan energi yang seimbang!';
+    sub.style.color = '#E2E8F0';
     winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'idle', 'right');
     loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
     winnerStamp.innerText = `${GAME.p1.name} (SERI)`;
