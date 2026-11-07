@@ -1229,6 +1229,73 @@ button { font-family: inherit; }
 .btn-start-tug:active {
   transform: translateY(1px) scale(0.98);
 }
+</style>
+/* User Reference Image 1: Dual Result Status Pill */
+.result-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #334155;
+  border: 3px solid #FFFFFF;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  margin: 12px auto 16px;
+  max-width: 95%;
+}
+
+.result-status-pill .pill-winner {
+  background: #10B981;
+  color: #FFFFFF;
+  font-weight: 900;
+  font-size: 1.05rem;
+  padding: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-right: 2.5px solid #FFFFFF;
+}
+
+.result-status-pill .pill-loser {
+  background: #475569;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* User Reference Image 2: Golden Amber Start Tug of War Pill Button */
+.btn-start-tug {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 290px;
+  padding: 14px 34px;
+  background: #EAA000;
+  background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+  color: #0F285F !important;
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 3.5px solid #FFFFFF;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.38), 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-start-tug:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.5);
+}
+
+.btn-start-tug:active {
+  transform: translateY(1px) scale(0.98);
+}
 
 </style>
 </head>
@@ -1277,154 +1344,73 @@ button { font-family: inherit; }
 
         <!-- Welcome Preview Stage with Roblox R6 Avatars -->
         <div class="welcome-preview-stage" aria-hidden="true">
-          <div class="preview-char-box" id="welcome-p1-preview"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-65 -95 130 195" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">
-    <g class="kce-hero-vector" >
-      <g  style="transform-origin: 0px 88px; transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <!-- Shadow Base -->
-        <ellipse cx="0" cy="88" rx="35" ry="7" fill="#15243C" opacity="0.2"/>
+          <div class="preview-char-box" id="welcome-p1-preview"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -60 100 145" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">
+    <g class="simple-hero-actor" >
+      <g  style="transform-origin: 0px 65px; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <!-- Drop Shadow -->
+        <ellipse cx="0" cy="73" rx="28" ry="6" fill="#0F172A" opacity="0.18"/>
         
-      <!-- Female Flowing Hair Back Silhouette -->
-      <path d="M -24 -46
-               C -36 -36, -46 -15, -42 12
-               C -38 34, -48 48, -42 64
-               C -36 74, -22 78, -14 78
-               L 14 78
-               C 22 78, 36 74, 42 64
-               C 48 48, 38 34, 42 12
-               C 46 -15, 36 -36, 24 -46
-               Z"
-            fill="#8A6E5E" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
+      <path d="M -26 -20 C -38 0, -38 28, -26 44 L 26 44 C 38 28, 38 0, 26 -20 Z"
+            fill="#784E3A" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
     
         
-    <!-- Shoes -->
-    <path d="M -34 83 C -34 80, -20 80, -16 83 L -16 92 L -34 92 Z" fill="#251A15" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <path d="M 16 83 C 20 80, 34 80, 34 83 L 34 92 L 16 92 Z" fill="#251A15" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <line x1="-34" y1="92" x2="-16" y2="92" stroke="#282828" stroke-width="2.6"/>
-    <line x1="16" y1="92" x2="34" y2="92" stroke="#282828" stroke-width="2.6"/>
+    <!-- Navy Pants -->
+    <path d="M -15 38 L -18 66 L -5 66 L -2 44 L 2 44 L 5 66 L 18 66 L 15 38 Z"
+          fill="#22385C" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- Dark Shoes -->
+    <path d="M -26 66 C -26 62, -18 62, -4 66 L -4 75 L -26 75 Z" fill="#181C24" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M 4 66 C 18 62, 26 62, 26 66 L 26 75 L 4 75 Z" fill="#181C24" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
   
         
-    <!-- Navy Slacks -->
-    <path d="M -19 32
-             L -24 82
-             L -15 82
-             L -3 46
-             L 3 46
-             L 15 82
-             L 24 82
-             L 19 32
-             Z"
-          fill="#243552" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Center Crease -->
-    <line x1="-19" y1="40" x2="-20" y2="78" stroke="#19263C" stroke-width="1.5"/>
-    <line x1="19" y1="40" x2="20" y2="78" stroke="#19263C" stroke-width="1.5"/>
+    <!-- Light Blue Work Shirt -->
+    <path d="M -18 10 L -21 38 L 21 38 L 18 10 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- Belt -->
+    <rect x="-21" y="38" width="42" height="7" fill="#2E1C0C" stroke="#1E232A" stroke-width="3.2"/>
+    <rect x="-5" y="37.5" width="10" height="8" rx="1.5" fill="#E2E8F0" stroke="#1E232A" stroke-width="1.8"/>
+    <!-- Chest Pockets -->
+    <rect x="-14" y="20" width="8" height="8" rx="1" fill="none" stroke="#1E232A" stroke-width="1.6"/>
+    <rect x="6" y="20" width="8" height="8" rx="1" fill="none" stroke="#1E232A" stroke-width="1.6"/>
+    <!-- Collar -->
+    <polygon points="0,11 -12,17 -4,22" fill="#FFFFFF" stroke="#1E232A" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="0,11 12,17 4,22" fill="#FFFFFF" stroke="#1E232A" stroke-width="1.8" stroke-linejoin="round"/>
   
         
-    <!-- Leather Belt -->
-    <rect x="-19" y="26" width="38" height="6.5" fill="#281808" stroke="#282828" stroke-width="2.6"/>
-    <!-- Silver Rectangular Buckle -->
-    <rect x="-4.5" y="25.5" width="9" height="7.5" rx="1" fill="#E2E8F0" stroke="#282828" stroke-width="1.8"/>
-    <rect x="-2" y="27.5" width="4" height="3.5" fill="#281808"/>
-  
-        
-    <!-- Light Blue Work Shirt Body -->
-    <path d="M -17 -13
-             L -22 26
-             L 22 26
-             L 17 -13
-             Z"
-          fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Center Button Placket -->
-    <line x1="0" y1="-8" x2="0" y2="26" stroke="#282828" stroke-width="1.5"/>
+      <path d="M -18 12 C -28 18, -28 32, -22 42 C -18 42, -16 38, -14 34 C -18 26, -18 18, -12 14 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M 18 12 C 28 18, 28 32, 22 42 C 18 42, 16 38, 14 34 C 18 26, 18 18, 12 14 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
     
-    <!-- Left Chest Pocket -->
-    <rect x="-15" y="2" width="10" height="10" rx="0.8" fill="none" stroke="#282828" stroke-width="1.4"/>
-    <line x1="-15" y1="4.5" x2="-5" y2="4.5" stroke="#282828" stroke-width="1.4"/>
-    
-    <!-- Right Chest Pocket -->
-    <rect x="5" y="2" width="10" height="10" rx="0.8" fill="none" stroke="#282828" stroke-width="1.4"/>
-    <line x1="5" y1="4.5" x2="15" y2="4.5" stroke="#282828" stroke-width="1.4"/>
-
-    <!-- KCE Logo Badge on Right Chest -->
-    <circle cx="-10" cy="-3" r="1.8" fill="#005596"/>
-    <circle cx="-8" cy="-3" r="1.4" fill="#43B02A"/>
-  
-        
-      <!-- Left Arm (Behind Back) -->
-      <path d="M -17 -10
-               C -29 2, -32 16, -26 27
-               C -24 30, -20 30, -18 26
-               C -22 17, -20 6, -12 -5
-               Z"
-            fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-      <!-- Left Sleeve Seam -->
-      <line x1="-26" y1="-3" x2="-14" y2="-5" stroke="#C2D3E6" stroke-width="1.5"/>
-
-      <!-- Right Arm (Behind Back) -->
-      <path d="M 17 -10
-               C 29 2, 32 16, 26 27
-               C 24 30, 20 30, 18 26
-               C 22 17, 20 6, 12 -5
-               Z"
-            fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-      <!-- Right Sleeve Seam -->
-      <line x1="26" y1="-3" x2="14" y2="-5" stroke="#C2D3E6" stroke-width="1.5"/>
-    
-        
-    <!-- Neck -->
-    <rect x="-5" y="-18" width="10" height="8" fill="#F9DFCB" stroke="#282828" stroke-width="2.6"/>
-    <!-- Collar Left Flap -->
-    <polygon points="-1,-14 -12,-9 -4,-4" fill="#FFFFFF" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Collar Right Flap -->
-    <polygon points="1,-14 12,-9 4,-4" fill="#FFFFFF" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-  
         
     <!-- Ears -->
-    <ellipse cx="-23" cy="-44" rx="4.5" ry="6" fill="#F9DFCB" stroke="#282828" stroke-width="2.6"/>
-    <path d="M -23 -46 C -25 -44, -25 -42, -23 -41" stroke="#282828" stroke-width="1.4" fill="none"/>
-    <ellipse cx="23" cy="-44" rx="4.5" ry="6" fill="#F9DFCB" stroke="#282828" stroke-width="2.6"/>
-    <path d="M 23 -46 C 25 -44, 25 -42, 23 -41" stroke="#282828" stroke-width="1.4" fill="none"/>
-
-    <!-- Face Oval -->
-    <path d="M -22 -48
-             C -22 -68, 22 -68, 22 -48
-             C 22 -32, 16 -22, 0 -22
-             C -16 -22, -22 -32, -22 -48
-             Z"
-          fill="#F9DFCB" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
+    <circle cx="-26" cy="-15" r="5" fill="#FDDFC8" stroke="#1E232A" stroke-width="3.2"/>
+    <circle cx="26" cy="-15" r="5" fill="#FDDFC8" stroke="#1E232A" stroke-width="3.2"/>
+    <!-- Face Contour -->
+    <ellipse cx="0" cy="-15" rx="26" ry="24" fill="#FDDFC8" stroke="#1E232A" stroke-width="3.2"/>
   
         
-      <!-- Female Hair Bangs & Front Curvature -->
-      <path d="M -24 -46
-               C -24 -66, -14 -76, 0 -76
-               C 14 -76, 24 -66, 24 -46
-               C 24 -40, 22 -35, 18 -32
-               C 12 -42, -2 -48, -14 -42
-               C -20 -38, -24 -42, -24 -46
+      <path d="M -27 -18
+               C -27 -46, 27 -46, 27 -18
+               C 27 -26, 18 -32, 10 -30
+               C 2 -36, -14 -35, -20 -28
+               C -24 -24, -27 -22, -27 -18
                Z"
-            fill="#8A6E5E" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-      <!-- Side Bang Curls -->
-      <path d="M -22 -44 C -28 -34, -28 -20, -22 -12" stroke="#282828" stroke-width="2.6" fill="none"/>
-      <path d="M 22 -44 C 28 -34, 28 -20, 22 -12" stroke="#282828" stroke-width="2.6" fill="none"/>
+            fill="#784E3A" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
     
         
-        <!-- Eyebrows -->
-        <path d="M -17 -54 Q -10 -58 -4 -54" stroke="#282828" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M 4 -54 Q 10 -58 17 -54" stroke="#282828" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        
-        <!-- Almond Eyes with Top Eyelash -->
-        <path d="M -17 -44 Q -10 -52 -3 -44" stroke="#282828" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="-10" cy="-43" rx="6" ry="5" fill="#FFFFFF" stroke="#282828" stroke-width="1.6"/>
-        <ellipse cx="-9.5" cy="-43" rx="3.2" ry="4.5" fill="#2A221E"/>
-        <circle cx="-8" cy="-45" r="1.6" fill="#FFFFFF"/>
-        
-        <path d="M 3 -44 Q 10 -52 17 -44" stroke="#282828" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="10" cy="-43" rx="6" ry="5" fill="#FFFFFF" stroke="#282828" stroke-width="1.6"/>
-        <ellipse cx="9.5" cy="-43" rx="3.2" ry="4.5" fill="#2A221E"/>
-        <circle cx="11" cy="-45" r="1.6" fill="#FFFFFF"/>
+      <!-- Alis -->
+      <path d="M -17 -26 Q -11 -29 -5 -26" stroke="#1E232A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M 5 -26 Q 11 -29 17 -26" stroke="#1E232A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
 
-        <!-- Sweet Smile -->
-        <path d="M -4 -28 Q 0 -22 4 -28" stroke="#282828" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <!-- Large Round White Eyes with Black Pupils -->
+      <circle cx="-11" cy="-16" r="7.5" fill="#FFFFFF" stroke="#1E232A" stroke-width="2.2"/>
+      <circle cx="-10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="-8.5" cy="-18" r="1.6" fill="#FFFFFF"/>
       
+      <circle cx="11" cy="-16" r="7.5" fill="#FFFFFF" stroke="#1E232A" stroke-width="2.2"/>
+      <circle cx="10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="11.5" cy="-18" r="1.6" fill="#FFFFFF"/>
+      
+      <!-- Gentle Smile -->
+      <path d="M -5 -4 Q 0 1 5 -4" stroke="#1E232A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    
       </g>
     </g>
   </svg></div>
@@ -1435,137 +1421,70 @@ button { font-family: inherit; }
               <path d="M 0,20 L 400,20" stroke="#FCD34D" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
             </svg>
           </div>
-          <div class="preview-char-box" id="welcome-p2-preview"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-65 -95 130 195" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">
-    <g class="kce-hero-vector" transform="scale(-1, 1)">
-      <g  style="transform-origin: 0px 88px; transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <!-- Shadow Base -->
-        <ellipse cx="0" cy="88" rx="35" ry="7" fill="#15243C" opacity="0.2"/>
+          <div class="preview-char-box" id="welcome-p2-preview"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -60 100 145" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">
+    <g class="simple-hero-actor" transform="scale(-1, 1)">
+      <g  style="transform-origin: 0px 65px; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <!-- Drop Shadow -->
+        <ellipse cx="0" cy="73" rx="28" ry="6" fill="#0F172A" opacity="0.18"/>
         
         
-    <!-- Shoes -->
-    <path d="M -34 83 C -34 80, -20 80, -16 83 L -16 92 L -34 92 Z" fill="#251A15" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <path d="M 16 83 C 20 80, 34 80, 34 83 L 34 92 L 16 92 Z" fill="#251A15" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <line x1="-34" y1="92" x2="-16" y2="92" stroke="#282828" stroke-width="2.6"/>
-    <line x1="16" y1="92" x2="34" y2="92" stroke="#282828" stroke-width="2.6"/>
+    <!-- Navy Pants -->
+    <path d="M -15 38 L -18 66 L -5 66 L -2 44 L 2 44 L 5 66 L 18 66 L 15 38 Z"
+          fill="#22385C" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- Dark Shoes -->
+    <path d="M -26 66 C -26 62, -18 62, -4 66 L -4 75 L -26 75 Z" fill="#181C24" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <path d="M 4 66 C 18 62, 26 62, 26 66 L 26 75 L 4 75 Z" fill="#181C24" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
   
         
-    <!-- Navy Slacks -->
-    <path d="M -19 32
-             L -24 82
-             L -15 82
-             L -3 46
-             L 3 46
-             L 15 82
-             L 24 82
-             L 19 32
-             Z"
-          fill="#243552" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Center Crease -->
-    <line x1="-19" y1="40" x2="-20" y2="78" stroke="#19263C" stroke-width="1.5"/>
-    <line x1="19" y1="40" x2="20" y2="78" stroke="#19263C" stroke-width="1.5"/>
+    <!-- Light Blue Work Shirt -->
+    <path d="M -18 10 L -21 38 L 21 38 L 18 10 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+    <!-- Belt -->
+    <rect x="-21" y="38" width="42" height="7" fill="#2E1C0C" stroke="#1E232A" stroke-width="3.2"/>
+    <rect x="-5" y="37.5" width="10" height="8" rx="1.5" fill="#E2E8F0" stroke="#1E232A" stroke-width="1.8"/>
+    <!-- Chest Pockets -->
+    <rect x="-14" y="20" width="8" height="8" rx="1" fill="none" stroke="#1E232A" stroke-width="1.6"/>
+    <rect x="6" y="20" width="8" height="8" rx="1" fill="none" stroke="#1E232A" stroke-width="1.6"/>
+    <!-- Collar -->
+    <polygon points="0,11 -12,17 -4,22" fill="#FFFFFF" stroke="#1E232A" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="0,11 12,17 4,22" fill="#FFFFFF" stroke="#1E232A" stroke-width="1.8" stroke-linejoin="round"/>
   
         
-    <!-- Leather Belt -->
-    <rect x="-19" y="26" width="38" height="6.5" fill="#281808" stroke="#282828" stroke-width="2.6"/>
-    <!-- Silver Rectangular Buckle -->
-    <rect x="-4.5" y="25.5" width="9" height="7.5" rx="1" fill="#E2E8F0" stroke="#282828" stroke-width="1.8"/>
-    <rect x="-2" y="27.5" width="4" height="3.5" fill="#281808"/>
-  
-        
-    <!-- Light Blue Work Shirt Body -->
-    <path d="M -17 -13
-             L -22 26
-             L 22 26
-             L 17 -13
-             Z"
-          fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Center Button Placket -->
-    <line x1="0" y1="-8" x2="0" y2="26" stroke="#282828" stroke-width="1.5"/>
+      <path d="M -18 12 C -28 18, -28 32, -22 42 C -18 42, -16 38, -14 34 C -18 26, -18 18, -12 14 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
+      <path d="M 18 12 C 28 18, 28 32, 22 42 C 18 42, 16 38, 14 34 C 18 26, 18 18, 12 14 Z" fill="#DEEAF7" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
     
-    <!-- Left Chest Pocket -->
-    <rect x="-15" y="2" width="10" height="10" rx="0.8" fill="none" stroke="#282828" stroke-width="1.4"/>
-    <line x1="-15" y1="4.5" x2="-5" y2="4.5" stroke="#282828" stroke-width="1.4"/>
-    
-    <!-- Right Chest Pocket -->
-    <rect x="5" y="2" width="10" height="10" rx="0.8" fill="none" stroke="#282828" stroke-width="1.4"/>
-    <line x1="5" y1="4.5" x2="15" y2="4.5" stroke="#282828" stroke-width="1.4"/>
-
-    <!-- KCE Logo Badge on Right Chest -->
-    <circle cx="-10" cy="-3" r="1.8" fill="#005596"/>
-    <circle cx="-8" cy="-3" r="1.4" fill="#43B02A"/>
-  
-        
-      <!-- Left Arm (Behind Back) -->
-      <path d="M -17 -10
-               C -29 2, -32 16, -26 27
-               C -24 30, -20 30, -18 26
-               C -22 17, -20 6, -12 -5
-               Z"
-            fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-      <!-- Left Sleeve Seam -->
-      <line x1="-26" y1="-3" x2="-14" y2="-5" stroke="#C2D3E6" stroke-width="1.5"/>
-
-      <!-- Right Arm (Behind Back) -->
-      <path d="M 17 -10
-               C 29 2, 32 16, 26 27
-               C 24 30, 20 30, 18 26
-               C 22 17, 20 6, 12 -5
-               Z"
-            fill="#DEE7F2" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-      <!-- Right Sleeve Seam -->
-      <line x1="26" y1="-3" x2="14" y2="-5" stroke="#C2D3E6" stroke-width="1.5"/>
-    
-        
-    <!-- Neck -->
-    <rect x="-5" y="-18" width="10" height="8" fill="#F6D2BA" stroke="#282828" stroke-width="2.6"/>
-    <!-- Collar Left Flap -->
-    <polygon points="-1,-14 -12,-9 -4,-4" fill="#FFFFFF" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-    <!-- Collar Right Flap -->
-    <polygon points="1,-14 12,-9 4,-4" fill="#FFFFFF" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
-  
         
     <!-- Ears -->
-    <ellipse cx="-23" cy="-44" rx="4.5" ry="6" fill="#F6D2BA" stroke="#282828" stroke-width="2.6"/>
-    <path d="M -23 -46 C -25 -44, -25 -42, -23 -41" stroke="#282828" stroke-width="1.4" fill="none"/>
-    <ellipse cx="23" cy="-44" rx="4.5" ry="6" fill="#F6D2BA" stroke="#282828" stroke-width="2.6"/>
-    <path d="M 23 -46 C 25 -44, 25 -42, 23 -41" stroke="#282828" stroke-width="1.4" fill="none"/>
-
-    <!-- Face Oval -->
-    <path d="M -22 -48
-             C -22 -68, 22 -68, 22 -48
-             C 22 -32, 16 -22, 0 -22
-             C -16 -22, -22 -32, -22 -48
-             Z"
-          fill="#F6D2BA" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
+    <circle cx="-26" cy="-15" r="5" fill="#FBD7BA" stroke="#1E232A" stroke-width="3.2"/>
+    <circle cx="26" cy="-15" r="5" fill="#FBD7BA" stroke="#1E232A" stroke-width="3.2"/>
+    <!-- Face Contour -->
+    <ellipse cx="0" cy="-15" rx="26" ry="24" fill="#FBD7BA" stroke="#1E232A" stroke-width="3.2"/>
   
         
-      <!-- Male Hair Cap -->
-      <path d="M -24 -44
-               C -26 -66, -14 -76, 0 -76
-               C 15 -76, 26 -66, 24 -44
-               C 24 -38, 20 -34, 16 -32
-               C 10 -42, -4 -44, -14 -38
-               C -20 -34, -24 -38, -24 -44
+      <path d="M -27 -18
+               C -27 -46, 27 -46, 27 -18
+               C 27 -26, 18 -32, 8 -30
+               C 0 -35, -12 -34, -20 -28
+               C -25 -24, -27 -22, -27 -18
                Z"
-            fill="#29282C" stroke="#282828" stroke-width="2.6" stroke-linejoin="round"/>
+            fill="#23272F" stroke="#1E232A" stroke-width="3.2" stroke-linejoin="round"/>
     
         
-        <!-- Eyebrows -->
-        <path d="M -17 -55 Q -11 -58 -6 -55" stroke="#282828" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M 6 -55 Q 11 -58 17 -55" stroke="#282828" stroke-width="2" fill="none" stroke-linecap="round"/>
-        
-        <!-- Large Anime Eyes -->
-        <circle cx="-11" cy="-44" r="8" fill="#FFFFFF" stroke="#282828" stroke-width="2"/>
-        <ellipse cx="-10.5" cy="-44" rx="3.5" ry="5.5" fill="#222224"/>
-        <circle cx="-9" cy="-46.5" r="1.8" fill="#FFFFFF"/>
-        
-        <circle cx="11" cy="-44" r="8" fill="#FFFFFF" stroke="#282828" stroke-width="2"/>
-        <ellipse cx="10.5" cy="-44" rx="3.5" ry="5.5" fill="#222224"/>
-        <circle cx="12" cy="-46.5" r="1.8" fill="#FFFFFF"/>
+      <!-- Alis -->
+      <path d="M -17 -26 Q -11 -29 -5 -26" stroke="#1E232A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M 5 -26 Q 11 -29 17 -26" stroke="#1E232A" stroke-width="2.4" fill="none" stroke-linecap="round"/>
 
-        <!-- Gentle Curved Smile -->
-        <path d="M -5 -29 Q 0 -23 5 -29" stroke="#282828" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <!-- Large Round White Eyes with Black Pupils -->
+      <circle cx="-11" cy="-16" r="7.5" fill="#FFFFFF" stroke="#1E232A" stroke-width="2.2"/>
+      <circle cx="-10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="-8.5" cy="-18" r="1.6" fill="#FFFFFF"/>
       
+      <circle cx="11" cy="-16" r="7.5" fill="#FFFFFF" stroke="#1E232A" stroke-width="2.2"/>
+      <circle cx="10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="11.5" cy="-18" r="1.6" fill="#FFFFFF"/>
+      
+      <!-- Gentle Smile -->
+      <path d="M -5 -4 Q 0 1 5 -4" stroke="#1E232A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    
       </g>
     </g>
   </svg></div>
@@ -2300,7 +2219,7 @@ const SFX = new AudioEngine();
 
 // ==========================================================================
 // ==========================================================================
-// 3. CHANDRA ASRI KCE ENERGY HEROES (AUTHENTIC HIGH-FIDELITY VECTOR RIG)
+// 3. CHANDRA ASRI KCE ENERGY HEROES (CLEAN SIMPLE CHIBI VECTOR RIG)
 // ==========================================================================
 
 const HERO_ROSTER = [
@@ -2324,436 +2243,259 @@ const HERO_ROSTER = [
   }
 ];
 
-function getKCEHeroVector(charId, pose = 'idle', facing = 'right') {
+
+function getSimpleHero(charId, pose = 'idle', facing = 'right') {
   const isFemale = (charId === 'citra' || charId === 'female' || charId === 'kce-citra');
   const flip = (facing === 'left') ? 'transform="scale(-1, 1)"' : '';
 
-  // Palette grounded in authentic KCE artwork
-  const C = {
-    line: '#282828',
-    strokeW: 2.6,
-    skin: isFemale ? '#F9DFCB' : '#F6D2BA',
-    skinShadow: '#E8BC9E',
-    blush: '#FA8072',
-    maleHair: '#29282C',
-    femaleHair: '#8A6E5E',
-    femaleHairShadow: '#755A4C',
-    shirt: '#DEE7F2',
-    shirtShadow: '#C2D3E6',
-    collar: '#FFFFFF',
-    belt: '#281808',
-    buckle: '#E2E8F0',
-    pants: '#243552',
-    pantsShadow: '#19263C',
-    shoes: '#251A15',
-    kceBlue: '#005596',
-    kceGreen: '#43B02A'
-  };
+  // Crisp, clean vector styling
+  const stroke = '#1E232A';
+  const sw = 3.2;
+  const skin = isFemale ? '#FDDFC8' : '#FBD7BA';
+  const hair = isFemale ? '#784E3A' : '#23272F';
+  const shirt = '#DEEAF7';
+  const pants = '#22385C';
+  const shoes = '#181C24';
 
-  // Dynamic Root Physics Animation Transform based on game tension
-  let animTransform = '';
+  // Dynamic animation physics
+  let rootTransform = '';
   if (pose === 'pull') {
-    // Leaning back with full body weight pulling rope
-    animTransform = 'transform="rotate(-15) translate(-6, 2)"';
+    rootTransform = 'transform="rotate(-15) translate(-4, 0)"';
   } else if (pose === 'stumble') {
-    // Yanked forward toward center
-    animTransform = 'transform="rotate(12) translate(8, 0)"';
+    rootTransform = 'transform="rotate(12) translate(6, 0)"';
   } else if (pose === 'celebrate') {
-    // Joyful victory jump
-    animTransform = 'transform="translate(0, -14) scale(1.05)"';
+    rootTransform = 'transform="translate(0, -12)"';
   } else if (pose === 'fall') {
-    // Tumble backward onto ground
-    animTransform = 'transform="translate(-20, 24) rotate(52)"';
+    rootTransform = 'transform="translate(-15, 20) rotate(48)"';
   }
 
-  // 1. SHOES (Ground level at Y=80..92)
-  const shoes = `
-    <!-- Shoes -->
-    <path d="M -34 83 C -34 80, -20 80, -16 83 L -16 92 L -34 92 Z" fill="${C.shoes}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-    <path d="M 16 83 C 20 80, 34 80, 34 83 L 34 92 L 16 92 Z" fill="${C.shoes}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-    <line x1="-34" y1="92" x2="-16" y2="92" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-    <line x1="16" y1="92" x2="34" y2="92" stroke="${C.line}" stroke-width="${C.strokeW}"/>
+  // 1. LEGS (Y=38..66) & SHOES (Y=66..75)
+  const legs = `
+    <!-- Navy Pants -->
+    <path d="M -15 38 L -18 66 L -5 66 L -2 44 L 2 44 L 5 66 L 18 66 L 15 38 Z"
+          fill="${pants}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+    <!-- Dark Shoes -->
+    <path d="M -26 66 C -26 62, -18 62, -4 66 L -4 75 L -26 75 Z" fill="${shoes}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+    <path d="M 4 66 C 18 62, 26 62, 26 66 L 26 75 L 4 75 Z" fill="${shoes}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
   `;
 
-  // 2. PANTS & LEGS (Y=28..83)
-  const pants = `
-    <!-- Navy Slacks -->
-    <path d="M -19 32
-             L -24 82
-             L -15 82
-             L -3 46
-             L 3 46
-             L 15 82
-             L 24 82
-             L 19 32
-             Z"
-          fill="${C.pants}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-    <!-- Center Crease -->
-    <line x1="-19" y1="40" x2="-20" y2="78" stroke="${C.pantsShadow}" stroke-width="1.5"/>
-    <line x1="19" y1="40" x2="20" y2="78" stroke="${C.pantsShadow}" stroke-width="1.5"/>
-  `;
-
-  // 3. BELT (Y=26..32)
-  const belt = `
-    <!-- Leather Belt -->
-    <rect x="-19" y="26" width="38" height="6.5" fill="${C.belt}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-    <!-- Silver Rectangular Buckle -->
-    <rect x="-4.5" y="25.5" width="9" height="7.5" rx="1" fill="${C.buckle}" stroke="${C.line}" stroke-width="1.8"/>
-    <rect x="-2" y="27.5" width="4" height="3.5" fill="${C.belt}"/>
-  `;
-
-  // 4. TORSO (Y=-14..26)
+  // 2. TORSO & BELT (Y=10..38)
   const torso = `
-    <!-- Light Blue Work Shirt Body -->
-    <path d="M -17 -13
-             L -22 26
-             L 22 26
-             L 17 -13
-             Z"
-          fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-    <!-- Center Button Placket -->
-    <line x1="0" y1="-8" x2="0" y2="26" stroke="${C.line}" stroke-width="1.5"/>
-    
-    <!-- Left Chest Pocket -->
-    <rect x="-15" y="2" width="10" height="10" rx="0.8" fill="none" stroke="${C.line}" stroke-width="1.4"/>
-    <line x1="-15" y1="4.5" x2="-5" y2="4.5" stroke="${C.line}" stroke-width="1.4"/>
-    
-    <!-- Right Chest Pocket -->
-    <rect x="5" y="2" width="10" height="10" rx="0.8" fill="none" stroke="${C.line}" stroke-width="1.4"/>
-    <line x1="5" y1="4.5" x2="15" y2="4.5" stroke="${C.line}" stroke-width="1.4"/>
-
-    <!-- KCE Logo Badge on Right Chest -->
-    <circle cx="-10" cy="-3" r="1.8" fill="${C.kceBlue}"/>
-    <circle cx="-8" cy="-3" r="1.4" fill="${C.kceGreen}"/>
+    <!-- Light Blue Work Shirt -->
+    <path d="M -18 10 L -21 38 L 21 38 L 18 10 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+    <!-- Belt -->
+    <rect x="-21" y="38" width="42" height="7" fill="#2E1C0C" stroke="${stroke}" stroke-width="${sw}"/>
+    <rect x="-5" y="37.5" width="10" height="8" rx="1.5" fill="#E2E8F0" stroke="${stroke}" stroke-width="1.8"/>
+    <!-- Chest Pockets -->
+    <rect x="-14" y="20" width="8" height="8" rx="1" fill="none" stroke="${stroke}" stroke-width="1.6"/>
+    <rect x="6" y="20" width="8" height="8" rx="1" fill="none" stroke="${stroke}" stroke-width="1.6"/>
+    <!-- Collar -->
+    <polygon points="0,11 -12,17 -4,22" fill="#FFFFFF" stroke="${stroke}" stroke-width="1.8" stroke-linejoin="round"/>
+    <polygon points="0,11 12,17 4,22" fill="#FFFFFF" stroke="${stroke}" stroke-width="1.8" stroke-linejoin="round"/>
   `;
 
-  // 5. COLLAR & NECK (Y=-20..-7)
-  const collarAndNeck = `
-    <!-- Neck -->
-    <rect x="-5" y="-18" width="10" height="8" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-    <!-- Collar Left Flap -->
-    <polygon points="-1,-14 -12,-9 -4,-4" fill="${C.collar}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-    <!-- Collar Right Flap -->
-    <polygon points="1,-14 12,-9 4,-4" fill="${C.collar}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-  `;
-
-  // 6. ARMS & HANDS (Conditional based on pose!)
-  let armsHTML = '';
+  // 3. ARMS & HANDS
+  let arms = '';
   if (pose === 'idle') {
-    // 100% Authentic Original Pose: Hands Neatly Folded Behind Back!
-    armsHTML = `
-      <!-- Left Arm (Behind Back) -->
-      <path d="M -17 -10
-               C -29 2, -32 16, -26 27
-               C -24 30, -20 30, -18 26
-               C -22 17, -20 6, -12 -5
-               Z"
-            fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Left Sleeve Seam -->
-      <line x1="-26" y1="-3" x2="-14" y2="-5" stroke="${C.shirtShadow}" stroke-width="1.5"/>
-
-      <!-- Right Arm (Behind Back) -->
-      <path d="M 17 -10
-               C 29 2, 32 16, 26 27
-               C 24 30, 20 30, 18 26
-               C 22 17, 20 6, 12 -5
-               Z"
-            fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Right Sleeve Seam -->
-      <line x1="26" y1="-3" x2="14" y2="-5" stroke="${C.shirtShadow}" stroke-width="1.5"/>
+    // Both arms neatly at side
+    arms = `
+      <path d="M -18 12 C -28 18, -28 32, -22 42 C -18 42, -16 38, -14 34 C -18 26, -18 18, -12 14 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <path d="M 18 12 C 28 18, 28 32, 22 42 C 18 42, 16 38, 14 34 C 18 26, 18 18, 12 14 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
     `;
   } else if (pose === 'pull') {
-    // Tug of War: Both Arms Reach Forward Gripping the Rope at Y=135!
-    armsHTML = `
-      <!-- Back Pulling Arm -->
-      <path d="M -4 -2 L 32 26 L 36 34 L 2 10 Z" fill="${C.shirtShadow}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Back Hand Fist Wrapped Around Rope -->
-      <circle cx="36" cy="30" r="6.5" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      
-      <!-- Front Pulling Arm (In Shirt Sleeve Fabric) -->
-      <path d="M 14 -6
-               C 18 -6, 22 -2, 26 6
-               L 44 24
-               L 40 34
-               L 22 22
-               L 12 16
-               Z"
-            fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Sleeve Cuff -->
-      <line x1="32" y1="16" x2="28" y2="28" stroke="${C.line}" stroke-width="1.6"/>
-      
-      <!-- Front Hand Clenched Fist Clamping The Rope -->
-      <rect x="40" y="24" width="13" height="13" rx="4" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <!-- Knuckle Creases -->
-      <path d="M 46 25 L 46 36 M 50 26 L 50 35" stroke="${C.line}" stroke-width="1.4"/>
-      <!-- Thumb Wrapping Around Top of the Rope -->
-      <path d="M 40 24 Q 46 20 51 24" stroke="${C.line}" stroke-width="${C.strokeW}" fill="none"/>
+    // Both arms reaching forward to hold the horizontal rope at local Y=25
+    arms = `
+      <!-- Back Arm (Darker sleeve) -->
+      <path d="M -6 12 L 26 21 L 24 31 L -6 22 Z" fill="#C4D6EB" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <circle cx="28" cy="26" r="6.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <!-- Front Arm -->
+      <path d="M 8 10 L 40 18 L 38 29 L 6 22 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <!-- Clenched Fist grasping rope -->
+      <rect x="36" y="19" width="14" height="13" rx="4" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <line x1="41" y1="20" x2="41" y2="31" stroke="${stroke}" stroke-width="1.6"/>
+      <line x1="45" y1="20" x2="45" y2="31" stroke="${stroke}" stroke-width="1.6"/>
+      <!-- Thumb wrapping over top of rope -->
+      <path d="M 36 20 Q 42 16 47 20" stroke="${stroke}" stroke-width="${sw}" fill="none"/>
     `;
   } else if (pose === 'stumble') {
-    // Jerked forward with tense reach toward center gripping the rope
-    armsHTML = `
-      <!-- Strained Forward Reach Arms -->
-      <path d="M -2 -2 L 30 18 L 34 26 L 2 6 Z" fill="${C.shirtShadow}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <circle cx="34" cy="22" r="6" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <path d="M 10 -4 L 38 16 L 36 26 L 8 6 Z" fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <rect x="36" y="16" width="12" height="12" rx="4" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <path d="M 42 17 L 42 27" stroke="${C.line}" stroke-width="1.4"/>
+    // Tense forward reach
+    arms = `
+      <path d="M -6 12 L 28 16 L 26 25 L -6 21 Z" fill="#C4D6EB" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <circle cx="30" cy="21" r="6" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <path d="M 8 10 L 42 15 L 40 25 L 6 20 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <rect x="38" y="15" width="12" height="12" rx="4" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
     `;
   } else if (pose === 'celebrate') {
-    // Victory Fist Pumped in the Air!
-    armsHTML = `
-      <!-- Left Arm (Resting on Hip) -->
-      <path d="M -16 -8 C -26 -4, -30 10, -22 18 L -14 14 C -18 8, -16 0, -10 -5 Z" fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <!-- Right Arm Raised High In Victory! -->
-      <path d="M 14 -8
-               C 22 -14, 26 -28, 28 -42
-               L 36 -39
-               C 34 -24, 28 -10, 18 -4
-               Z"
-            fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Victory Clenched Fist -->
-      <circle cx="32" cy="-46" r="7" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <!-- Finger Details on Fist -->
-      <line x1="29" y1="-49" x2="29" y2="-43" stroke="${C.line}" stroke-width="1.4"/>
-      <line x1="32" y1="-50" x2="32" y2="-42" stroke="${C.line}" stroke-width="1.4"/>
-      <line x1="35" y1="-49" x2="35" y2="-43" stroke="${C.line}" stroke-width="1.4"/>
+    // Joyful arms pumped in the air \o/
+    arms = `
+      <path d="M -16 12 L -28 -10 L -20 -13 L -10 10 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <circle cx="-25" cy="-14" r="6.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+      <path d="M 16 12 L 28 -10 L 20 -13 L 10 10 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <circle cx="25" cy="-14" r="6.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
     `;
   } else if (pose === 'fall') {
-    // Fallen Arms Sprawled Out
-    armsHTML = `
-      <path d="M -14 -6 L -34 -14 L -30 -22 L -10 -12 Z" fill="${C.shirt}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-      <circle cx="-34" cy="-18" r="6" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
+    arms = `
+      <path d="M -14 12 L -32 4 L -28 -3 L -10 8 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}"/>
+      <circle cx="-32" cy="1" r="6" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
     `;
   }
 
-  // 7. HEAD & FACE
+  // 4. HEAD, EARS, HAIR
   let hairBack = '';
-  let hairFront = '';
-  let faceDetails = '';
+  let hairTop = '';
 
   if (isFemale) {
-    // Female Hair Back: Flowing long hair falling down behind shoulders
+    // Female: Flowing brown hair down behind shoulders
     hairBack = `
-      <!-- Female Flowing Hair Back Silhouette -->
-      <path d="M -24 -46
-               C -36 -36, -46 -15, -42 12
-               C -38 34, -48 48, -42 64
-               C -36 74, -22 78, -14 78
-               L 14 78
-               C 22 78, 36 74, 42 64
-               C 48 48, 38 34, 42 12
-               C 46 -15, 36 -36, 24 -46
-               Z"
-            fill="${C.femaleHair}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
+      <path d="M -26 -20 C -38 0, -38 28, -26 44 L 26 44 C 38 28, 38 0, 26 -20 Z"
+            fill="${hair}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
     `;
-
-    // Female Hair Front: Soft bangs parted on forehead
-    hairFront = `
-      <!-- Female Hair Bangs & Front Curvature -->
-      <path d="M -24 -46
-               C -24 -66, -14 -76, 0 -76
-               C 14 -76, 24 -66, 24 -46
-               C 24 -40, 22 -35, 18 -32
-               C 12 -42, -2 -48, -14 -42
-               C -20 -38, -24 -42, -24 -46
+    // Female hair cap above forehead
+    hairTop = `
+      <path d="M -27 -18
+               C -27 -46, 27 -46, 27 -18
+               C 27 -26, 18 -32, 10 -30
+               C 2 -36, -14 -35, -20 -28
+               C -24 -24, -27 -22, -27 -18
                Z"
-            fill="${C.femaleHair}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
-      <!-- Side Bang Curls -->
-      <path d="M -22 -44 C -28 -34, -28 -20, -22 -12" stroke="${C.line}" stroke-width="${C.strokeW}" fill="none"/>
-      <path d="M 22 -44 C 28 -34, 28 -20, 22 -12" stroke="${C.line}" stroke-width="${C.strokeW}" fill="none"/>
+            fill="${hair}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
     `;
   } else {
-    // Male Hair: Smooth rounded black hair with neat side-parted fringe
-    hairFront = `
-      <!-- Male Hair Cap -->
-      <path d="M -24 -44
-               C -26 -66, -14 -76, 0 -76
-               C 15 -76, 26 -66, 24 -44
-               C 24 -38, 20 -34, 16 -32
-               C 10 -42, -4 -44, -14 -38
-               C -20 -34, -24 -38, -24 -44
+    // Male: Smooth rounded short black hair cap cleanly above forehead!
+    hairTop = `
+      <path d="M -27 -18
+               C -27 -46, 27 -46, 27 -18
+               C 27 -26, 18 -32, 8 -30
+               C 0 -35, -12 -34, -20 -28
+               C -25 -24, -27 -22, -27 -18
                Z"
-            fill="${C.maleHair}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
+            fill="${hair}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
     `;
   }
 
-  // Base Face Contour (Smooth rounded chin and cheeks)
-  const faceBase = `
+  // Smooth cute round face
+  const head = `
     <!-- Ears -->
-    <ellipse cx="-23" cy="-44" rx="4.5" ry="6" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-    <path d="M -23 -46 C -25 -44, -25 -42, -23 -41" stroke="${C.line}" stroke-width="1.4" fill="none"/>
-    <ellipse cx="23" cy="-44" rx="4.5" ry="6" fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}"/>
-    <path d="M 23 -46 C 25 -44, 25 -42, 23 -41" stroke="${C.line}" stroke-width="1.4" fill="none"/>
-
-    <!-- Face Oval -->
-    <path d="M -22 -48
-             C -22 -68, 22 -68, 22 -48
-             C 22 -32, 16 -22, 0 -22
-             C -16 -22, -22 -32, -22 -48
-             Z"
-          fill="${C.skin}" stroke="${C.line}" stroke-width="${C.strokeW}" stroke-linejoin="round"/>
+    <circle cx="-26" cy="-15" r="5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+    <circle cx="26" cy="-15" r="5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+    <!-- Face Contour -->
+    <ellipse cx="0" cy="-15" rx="26" ry="24" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
   `;
 
-  // Dynamic Facial Expressions based on Pose!
+  // 5. CUTE CARTOON FACIAL EXPRESSIONS (Placed on forehead & cheeks)
+  let face = '';
   if (pose === 'idle') {
-    if (!isFemale) {
-      // Male Big Round Eyes (Signature Rizky look)
-      faceDetails = `
-        <!-- Eyebrows -->
-        <path d="M -17 -55 Q -11 -58 -6 -55" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M 6 -55 Q 11 -58 17 -55" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-        
-        <!-- Large Anime Eyes -->
-        <circle cx="-11" cy="-44" r="8" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-        <ellipse cx="-10.5" cy="-44" rx="3.5" ry="5.5" fill="#222224"/>
-        <circle cx="-9" cy="-46.5" r="1.8" fill="#FFFFFF"/>
-        
-        <circle cx="11" cy="-44" r="8" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-        <ellipse cx="10.5" cy="-44" rx="3.5" ry="5.5" fill="#222224"/>
-        <circle cx="12" cy="-46.5" r="1.8" fill="#FFFFFF"/>
+    // Big round cartoon anime eyes
+    face = `
+      <!-- Alis -->
+      <path d="M -17 -26 Q -11 -29 -5 -26" stroke="${stroke}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <path d="M 5 -26 Q 11 -29 17 -26" stroke="${stroke}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
 
-        <!-- Gentle Curved Smile -->
-        <path d="M -5 -29 Q 0 -23 5 -29" stroke="${C.line}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      `;
-    } else {
-      // Female Big Almond Eyes with Lashes
-      faceDetails = `
-        <!-- Eyebrows -->
-        <path d="M -17 -54 Q -10 -58 -4 -54" stroke="${C.line}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M 4 -54 Q 10 -58 17 -54" stroke="${C.line}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        
-        <!-- Almond Eyes with Top Eyelash -->
-        <path d="M -17 -44 Q -10 -52 -3 -44" stroke="${C.line}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="-10" cy="-43" rx="6" ry="5" fill="#FFFFFF" stroke="${C.line}" stroke-width="1.6"/>
-        <ellipse cx="-9.5" cy="-43" rx="3.2" ry="4.5" fill="#2A221E"/>
-        <circle cx="-8" cy="-45" r="1.6" fill="#FFFFFF"/>
-        
-        <path d="M 3 -44 Q 10 -52 17 -44" stroke="${C.line}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="10" cy="-43" rx="6" ry="5" fill="#FFFFFF" stroke="${C.line}" stroke-width="1.6"/>
-        <ellipse cx="9.5" cy="-43" rx="3.2" ry="4.5" fill="#2A221E"/>
-        <circle cx="11" cy="-45" r="1.6" fill="#FFFFFF"/>
-
-        <!-- Sweet Smile -->
-        <path d="M -4 -28 Q 0 -22 4 -28" stroke="${C.line}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      `;
-    }
+      <!-- Large Round White Eyes with Black Pupils -->
+      <circle cx="-11" cy="-16" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="-10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="-8.5" cy="-18" r="1.6" fill="#FFFFFF"/>
+      
+      <circle cx="11" cy="-16" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="10" cy="-16" r="4.2" fill="#181C24"/>
+      <circle cx="11.5" cy="-18" r="1.6" fill="#FFFFFF"/>
+      
+      <!-- Gentle Smile -->
+      <path d="M -5 -4 Q 0 1 5 -4" stroke="${stroke}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    `;
   } else if (pose === 'pull') {
-    // Effort & Strain expression: gritted teeth, angled eyebrows, sweat drop!
-    faceDetails = `
-      <!-- Angled Determined Eyebrows -->
-      <path d="M -17 -52 L -6 -56" stroke="${C.line}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path d="M 6 -56 L 17 -52" stroke="${C.line}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      
-      <!-- Focused Squinting Eyes -->
-      <circle cx="-11" cy="-44" r="7" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-      <ellipse cx="-9.5" cy="-44" rx="3" ry="5" fill="#222224"/>
-      <circle cx="-8.5" cy="-46" r="1.4" fill="#FFFFFF"/>
-      
-      <circle cx="11" cy="-44" r="7" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-      <ellipse cx="9.5" cy="-44" rx="3" ry="5" fill="#222224"/>
-      <circle cx="10.5" cy="-46" r="1.4" fill="#FFFFFF"/>
+    // Pulling face: gritted teeth & sweat drop
+    face = `
+      <!-- Eyebrows angled in effort -->
+      <line x1="-16" y1="-23" x2="-6" y2="-27" stroke="${stroke}" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="6" y1="-27" x2="16" y2="-23" stroke="${stroke}" stroke-width="2.6" stroke-linecap="round"/>
 
-      <!-- Gritted Strain Teeth Smile -->
-      <path d="M -7 -29 L 7 -29 Q 0 -23 -7 -29 Z" fill="#FFFFFF" stroke="${C.line}" stroke-width="1.8" stroke-linejoin="round"/>
-      <line x1="-2" y1="-29" x2="-2" y2="-25" stroke="${C.line}" stroke-width="1.2"/>
-      <line x1="2" y1="-29" x2="2" y2="-25" stroke="${C.line}" stroke-width="1.2"/>
+      <!-- Focused Eyes -->
+      <circle cx="-11" cy="-16" r="6.8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="-9.5" cy="-16" r="3.8" fill="#181C24"/>
+      <circle cx="11" cy="-16" r="6.8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="9.5" cy="-16" r="3.8" fill="#181C24"/>
 
-      <!-- Effort Sweat Drop on Forehead -->
-      <path d="M 16 -60 C 19 -66, 23 -68, 23 -72 C 23 -75, 18 -75, 18 -72 C 15 -68, 13 -66, 16 -60 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="1.2"/>
-      <circle cx="17.5" cy="-64" r="1.2" fill="#FFFFFF"/>
+      <!-- Gritted Teeth -->
+      <rect x="-6" y="-5" width="12" height="6.5" rx="2" fill="#FFFFFF" stroke="${stroke}" stroke-width="1.8"/>
+      <line x1="-1" y1="-5" x2="-1" y2="1.5" stroke="${stroke}" stroke-width="1.2"/>
+      <line x1="2" y1="-5" x2="2" y2="1.5" stroke="${stroke}" stroke-width="1.2"/>
+
+      <!-- Sweat Drop 💧 on Forehead -->
+      <path d="M 17 -30 C 21 -35, 24 -36, 24 -40 C 24 -43, 19 -43, 19 -40 C 16 -36, 14 -35, 17 -30 Z" fill="#38BDF8" stroke="#0284C7" stroke-width="1.2"/>
     `;
   } else if (pose === 'stumble') {
-    // Startled / Surprised expression
-    faceDetails = `
-      <!-- High Startled Eyebrows -->
-      <path d="M -17 -58 Q -11 -62 -6 -58" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M 6 -58 Q 11 -62 17 -58" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-      
+    face = `
+      <!-- Startled High Eyebrows -->
+      <path d="M -16 -28 Q -11 -32 -6 -28" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 6 -28 Q 11 -32 16 -28" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
       <!-- Wide Eyes with Small Pupils -->
-      <circle cx="-11" cy="-44" r="8" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-      <circle cx="-11" cy="-44" r="2.8" fill="#222224"/>
-      
-      <circle cx="11" cy="-44" r="8" fill="#FFFFFF" stroke="${C.line}" stroke-width="2"/>
-      <circle cx="11" cy="-44" r="2.8" fill="#222224"/>
-
-      <!-- Small Startled Open 'O' Mouth -->
-      <ellipse cx="0" cy="-27" rx="3.5" ry="5" fill="#222224" stroke="${C.line}" stroke-width="1.6"/>
-      
-      <!-- Startle Exclamation Mark -->
-      <text x="20" y="-66" font-size="20" font-weight="900" fill="#EF4444">❗</text>
+      <circle cx="-11" cy="-16" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="-11" cy="-16" r="2.6" fill="#181C24"/>
+      <circle cx="11" cy="-16" r="7.5" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
+      <circle cx="11" cy="-16" r="2.6" fill="#181C24"/>
+      <!-- Open 'O' Mouth -->
+      <ellipse cx="0" cy="-4" rx="3.5" ry="5" fill="#181C24"/>
+      <!-- Exclamation ❗ -->
+      <text x="18" y="-34" font-size="18" font-weight="900" fill="#EF4444">❗</text>
     `;
   } else if (pose === 'celebrate') {
-    // Joyful laughing eyes & open cheerful smile + crown!
-    faceDetails = `
-      <!-- Laughing Crescent Eyes (^ ^) -->
-      <path d="M -16 -43 Q -11 -51 -6 -43" stroke="${C.line}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-      <path d="M 6 -43 Q 11 -51 16 -43" stroke="${C.line}" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-      
-      <!-- Wide Open Laughing Smile -->
-      <path d="M -7 -30 Q 0 -18 7 -30 Z" fill="#EF4444" stroke="${C.line}" stroke-width="2" stroke-linejoin="round"/>
-      <path d="M -4 -25 Q 0 -21 4 -25" stroke="#F87171" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <!-- Golden Royal Crown -->
-      <text x="-14" y="-84" font-size="28">👑</text>
-      <!-- Sparkles -->
-      <polygon points="32,-74 34,-80 40,-77 35,-71 38,-65 32,-68 26,-65 29,-71 24,-77 30,-80" fill="#FFD028"/>
-      <polygon points="-30,-64 -28,-70 -22,-67 -27,-61 -24,-55 -30,-58 -36,-55 -33,-61 -38,-67 -32,-70" fill="#38BDF8"/>
+    face = `
+      <!-- Cheerful crescent eyes ^ ^ -->
+      <path d="M -16 -16 Q -11 -23 -6 -16" stroke="${stroke}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 6 -16 Q 11 -23 16 -16" stroke="${stroke}" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Laughing mouth -->
+      <path d="M -7 -5 Q 0 6 7 -5 Z" fill="#EF4444" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>
+      <!-- Crown 👑 -->
+      <text x="-13" y="-48" font-size="26">👑</text>
     `;
   } else if (pose === 'fall') {
-    // Dizzy spiral eyes & stars
-    faceDetails = `
-      <!-- Dizzy Spiral Eyes -->
-      <path d="M -13 -44 A 3 3 0 0 1 -10 -47 A 5 5 0 0 1 -7 -44 A 7 7 0 0 1 -13 -41" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M 9 -44 A 3 3 0 0 1 12 -47 A 5 5 0 0 1 15 -44 A 7 7 0 0 1 9 -41" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <!-- Wavy Mouth -->
-      <path d="M -6 -28 Q -3 -31 0 -28 Q 3 -25 6 -28" stroke="${C.line}" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <!-- Dizzy Stars -->
-      <text x="-22" y="-70" font-size="18">💫</text>
-      <text x="12" y="-74" font-size="18">⭐</text>
+    face = `
+      <circle cx="-11" cy="-16" r="6" fill="#FFFFFF" stroke="${stroke}" stroke-width="2"/>
+      <text x="-16" y="-11" font-size="12">🌀</text>
+      <circle cx="11" cy="-16" r="6" fill="#FFFFFF" stroke="${stroke}" stroke-width="2"/>
+      <text x="6" y="-11" font-size="12">🌀</text>
+      <path d="M -6 -4 Q -3 -7 0 -4 Q 3 -1 6 -4" stroke="${stroke}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <text x="-20" y="-38" font-size="16">💫</text>
+      <text x="10" y="-42" font-size="16">⭐</text>
     `;
   }
 
   return `
-    <g class="kce-hero-vector" ${flip}>
-      <g ${animTransform} style="transform-origin: 0px 88px; transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);">
-        <!-- Shadow Base -->
-        <ellipse cx="0" cy="88" rx="35" ry="7" fill="#15243C" opacity="0.2"/>
+    <g class="simple-hero-actor" ${flip}>
+      <g ${rootTransform} style="transform-origin: 0px 65px; transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);">
+        <!-- Drop Shadow -->
+        <ellipse cx="0" cy="73" rx="28" ry="6" fill="#0F172A" opacity="0.18"/>
         ${hairBack}
-        ${shoes}
-        ${pants}
-        ${belt}
+        ${legs}
         ${torso}
-        ${armsHTML}
-        ${collarAndNeck}
-        ${faceBase}
-        ${hairFront}
-        ${faceDetails}
+        ${arms}
+        ${head}
+        ${hairTop}
+        ${face}
       </g>
     </g>
   `;
 }
 
+
 /**
- * Renders the hero actor for the SVG Tug of War battlefield arena.
- * Returns the <g class="kce-hero-vector"> group element.
+ * Arena hero renderer returning <g class="simple-hero-actor">
  */
 function renderHeroArena(heroId, pose = 'idle', facing = 'right') {
-  return getKCEHeroVector(heroId, pose, facing);
+  return getSimpleHero(heroId, pose, facing);
 }
 
 /**
- * Standard vector renderer for HTML UI containers (Selection Cards, Ready Preview, Victory Screen).
- * Returns an inline SVG container with pose-adaptive viewBox.
+ * UI vector renderer with adaptive viewBox
  */
 function renderHeroSVG(heroId, pose = 'idle', facing = 'right') {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-65 -95 130 195" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">${getKCEHeroVector(heroId, pose, facing)}</svg>`;
+  let vb = '-50 -60 100 145';
+  if (pose === 'celebrate') vb = '-50 -80 100 160';
+  else if (pose === 'fall') vb = '-70 -60 140 145';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%" style="overflow:visible;" preserveAspectRatio="xMidYMid meet">${getSimpleHero(heroId, pose, facing)}</svg>`;
 }
 
-/**
- * Standalone avatar preview HTML (idle pose).
- */
 function renderHeroAvatarHTML(heroId, facing = 'right') {
   return renderHeroSVG(heroId, 'idle', facing);
 }
@@ -2777,14 +2519,14 @@ function drawBattlefield() {
   const offset = GAME.ropeOffset; // -4 to +4
   const markerX = 500 + offset * 60; // 500 is center
 
-  // Rope connects from P1 fists (X=158) to P2 fists (X=842) at exact Y=135
-  const ropeD = `M 158 135 L ${markerX} 135 L 842 135`;
+  // Rope connects from P1 fists (X=150) to P2 fists (X=850) at exact Y=135
+  const ropeD = `M 150 135 L ${markerX} 135 L 850 135`;
 
   const p1SVG = renderHeroArena(GAME.p1.charId, p1HeroState, 'right');
   const p2SVG = renderHeroArena(GAME.p2.charId, p2HeroState, 'left');
 
   // Generate jagged electric lightning path along the rope when pulled
-  const surgeTargetX = (offset < 0) ? 158 : 842;
+  const surgeTargetX = (offset < 0) ? 150 : 850;
   const surgeX1 = markerX;
   const surgeX2 = surgeTargetX;
   const midX1 = surgeX1 + (surgeX2 - surgeX1) * 0.35;
@@ -2826,8 +2568,8 @@ function drawBattlefield() {
     <line x1="500" y1="12" x2="500" y2="208" stroke="#FFB800" stroke-width="2" stroke-dasharray="6 6" opacity="0.75"/>
 
     <!-- Tug of War Braided Rope -->
-    <path d="${ropeD}" stroke="#9A3412" stroke-width="13" stroke-linecap="round" fill="none"/>
-    <path d="${ropeD}" stroke="#FDE047" stroke-width="4.5" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
+    <path d="${ropeD}" stroke="#9A3412" stroke-width="12" stroke-linecap="round" fill="none"/>
+    <path d="${ropeD}" stroke="#FDE047" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
 
     <!-- Electric Lightning Bolt Surge Effect when Tugged -->
     ${isElectricSurging ? `
