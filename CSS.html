@@ -250,7 +250,11 @@ button { font-family: inherit; }
 }
 
 .preview-char-box { width: 130px; height: 145px; }
-.preview-char-box svg { width: 100%; height: 100%; }
+.preview-char-box img, .preview-char-box svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 .preview-rope-box {
   flex: 1;
@@ -654,7 +658,11 @@ button { font-family: inherit; }
 }
 
 .ready-hero-avatar { width: 65px; height: 75px; }
-.ready-hero-avatar svg { width: 100%; height: 100%; }
+.ready-hero-avatar img, .ready-hero-avatar svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 /* ==========================================================================
    ARENA SCREEN: BATTLEFIELD + 30-SECOND INDEPENDENT TIMERS PER SOAL

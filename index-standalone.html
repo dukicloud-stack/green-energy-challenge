@@ -261,7 +261,11 @@ button { font-family: inherit; }
 }
 
 .preview-char-box { width: 130px; height: 145px; }
-.preview-char-box svg { width: 100%; height: 100%; }
+.preview-char-box img, .preview-char-box svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 .preview-rope-box {
   flex: 1;
@@ -665,7 +669,11 @@ button { font-family: inherit; }
 }
 
 .ready-hero-avatar { width: 65px; height: 75px; }
-.ready-hero-avatar svg { width: 100%; height: 100%; }
+.ready-hero-avatar img, .ready-hero-avatar svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
 /* ==========================================================================
    ARENA SCREEN: BATTLEFIELD + 30-SECOND INDEPENDENT TIMERS PER SOAL
@@ -1086,7 +1094,7 @@ button { font-family: inherit; }
   .arena-player-pill { width: 100%; }
 }
 
-  </style>
+</style>
 </head>
 <body>
 
@@ -1700,6 +1708,37 @@ class AudioEngine {
       osc.stop(this.ctx.currentTime + 0.22);
     } catch (e) {}
   }
+  electricZap() {
+    if (!GAME.soundEnabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(950, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.18);
+      gain.gain.setValueAtTime(0.24, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.18);
+
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(1600, now);
+      osc2.frequency.linearRampToValueAtTime(400, now + 0.14);
+      gain2.gain.setValueAtTime(0.2, now);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 0.14);
+    } catch(e) {}
+  }
   victory() {
     [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((f, i) => {
       this.playTone(f, 'triangle', 0.3, 0.25, i * 90);
@@ -1835,342 +1874,71 @@ class AudioEngine {
 const SFX = new AudioEngine();
 
 // ==========================================================================
-// 3. ROBLOX CHARACTER ENGINE (CLASSIC R6 BLOCKY AVATARS)
+// ==========================================================================
+// 3. CHANDRA ASRI KCE ENERGY HEROES (AUTHENTIC CHIBI ARTWORK)
 // ==========================================================================
 
 const HERO_ROSTER = [
-  { id: 'surya-yellow', name: 'Surya',  title: 'Pakar Tenaga Surya',        gender: 'male',   color: '#FFC928', pants: '#1E3A7A', hair: 'bacon' },
-  { id: 'citra-green',  name: 'Citra',  title: 'Pelestari Lingkungan',      gender: 'female', color: '#20A66A', pants: '#14294A', hair: 'ponytail' },
-  { id: 'alya-cyan',    name: 'Alya',   title: 'Pionir Energi Baru',        gender: 'female', color: '#38BDF8', pants: '#1E3A7A', hair: 'bob' },
-  { id: 'satria-navy',  name: 'Satria', title: 'Kesatria Transisi Energi',  gender: 'male',   color: '#0877B9', pants: '#0F172A', hair: 'shaggy' }
+  { id: 'satria-blue',  name: 'Satria', title: 'Kesatria Bauran Energi',       gender: 'male',   color: '#3077B5', shirt: 'Biru Korporat', image: 'assets/satria-blue.png' },
+  { id: 'citra-navy',   name: 'Citra',  title: 'Pelopor Transisi Bersih',     gender: 'female', color: '#1E2B58', shirt: 'Biru Navy',     image: 'assets/citra-navy.png' },
+  { id: 'bayu-green',   name: 'Bayu',   title: 'Pakar Efisiensi Industri',    gender: 'male',   color: '#20A66A', shirt: 'Hijau Energi',  image: 'assets/bayu-green.png' },
+  { id: 'alya-yellow',  name: 'Alya',   title: 'Inovator Surya & Dekarbon',   gender: 'female', color: '#FFB800', shirt: 'Kuning Surya',  image: 'assets/alya-yellow.png' }
 ];
-
-function getRobloxHairSVG(hairType) {
-  if (hairType === 'bacon') {
-    // Surya: Iconic Roblox Bacon Hair (Pal Hair)
-    return `
-      <!-- Roblox Pal Hair (Stepped Block Layers) -->
-      <path d="M 46 36 L 46 16 L 114 16 L 114 36 Z" fill="#3D2314" stroke="#1E293B" stroke-width="2.5"/>
-      <rect x="52" y="10" width="56" height="10" rx="1" fill="#4E2F1B" stroke="#1E293B" stroke-width="2"/>
-      <rect x="62" y="5" width="36" height="8" rx="1" fill="#5C3820" stroke="#1E293B" stroke-width="1.8"/>
-      <!-- Bacon Fringe Blocks -->
-      <polygon points="46,26 58,26 58,38 46,38" fill="#4E2F1B" stroke="#1E293B" stroke-width="1.5"/>
-      <polygon points="56,26 74,26 72,42 56,38" fill="#3D2314" stroke="#1E293B" stroke-width="1.5"/>
-      <polygon points="72,26 92,26 90,44 72,42" fill="#5C3820" stroke="#1E293B" stroke-width="1.5"/>
-      <polygon points="90,26 104,26 104,38 90,42" fill="#4E2F1B" stroke="#1E293B" stroke-width="1.5"/>
-      <polygon points="102,26 114,26 114,36 102,36" fill="#3D2314" stroke="#1E293B" stroke-width="1.5"/>
-    `;
-  } else if (hairType === 'ponytail') {
-    // Citra: Roblox Female High Ponytail with Green Scrunchie
-    return `
-      <path d="M 46 36 L 46 16 L 114 16 L 114 36 Z" fill="#3E2723" stroke="#1E293B" stroke-width="2.5"/>
-      <rect x="54" y="10" width="52" height="10" rx="2" fill="#4A2E1B" stroke="#1E293B" stroke-width="2"/>
-      <!-- High Ponytail Block sweeping back -->
-      <g transform="translate(104, 14)">
-        <rect x="0" y="4" width="8" height="10" rx="1" fill="#20A66A" stroke="#1E293B" stroke-width="1.5"/>
-        <polygon points="6,2 34,14 30,38 4,18" fill="#3E2723" stroke="#1E293B" stroke-width="2"/>
-        <polygon points="12,12 36,24 32,46 10,26" fill="#4A2E1B" stroke="#1E293B" stroke-width="1.8"/>
-      </g>
-      <rect x="48" y="24" width="16" height="12" rx="1" fill="#4A2E1B" stroke="#1E293B" stroke-width="1.5"/>
-      <rect x="62" y="24" width="22" height="10" rx="1" fill="#3E2723" stroke="#1E293B" stroke-width="1.5"/>
-      <rect x="82" y="24" width="30" height="12" rx="1" fill="#4A2E1B" stroke="#1E293B" stroke-width="1.5"/>
-      <rect x="44" y="32" width="6" height="24" rx="1" fill="#3E2723" stroke="#1E293B" stroke-width="1.8"/>
-      <rect x="110" y="32" width="6" height="24" rx="1" fill="#3E2723" stroke="#1E293B" stroke-width="1.8"/>
-    `;
-  } else if (hairType === 'bob') {
-    // Alya: Roblox Female Straight Bob
-    return `
-      <path d="M 44 38 L 44 16 L 116 16 L 116 38 Z" fill="#2D1C12" stroke="#1E293B" stroke-width="2.5"/>
-      <rect x="52" y="10" width="56" height="10" rx="2" fill="#3D2817" stroke="#1E293B" stroke-width="2"/>
-      <rect x="46" y="24" width="68" height="12" rx="1" fill="#2D1C12" stroke="#1E293B" stroke-width="1.8"/>
-      <line x1="68" y1="24" x2="68" y2="36" stroke="#1E293B" stroke-width="1.5"/>
-      <line x1="92" y1="24" x2="92" y2="36" stroke="#1E293B" stroke-width="1.5"/>
-      <rect x="42" y="30" width="8" height="34" rx="2" fill="#2D1C12" stroke="#1E293B" stroke-width="2"/>
-      <rect x="110" y="30" width="8" height="34" rx="2" fill="#2D1C12" stroke="#1E293B" stroke-width="2"/>
-    `;
-  } else {
-    // Satria: Roblox Shaggy Hair
-    return `
-      <path d="M 44 36 L 44 14 L 116 14 L 116 36 Z" fill="#0F172A" stroke="#1E293B" stroke-width="2.5"/>
-      <polygon points="50,14 74,4 98,6 114,14" fill="#1E293B" stroke="#1E293B" stroke-width="2"/>
-      <polygon points="44,24 76,24 88,38 44,36" fill="#0F172A" stroke="#1E293B" stroke-width="1.8"/>
-      <polygon points="74,24 116,24 116,34 84,36" fill="#1E293B" stroke="#1E293B" stroke-width="1.8"/>
-      <rect x="42" y="28" width="6" height="20" rx="1" fill="#0F172A" stroke="#1E293B" stroke-width="1.8"/>
-      <rect x="112" y="28" width="6" height="18" rx="1" fill="#0F172A" stroke="#1E293B" stroke-width="1.8"/>
-    `;
-  }
-}
 
 function renderHeroSVG(heroId, pose = 'idle', facing = 'right') {
   const hero = HERO_ROSTER.find(h => h.id === heroId) || HERO_ROSTER[0];
-  const color = hero.color;
-  const pants = hero.pants;
-  const isFemale = (hero.gender === 'female');
-  const hairSVG = getRobloxHairSVG(hero.hair);
-  const flip = (facing === 'left') ? 'transform="scale(-1, 1) translate(-160, 0)"' : '';
-
+  const flip = (facing === 'left') ? 'transform="scale(-1, 1) translate(-150, 0)"' : '';
+  
+  let animTransform = '';
   if (pose === 'pull') {
-    // Roblox R6 Pulling Pose: Blocky body angled back, rectangular block arms reaching to grab rope
-    const faceDecal = isFemale ? `
-      <!-- Female Determined Roblox Face -->
-      <polygon points="60,45 72,48 70,51 58,48" fill="#1E293B"/>
-      <polygon points="100,45 88,48 90,51 102,48" fill="#1E293B"/>
-      <!-- Eyes with Lashes -->
-      <circle cx="68" cy="56" r="4.5" fill="#1E293B"/>
-      <circle cx="70" cy="54" r="1.5" fill="#FFFFFF"/>
-      <line x1="62" y1="52" x2="57" y2="49" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
-      <line x1="74" y1="52" x2="78" y2="49" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
-      <circle cx="92" cy="56" r="4.5" fill="#1E293B"/>
-      <circle cx="94" cy="54" r="1.5" fill="#FFFFFF"/>
-      <line x1="86" y1="52" x2="82" y2="49" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
-      <line x1="98" y1="52" x2="103" y2="49" stroke="#1E293B" stroke-width="2" stroke-linecap="round"/>
-      <!-- Gritted Block Teeth -->
-      <rect x="73" y="64" width="14" height="7" rx="1" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.8"/>
-      <line x1="78" y1="64" x2="78" y2="71" stroke="#1E293B" stroke-width="1.2"/>
-      <line x1="82" y1="64" x2="82" y2="71" stroke="#1E293B" stroke-width="1.2"/>
-      <!-- Pink Blush -->
-      <rect x="58" y="62" width="8" height="4" rx="2" fill="#F472B6" opacity="0.7"/>
-      <rect x="94" y="62" width="8" height="4" rx="2" fill="#F472B6" opacity="0.7"/>
-      <path d="M 108 42 Q 112 40 114 44 Q 112 47 110 44 Z" fill="#38BDF8"/>
-    ` : `
-      <!-- Male Determined Roblox Face -->
-      <polygon points="58,45 74,49 72,53 56,49" fill="#1E293B"/>
-      <polygon points="102,45 86,49 88,53 104,49" fill="#1E293B"/>
-      <circle cx="68" cy="56" r="4.5" fill="#1E293B"/>
-      <circle cx="92" cy="56" r="4.5" fill="#1E293B"/>
-      <!-- Gritted Block Teeth -->
-      <rect x="73" y="64" width="14" height="7" rx="1" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.8"/>
-      <line x1="78" y1="64" x2="78" y2="71" stroke="#1E293B" stroke-width="1.2"/>
-      <line x1="82" y1="64" x2="82" y2="71" stroke="#1E293B" stroke-width="1.2"/>
-      <path d="M 108 42 Q 112 40 114 44 Q 112 47 110 44 Z" fill="#38BDF8"/>
-    `;
-
-    return `
-      <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
-        <g ${flip}>
-          <!-- Ground Shadow -->
-          <ellipse cx="78" cy="166" rx="46" ry="8" fill="rgba(15, 23, 42, 0.2)"/>
-
-          <!-- Blocky Braced Legs (Roblox R6 Stance) -->
-          <polygon points="48,122 28,162 58,162 78,122" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="24" y="156" width="34" height="10" rx="1" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <polygon points="84,122 104,162 134,162 114,122" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="104" y="156" width="32" height="10" rx="1" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <!-- Angled Torso & Head (-12 deg) -->
-          <g transform="rotate(-12, 80, 135)">
-            <!-- Torso (Classic 2x2x1 Roblox Block) -->
-            <rect x="48" y="70" width="64" height="52" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <!-- Shirt Seams & KCE Crest -->
-            <polygon points="72,70 80,80 88,70" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5"/>
-            <polygon points="79,80 82,88 78,88 81,96 76,91 79,91" fill="#FFFFFF" stroke="#1E293B" stroke-width="1"/>
-            <rect x="48" y="114" width="64" height="8" fill="#1E293B"/>
-            <rect x="76" y="113" width="8" height="10" rx="1" fill="#FFC928" stroke="#1E293B" stroke-width="1"/>
-
-            <!-- Neck Stud -->
-            <rect x="73" y="66" width="14" height="6" fill="#FED049" stroke="#1E293B" stroke-width="1.8"/>
-
-            <!-- Head (Classic Roblox Block Head with Cylinder Stud) -->
-            <rect x="73" y="24" width="14" height="6" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-            <rect x="52" y="28" width="56" height="42" rx="4" fill="#FED049" stroke="#1E293B" stroke-width="2.5"/>
-
-            ${hairSVG}
-            ${faceDecal}
-
-            <!-- Blocky Roblox Arms Reaching Forward -->
-            <!-- Far Arm -->
-            <polygon points="56,80 102,100 98,116 52,96" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <rect x="98" y="102" width="16" height="14" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-
-            <!-- Near Arm -->
-            <polygon points="72,82 118,102 114,118 68,98" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <rect x="114" y="104" width="16" height="14" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-          </g>
-        </g>
-      </svg>
-    `;
+    // Leaning back pulling the rope
+    animTransform = 'transform="rotate(-12, 75, 175)"';
+  } else if (pose === 'stumble') {
+    // Stumbling forward with tension
+    animTransform = 'transform="rotate(10, 75, 175)"';
+  } else if (pose === 'fall') {
+    // Knocked back onto ground
+    animTransform = 'transform="translate(-10, 30) rotate(50, 75, 175)"';
+  } else if (pose === 'celebrate') {
+    // Jumping with joy
+    animTransform = 'transform="translate(0, -12) scale(1.05)"';
   }
 
-  if (pose === 'stumble') {
-    // Roblox OOF! Surprised face & stumbling forward (+6 deg)
-    const blushColor = isFemale ? '#F472B6' : '#FF8A8A';
-    return `
-      <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
-        <g ${flip}>
-          <ellipse cx="78" cy="166" rx="46" ry="8" fill="rgba(15, 23, 42, 0.2)"/>
-
-          <rect x="50" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="50" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <rect x="82" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="82" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <g transform="rotate(6, 80, 135)">
-            <rect x="48" y="70" width="64" height="52" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <polygon points="72,70 80,80 88,70" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5"/>
-            <rect x="48" y="114" width="64" height="8" fill="#1E293B"/>
-
-            <rect x="73" y="24" width="14" height="6" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-            <rect x="52" y="28" width="56" height="42" rx="4" fill="#FED049" stroke="#1E293B" stroke-width="2.5"/>
-
-            ${hairSVG}
-
-            <!-- Roblox OOF Face -->
-            <circle cx="68" cy="54" r="4.5" fill="#1E293B"/>
-            <circle cx="92" cy="54" r="4.5" fill="#1E293B"/>
-            <circle cx="80" cy="65" r="5" fill="#1E293B"/>
-            <rect x="58" y="62" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-            <rect x="94" y="62" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-            <circle cx="108" cy="46" r="3" fill="#38BDF8"/>
-
-            <polygon points="56,80 100,102 96,118 52,96" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <rect x="96" y="104" width="16" height="14" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-
-            <polygon points="72,82 116,104 112,120 68,98" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <rect x="112" y="106" width="16" height="14" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-          </g>
-        </g>
-      </svg>
-    `;
-  }
-
-  if (pose === 'celebrate') {
-    // Roblox Winning Smile: Both Blocky Arms Raised Up o/
-    const blushColor = isFemale ? '#F472B6' : '#FF8A8A';
-    return `
-      <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
-        <g ${flip}>
-          <ellipse cx="80" cy="166" rx="44" ry="8" fill="rgba(15, 23, 42, 0.2)"/>
-
-          <!-- Block Legs -->
-          <rect x="49" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="49" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <rect x="81" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="81" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <!-- Block Torso -->
-          <rect x="48" y="70" width="64" height="52" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-          <polygon points="72,70 80,80 88,70" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5"/>
-          <polygon points="79,80 82,88 78,88 81,96 76,91 79,91" fill="#FFFFFF" stroke="#1E293B" stroke-width="1"/>
-          <rect x="48" y="114" width="64" height="8" fill="#1E293B"/>
-
-          <!-- Head -->
-          <rect x="73" y="24" width="14" height="6" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-          <rect x="52" y="28" width="56" height="42" rx="4" fill="#FED049" stroke="#1E293B" stroke-width="2.5"/>
-
-          ${hairSVG}
-
-          <!-- Roblox Winning Smile Decal -->
-          <circle cx="68" cy="52" r="4.5" fill="#1E293B"/>
-          <circle cx="70" cy="50" r="1.5" fill="#FFFFFF"/>
-          <circle cx="92" cy="52" r="4.5" fill="#1E293B"/>
-          <circle cx="94" cy="50" r="1.5" fill="#FFFFFF"/>
-          <!-- Big Curved Roblox Smile -->
-          <path d="M 68 60 Q 80 74 92 60 Z" fill="#EF4444" stroke="#1E293B" stroke-width="2"/>
-          <rect x="58" y="60" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-          <rect x="94" y="60" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-
-          <!-- Arms Raised High in Victory o/ -->
-          <rect x="28" y="30" width="18" height="48" rx="2" transform="rotate(-28, 37, 78)" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="14" y="22" width="18" height="12" rx="2" transform="rotate(-28, 23, 28)" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-
-          <rect x="114" y="30" width="18" height="48" rx="2" transform="rotate(28, 123, 78)" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="128" y="22" width="18" height="12" rx="2" transform="rotate(28, 137, 28)" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-        </g>
-      </svg>
-    `;
-  }
-
-  if (pose === 'fall') {
-    // Roblox Knockout Defeat
-    return `
-      <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
-        <g ${flip}>
-          <ellipse cx="85" cy="166" rx="46" ry="8" fill="rgba(15, 23, 42, 0.2)"/>
-
-          <rect x="58" y="146" width="46" height="24" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-          <rect x="98" y="146" width="14" height="24" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-          <g transform="translate(5, 18) rotate(-24, 75, 140)">
-            <rect x="48" y="70" width="64" height="52" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <polygon points="72,70 80,80 88,70" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5"/>
-            <rect x="48" y="114" width="64" height="8" fill="#1E293B"/>
-
-            <rect x="73" y="24" width="14" height="6" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-            <rect x="52" y="28" width="56" height="42" rx="4" fill="#FED049" stroke="#1E293B" stroke-width="2.5"/>
-
-            ${hairSVG}
-
-            <!-- X_X Defeat Face -->
-            <path d="M 64 50 L 72 58 M 72 50 L 64 58" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
-            <path d="M 88 50 L 96 58 M 96 50 L 88 58" stroke="#1E293B" stroke-width="3" stroke-linecap="round"/>
-            <path d="M 74 66 Q 80 62 86 66" stroke="#1E293B" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-            <!-- Dizzy Stars around Head Stud -->
-            <polygon points="70,10 73,16 80,17 75,22 76,28 70,25 64,28 65,22 60,17 67,16" fill="#FBB03B" stroke="#1E293B" stroke-width="1.2"/>
-            <polygon points="100,14 102,19 108,20 104,24 105,30 100,27 95,30 96,24 92,20 98,19" fill="#FBB03B" stroke="#1E293B" stroke-width="1.2"/>
-
-            <rect x="28" y="80" width="18" height="46" rx="2" transform="rotate(-35, 37, 85)" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-            <rect x="16" y="118" width="18" height="12" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-          </g>
-        </g>
-      </svg>
-    `;
-  }
-
-  // Idle pose: Classic Roblox R6 Standing Pose
-  const blushColor = isFemale ? '#F472B6' : '#FF8A8A';
   return `
-    <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 150 190" width="100%" height="100%">
       <g ${flip}>
-        <ellipse cx="80" cy="166" rx="42" ry="8" fill="rgba(15, 23, 42, 0.2)"/>
-
-        <!-- Block Legs -->
-        <rect x="49" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-        <rect x="49" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-        <rect x="81" y="122" width="30" height="44" rx="2" fill="${pants}" stroke="#1E293B" stroke-width="2.5"/>
-        <rect x="81" y="156" width="30" height="10" fill="#0F172A" stroke="#1E293B" stroke-width="2"/>
-
-        <!-- Block Torso -->
-        <rect x="48" y="70" width="64" height="52" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-        <polygon points="72,70 80,80 88,70" fill="#FFFFFF" stroke="#1E293B" stroke-width="1.5"/>
-        <polygon points="79,80 82,88 78,88 81,96 76,91 79,91" fill="#FFFFFF" stroke="#1E293B" stroke-width="1"/>
-        <rect x="48" y="114" width="64" height="8" fill="#1E293B"/>
-        <rect x="76" y="113" width="8" height="10" rx="1" fill="#FFC928" stroke="#1E293B" stroke-width="1"/>
-
-        <!-- Head Stud & Block Head -->
-        <rect x="73" y="24" width="14" height="6" rx="2" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-        <rect x="52" y="28" width="56" height="42" rx="4" fill="#FED049" stroke="#1E293B" stroke-width="2.5"/>
-
-        ${hairSVG}
-
-        <!-- Classic Roblox Smile Face -->
-        <circle cx="68" cy="52" r="4.5" fill="#1E293B"/><circle cx="70" cy="50" r="1.5" fill="#FFFFFF"/>
-        <circle cx="92" cy="52" r="4.5" fill="#1E293B"/><circle cx="94" cy="50" r="1.5" fill="#FFFFFF"/>
-        <path d="M 72 62 Q 80 68 88 62" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <rect x="58" y="60" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-        <rect x="94" y="60" width="8" height="4" rx="2" fill="${blushColor}" opacity="0.6"/>
-
-        <!-- Block Arms at sides -->
-        <rect x="26" y="70" width="20" height="50" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-        <rect x="26" y="112" width="20" height="8" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
-
-        <rect x="114" y="70" width="20" height="50" rx="2" fill="${color}" stroke="#1E293B" stroke-width="2.5"/>
-        <rect x="114" y="112" width="20" height="8" fill="#FED049" stroke="#1E293B" stroke-width="2"/>
+        <g ${animTransform} style="transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);">
+          <!-- Shadow base -->
+          <ellipse cx="75" cy="182" rx="42" ry="8" fill="#14294A" opacity="0.15"/>
+          <!-- Chibi Character Image from KCE Asset -->
+          <image href="${hero.image}" x="5" y="5" width="140" height="180" preserveAspectRatio="xMidYMid meet" />
+          ${(pose === 'celebrate') ? `
+            <!-- Sparkles -->
+            <polygon points="120,20 124,10 134,14 126,24 130,34 120,28 110,34 114,24 106,14 116,10" fill="#FFD028"/>
+            <polygon points="30,30 33,22 41,25 35,33 38,41 30,36 22,41 25,33 19,25 27,22" fill="#38BDF8"/>
+          ` : ''}
+          ${(pose === 'fall') ? `
+            <!-- Dizzy stars -->
+            <text x="60" y="25" font-size="18">💫</text>
+            <text x="90" y="15" font-size="16">⭐</text>
+          ` : ''}
+        </g>
       </g>
     </svg>
   `;
 }
 
-// ==========================================================================
-// 4. ARENA CANVAS & ROPE RENDERING (CLEAN SLATE: NO AI SLOP BOUNDARY LINES!)
-// ==========================================================================
+let isElectricSurging = false;
 
-let p1HeroState = 'pull';
-let p2HeroState = 'pull';
+function triggerElectricSurge(targetDirection) {
+  isElectricSurging = true;
+  drawBattlefield();
+  SFX.electricZap();
+  setTimeout(() => {
+    isElectricSurging = false;
+    drawBattlefield();
+  }, 420);
+}
 
 function drawBattlefield() {
   const svg = document.getElementById('arena-battlefield-svg');
@@ -2185,37 +1953,78 @@ function drawBattlefield() {
   const p1SVG = renderHeroSVG(GAME.p1.charId, p1HeroState, 'right');
   const p2SVG = renderHeroSVG(GAME.p2.charId, p2HeroState, 'left');
 
+  // Generate jagged electric lightning path along the rope when pulled
+  const surgeTargetX = (offset < 0) ? 140 : 860;
+  const surgeX1 = markerX;
+  const surgeX2 = surgeTargetX;
+  const midX1 = surgeX1 + (surgeX2 - surgeX1) * 0.35;
+  const midX2 = surgeX1 + (surgeX2 - surgeX1) * 0.7;
+  const electricArcD = `M ${surgeX1} 135 L ${midX1} ${135 - 14} L ${midX1 + 10} ${135 + 12} L ${midX2} ${135 - 16} L ${midX2 + 8} ${135 + 10} L ${surgeX2} 135`;
+
   svg.innerHTML = `
     <defs>
       <linearGradient id="arenaBg" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#F8FAFC"/>
-        <stop offset="100%" stop-color="#EFF6FB"/>
+        <stop offset="0%" stop-color="#FFFFFF"/>
+        <stop offset="100%" stop-color="#F2F7FB"/>
       </linearGradient>
+      <linearGradient id="boltGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#FFF3B0"/>
+        <stop offset="35%" stop-color="#FFD028"/>
+        <stop offset="70%" stop-color="#FF9E00"/>
+        <stop offset="100%" stop-color="#E27D00"/>
+      </linearGradient>
+      <filter id="boltGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3.5" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
     </defs>
 
-    <rect width="1000" height="220" rx="16" fill="url(#arenaBg)" stroke="#D9E4EE" stroke-width="2"/>
+    <rect width="1000" height="220" rx="16" fill="url(#arenaBg)" stroke="#CBD1D4" stroke-width="2"/>
 
-    <!-- Subtle Center Reference Line -->
-    <line x1="500" y1="12" x2="500" y2="208" stroke="#FBB03B" stroke-width="2" stroke-dasharray="6 6" opacity="0.8"/>
-    
+    <!-- Subtle Center Reference Line (No Text) -->
+    <line x1="500" y1="12" x2="500" y2="208" stroke="#FFB800" stroke-width="2" stroke-dasharray="6 6" opacity="0.75"/>
+
     <!-- Rope Layer -->
-    <path d="${ropeD}" stroke="#B45309" stroke-width="12" stroke-linecap="round" fill="none"/>
-    <path d="${ropeD}" stroke="#FCD34D" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
+    <path d="${ropeD}" stroke="#9A3412" stroke-width="13" stroke-linecap="round" fill="none"/>
+    <path d="${ropeD}" stroke="#FDE047" stroke-width="4.5" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
 
-    <!-- Center Marker (Clean rounded knot with center dot) -->
+    ${isElectricSurging ? `
+      <!-- Dynamic Electric Arcs crackling along the rope when pulled! -->
+      <path d="${electricArcD}" stroke="#38BDF8" stroke-width="4" stroke-linecap="round" fill="none" filter="url(#boltGlow)"/>
+      <path d="${electricArcD}" stroke="#FFF59D" stroke-width="2" stroke-linecap="round" fill="none"/>
+    ` : ''}
+
+    <!-- Center Marker: Golden Lightning Bolt Icon (⚡) matching Image 2 -->
     <g transform="translate(${markerX}, 135)">
-      <rect x="-12" y="-20" width="24" height="40" rx="4" fill="#FBB03B" stroke="#1E293B" stroke-width="2"/>
-      <circle cx="0" cy="0" r="4.5" fill="#FFFFFF"/>
+      ${isElectricSurging ? `
+        <!-- Electric Shock Aura Corona -->
+        <circle cx="0" cy="0" r="26" fill="#38BDF8" opacity="0.45" filter="url(#boltGlow)"/>
+        <circle cx="0" cy="0" r="20" fill="#FFEA00" opacity="0.6"/>
+        <!-- Electric Spark Rays -->
+        <line x1="-12" y1="-14" x2="-22" y2="-24" stroke="#FFD028" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="12" y1="-14" x2="22" y2="-24" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="-14" y1="12" x2="-24" y2="22" stroke="#FFEA00" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="14" y1="12" x2="24" y2="22" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round"/>
+      ` : `
+        <circle cx="0" cy="0" r="18" fill="#FFB800" opacity="0.25"/>
+      `}
+      <!-- Badge Disc -->
+      <circle cx="0" cy="0" r="16" fill="#1E2B58" stroke="#FFD028" stroke-width="2.5"/>
+      <!-- Sharp Lightning Bolt (⚡) -->
+      <polygon points="1,-11 -8,1 0,1 -2,12 8,-1 0,-1 3,-11" fill="url(#boltGrad)" stroke="#B45309" stroke-width="1.2" stroke-linejoin="round"/>
     </g>
 
     <!-- P1 Hero (Left) -->
-    <g transform="translate(40, 25)">
-      ${p1SVG.replace(/<svg[^>]*>/, '').replace(/<\/svg>/, '')}
+    <g transform="translate(30, 20)">
+      ${p1SVG}
     </g>
 
     <!-- P2 Hero (Right) -->
-    <g transform="translate(800, 25)">
-      ${p2SVG.replace(/<svg[^>]*>/, '').replace(/<\/svg>/, '')}
+    <g transform="translate(820, 20)">
+      ${p2SVG}
     </g>
   `;
 }
@@ -2524,8 +2333,7 @@ function handleP1Answer(chosenIdx, btnEl, q) {
     // Hero pose: P1 pulls, P2 stumbles slightly (does NOT fall!)
     p1HeroState = 'pull';
     p2HeroState = 'stumble';
-    drawBattlefield();
-
+    triggerElectricSurge(-1);
     setTimeout(() => {
       if (!GAME.isGameOver) {
         p2HeroState = 'pull';
@@ -2738,7 +2546,7 @@ function handleP2Answer(chosenIdx, btnEl, q) {
     }
 
     p2HeroState = 'stumble';
-    drawBattlefield();
+    triggerElectricSurge(-1);
     setTimeout(() => {
       if (!GAME.isGameOver) {
         p2HeroState = 'pull';
@@ -2771,13 +2579,13 @@ function handleP2Timeout() {
   }
 
   p2HeroState = 'stumble';
-  drawBattlefield();
-  setTimeout(() => {
-    if (!GAME.isGameOver) {
-      p2HeroState = 'pull';
-      drawBattlefield();
-    }
-  }, 450);
+  triggerElectricSurge(-1);
+    setTimeout(() => {
+      if (!GAME.isGameOver) {
+        p2HeroState = 'pull';
+        drawBattlefield();
+      }
+    }, 450);
 
   GAME.p2.canAnswer = false;
   setTimeout(() => {
@@ -2858,11 +2666,11 @@ function showVictoryModal(winner) {
     title.style.color = 'var(--blue-primary)';
     sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
 
-    winnerAvatar.innerHTML = renderHeroSVG(GAME.p1.charId, 'celebrate', 'right');
+    winnerAvatar.innerHTML = `<img src="${(winner === 1 ? hero1 : hero2).image}" style="width:120px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(67,117,189,0.3));">`;
     const wTitle = document.getElementById('victory-winner-name'); if (wTitle) wTitle.innerText = `${GAME.p1.name} (Player 1)`; winnerStamp.innerText = 'JUARA 🏆';
     winnerStamp.style.background = 'var(--blue-primary)';
 
-    loserAvatar.innerHTML = renderHeroSVG(GAME.p2.charId, 'fall', 'left');
+    loserAvatar.innerHTML = `<img src="${(winner === 1 ? hero2 : hero1).image}" style="width:120px;height:140px;object-fit:contain;opacity:0.85;filter:grayscale(30%);">`;
     const lTitle = document.getElementById('victory-loser-name'); if (lTitle) lTitle.innerText = `${GAME.p2.name} (Player 2)`; loserStamp.innerText = 'NICE TRY! 👍';
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
@@ -2870,18 +2678,18 @@ function showVictoryModal(winner) {
     title.style.color = 'var(--green-energy)';
     sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
 
-    winnerAvatar.innerHTML = renderHeroSVG(GAME.p2.charId, 'celebrate', 'left');
+    winnerAvatar.innerHTML = `<img src="${(winner === 1 ? hero1 : hero2).image}" style="width:120px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(67,117,189,0.3));">`;
     const wTitle2 = document.getElementById('victory-winner-name'); if (wTitle2) wTitle2.innerText = `${GAME.p2.name} (Player 2)`; winnerStamp.innerText = 'JUARA 🏆';
     winnerStamp.style.background = 'var(--green-energy)';
 
-    loserAvatar.innerHTML = renderHeroSVG(GAME.p1.charId, 'fall', 'right');
+    loserAvatar.innerHTML = `<img src="${(winner === 1 ? hero2 : hero1).image}" style="width:120px;height:140px;object-fit:contain;opacity:0.85;filter:grayscale(30%);">`;
     const lTitle2 = document.getElementById('victory-loser-name'); if (lTitle2) lTitle2.innerText = `${GAME.p1.name} (Player 1)`; loserStamp.innerText = 'NICE TRY! 👍';
   } else {
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
     sub.innerText = 'Kedua tim memiliki kekuatan energi yang seimbang!';
-    winnerAvatar.innerHTML = renderHeroSVG(GAME.p1.charId, 'celebrate', 'right');
-    loserAvatar.innerHTML = renderHeroSVG(GAME.p2.charId, 'celebrate', 'left');
+    winnerAvatar.innerHTML = `<img src="${(winner === 1 ? hero1 : hero2).image}" style="width:120px;height:140px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(67,117,189,0.3));">`;
+    loserAvatar.innerHTML = `<img src="${(winner === 1 ? hero2 : hero1).image}" style="width:120px;height:140px;object-fit:contain;opacity:0.85;filter:grayscale(30%);">`;
     winnerStamp.innerText = `${GAME.p1.name} (SERI)`;
     loserStamp.innerText = `${GAME.p2.name} (SERI)`;
   }
@@ -2983,80 +2791,507 @@ function shuffleArray(arr) {
 
 function getFallbackQuestions() {
   const raw = [
-    {
-      category: 'Krakatau Chandra Energi',
-      question: 'Siapakah PT Krakatau Chandra Energi (KCE) dalam industri energi nasional?',
-      correct: 'Penyedia solusi energi terintegrasi dan utilitas industri terdepan',
-      wrongs: ['Manufaktur suku cadang ponsel pintar', 'Penyedia jasa logistik transportasi laut', 'Lembaga riset astronomi antariksa']
-    },
-    {
-      category: 'PLTS Industri KCE',
-      question: 'Proyek tenaga surya yang dipasang di atap pabrik/fasilitas industri oleh KCE disebut?',
-      correct: 'PLTS Atap (Rooftop Solar PV)',
-      wrongs: ['PLT Nuklir Mini', 'PLTA Bendungan Raksasa', 'PLTU Batubara Superkritis']
-    },
-    {
-      category: 'PLTS Kawasan KCE',
-      question: 'Inovasi tenaga surya di atas permukaan perairan/waduk yang dikembangkan KCE disebut?',
-      correct: 'PLTS Terapung (Floating Solar PV)',
-      wrongs: ['Pembangkit Gelombang Magnetik Laut', 'Reaktor Fusi Air Asin', 'Pembangkit Uap Geotermal Samudera']
-    },
-    {
-      category: 'Fisika & Prinsip Surya',
-      question: 'Fenomena fisika apa yang memungkinkan sel surya mengubah cahaya menjadi listrik?',
-      correct: 'Efek Fotovoltaik (Photovoltaic Effect)',
-      wrongs: ['Efek Rumah Kaca Termal', 'Efek Doppler Akustik', 'Efek Bernoulli Fluida']
-    },
-    {
-      category: 'Komponen PLTS',
-      question: 'Perangkat apa yang wajib ada pada PLTS untuk mengubah arus searah (DC) menjadi arus bolak-balik (AC)?',
-      correct: 'Inverter Solar',
-      wrongs: ['Transformator Penurun Tegangan Saja', 'Kondensor Uap Bertekanan', 'Karburator Elektronik']
-    },
-    {
-      category: 'Bauran EBT Nasional',
-      question: 'Berapakah target bauran Energi Baru Terbarukan (EBT) nasional Indonesia pada tahun 2025?',
-      correct: '23 Persen',
-      wrongs: ['50 Persen', '10 Persen', '5 Persen']
-    },
-    {
-      category: 'Keberlanjutan Lingkungan',
-      question: 'Apa manfaat utama pemanfaatan PLTS bagi operasional kawasan industri ramah lingkungan?',
-      correct: 'Mengurangi emisi gas rumah kaca dan jejak karbon operasional',
-      wrongs: ['Meningkatkan emisi gas buang karbon dioksida', 'Menghabiskan cadangan air bawah tanah', 'Menghasilkan limbah abu pembakaran']
-    },
-    {
-      category: 'Karakteristik Matahari',
-      question: 'Radiasi matahari yang mengenai permukaan bumi terdiri atas spektrum apa saja?',
-      correct: 'Cahaya tampak, inframerah, dan ultraviolet',
-      wrongs: ['Sinar gamma, sinar X, dan gelombang mikro saja', 'Hanya gelombang radio dan infra merah', 'Hanya cahaya tampak berwarna kuning']
-    },
-    {
-      category: 'Infrastruktur KCE',
-      question: 'Di wilayah manakah pusat infrastruktur dan jaringan pembangkit listrik terintegrasi KCE berada?',
-      correct: 'Kawasan Industri Cilegon, Banten',
-      wrongs: ['Kawasan Wisata Kuta, Bali', 'Kawasan Pegunungan Jayawijaya, Papua', 'Kawasan Hutan Lindung Kalimantan Timur']
-    },
-    {
-      category: 'Sistem Penyimpanan',
-      question: 'Perangkat apa yang digunakan untuk menyimpan kelebihan energi listrik dari PLTS saat siang hari?',
-      correct: 'BESS (Battery Energy Storage System)',
-      wrongs: ['Kompresor Angin Tekanan Tinggi', 'Boiler Pemanas Batubara', 'Radiator Pendingin Mesin']
-    },
-    {
-      category: 'Efisiensi Energi',
-      question: 'Mengapa efisiensi PLTS Terapung (Floating PV) cenderung lebih tinggi dibanding PLTS darat?',
-      correct: 'Efek pendinginan alami dari permukaan air menjaga suhu modul surya tetap optimal',
-      wrongs: ['Karena panel surya menyerap air untuk menghasilkan listrik', 'Karena terhindar sepenuhnya dari hembusan angin', 'Karena air mengubah panel menjadi cermin']
-    },
-    {
-      category: 'Dekarbonisasi Industri',
-      question: 'Apa komitmen PT Krakatau Chandra Energi dalam mendukung target Net Zero Emission Indonesia?',
-      correct: 'Mengakselerasi penyediaan energi hijau terbarukan dan transisi energi bersih',
-      wrongs: ['Menambah pembangkit listrik bertenaga solar konvensional', 'Menghentikan seluruh riset energi baru terbarukan', 'Fokus pada bahan bakar fosil semata']
-    }
-  ];
-
+  {
+    "category": "Profil KCE",
+    "question": "Di bawah naungan pilar infrastruktur grup manakah PT Krakatau Chandra Energi (KCE) beroperasi?",
+    "correct": "PT Chandra Daya Investasi Tbk (CDI Group) - Chandra Asri Group",
+    "wrongs": [
+      "Krakatau Semen Group",
+      "Pertamina Power Internasional",
+      "PLN Nusantara Power Holding"
+    ]
+  },
+  {
+    "category": "Wilayah Operasi KCE",
+    "question": "Berapakah luas Kawasan Industri Krakatau (KIK) di Cilegon yang dilayani pasokan listriknya oleh KCE?",
+    "correct": "Lebih dari 2.600 Hektare",
+    "wrongs": [
+      "Sekitar 200 Hektare",
+      "Hanya 50 Hektare",
+      "Lebih dari 50.000 Hektare"
+    ]
+  },
+  {
+    "category": "Izin Ketenagalistrikan",
+    "question": "Izin ketenagalistrikan resmi yang dimiliki KCE untuk menyediakan listrik terintegrasi di kawasan industri adalah?",
+    "correct": "Izin Usaha Penyediaan Tenaga Listrik (IUPTL) Terintegrasi",
+    "wrongs": [
+      "Izin Edar Genset Mandiri",
+      "Sertifikat Pengecer Listrik Umum",
+      "Izin Impor Bahan Bakar Minyak"
+    ]
+  },
+  {
+    "category": "Visi Perusahaan KCE",
+    "question": "Apakah visi utama PT Krakatau Chandra Energi (KCE)?",
+    "correct": "Menjadi perusahaan penyedia energi dan bisnis terkait yang terkemuka di Indonesia",
+    "wrongs": [
+      "Menjadi produsen baja lembaran terbesar di Asia Tenggara",
+      "Menjadi distributor batubara termal utama",
+      "Menjadi operator bandar udara internasional"
+    ]
+  },
+  {
+    "category": "Brand Hashtag KCE",
+    "question": "Apakah tagline dan hashtag resmi Chandra Asri Group yang diusung oleh KCE dalam transisi energi?",
+    "correct": "#YourGrowthPartner",
+    "wrongs": [
+      "#BajaTerbaikKita",
+      "#SemuaBisaBeliListrik",
+      "#ListrikMurahTanpaBatas"
+    ]
+  },
+  {
+    "category": "Sejarah KCE",
+    "question": "Pada tanggal berapakah unit ketenagalistrikan resmi berdiri mandiri dengan nama PT Krakatau Daya Listrik (KDL)?",
+    "correct": "28 Februari 1996",
+    "wrongs": [
+      "17 Agustus 1945",
+      "1 Januari 2010",
+      "10 November 2005"
+    ]
+  },
+  {
+    "category": "Sejarah PLTU Awal",
+    "question": "Sebelum beralih ke pembangkit gas, fasilitas pembangkit awal 400 MW yang diresmikan Presiden Soeharto pada 1979 adalah?",
+    "correct": "Pembangkit Listrik Tenaga Uap (PLTU)",
+    "wrongs": [
+      "Pembangkit Listrik Tenaga Panas Bumi (PLTP)",
+      "Pembangkit Listrik Tenaga Nuklir (PLTN)",
+      "Pembangkit Listrik Tenaga Angin (PLTB)"
+    ]
+  },
+  {
+    "category": "Modernisasi PLTGU 2015",
+    "question": "Pada tahun 2015, KCE melakukan lompatan efisiensi energi dengan mengoperasikan pembangkit ramah lingkungan berjenis?",
+    "correct": "Pembangkit Listrik Tenaga Gas dan Uap (PLTGU / CCPP) 120 MW",
+    "wrongs": [
+      "PLTU Batubara Terbuka 1.000 MW",
+      "Pembangkit Diesel Portabel 10 MW",
+      "Pembangkit Gambut Konvensional"
+    ]
+  },
+  {
+    "category": "Transformasi Nama 2024",
+    "question": "Nama baru PT Krakatau Daya Listrik (KDL) setelah bergabung dan bertransformasi di bawah naungan Chandra Asri Group adalah?",
+    "correct": "PT Krakatau Chandra Energi (KCE)",
+    "wrongs": [
+      "PT Chandra Steel Power",
+      "PT Krakatau Petro Energi",
+      "PT Banten Daya Listrik"
+    ]
+  },
+  {
+    "category": "Teknologi CCPP",
+    "question": "Apa kepanjangan dari CCPP pada fasilitas pembangkit 120 MW milik KCE?",
+    "correct": "Combined Cycle Power Plant",
+    "wrongs": [
+      "Central Coal Processing Plant",
+      "Combined Carbon Power Production",
+      "Clean Combustion Petro Plant"
+    ]
+  },
+  {
+    "category": "Prinsip Combined Cycle",
+    "question": "Mengapa teknologi PLTGU (Combined Cycle) jauh lebih efisien dibanding pembangkit gas sederhana?",
+    "correct": "Gas buang panas dari turbin gas dimanfaatkan kembali untuk menghasilkan uap pemutar turbin uap",
+    "wrongs": [
+      "Menggunakan bahan bakar ganda batubara dan kayu bakar",
+      "Hanya membakar bahan bakar ketika cuaca mendung",
+      "Tidak menghasilkan panas sama sekali selama beroperasi"
+    ]
+  },
+  {
+    "category": "Kapasitas PLTGU KCE",
+    "question": "Berapakah total kapasitas terpasang pembangkit PLTGU yang dioperasikan KCE di Cilegon?",
+    "correct": "120 MW (Megawatt)",
+    "wrongs": [
+      "10 MW (Megawatt)",
+      "500 MW (Megawatt)",
+      "1.500 MW (Megawatt)"
+    ]
+  },
+  {
+    "category": "Emisi Gas Alam",
+    "question": "Dibandingkan batubara konvensional, gas alam pada PLTGU KCE menghasilkan emisi karbon sekitar berapa persen lebih rendah?",
+    "correct": "Sekitar 40% - 50% lebih rendah",
+    "wrongs": [
+      "Hanya 2% lebih rendah",
+      "Sama persis dengan batubara",
+      "100% tanpa menghasilkan molekul apapun"
+    ]
+  },
+  {
+    "category": "Tegangan Transmisi",
+    "question": "Berapa level tegangan transmisi listrik utama yang dikelola KCE untuk keandalan kawasan industri?",
+    "correct": "150 kV (Kilovolt / Tegangan Tinggi)",
+    "wrongs": [
+      "220 Volt (Tegangan Rumah Tangga)",
+      "12 Volt (Tegangan Aki)",
+      "500 kV (Saluran Udara Ekstra Tinggi)"
+    ]
+  },
+  {
+    "category": "Underground Cable",
+    "question": "KCE menggunakan sistem kabel bawah tanah (underground cable) di beberapa zona industri dengan tujuan?",
+    "correct": "Meningkatkan estetika, keandalan cuaca ekstrim, dan meminimalkan gangguan induksi petir",
+    "wrongs": [
+      "Mengurangi kecepatan aliran listrik agar hemat",
+      "Mendinginkan kabel dengan air tanah laut",
+      "Mempermudah penggalian liar oleh pihak lain"
+    ]
+  },
+  {
+    "category": "Fungsi Gardu Induk (Substation)",
+    "question": "Apakah fungsi utama Gardu Induk (Substation) dalam sistem ketenagalistrikan KCE?",
+    "correct": "Mentransformasikan tegangan tinggi ke tegangan menengah untuk didistribusikan ke pabrik",
+    "wrongs": [
+      "Tempat penyimpanan bahan bakar batubara cadangan",
+      "Tempat memproduksi aki kendaraan listrik",
+      "Kantor kas pembayaran tagihan air bersih"
+    ]
+  },
+  {
+    "category": "Sistem SCADA KCE",
+    "question": "Sistem komputasi otomatis yang digunakan KCE untuk memonitor jaringan listrik secara real-time adalah?",
+    "correct": "SCADA (Supervisory Control and Data Acquisition)",
+    "wrongs": [
+      "PABX Telepon Kabel",
+      "GPS Pelacak Kendaraan Truk",
+      "Mesin Kasir POS Elektronik"
+    ]
+  },
+  {
+    "category": "Kapasitas Kumulatif PLTS",
+    "question": "Berapakah estimasi kapasitas kumulatif terpasang PLTS dalam portofolio pengembangan energi bersih KCE saat ini?",
+    "correct": "Sekitar 11 MWp (Megawatt-peak)",
+    "wrongs": [
+      "Kurang dari 0,1 MWp",
+      "Sekitar 250 MWp",
+      "5.000 MWp"
+    ]
+  },
+  {
+    "category": "PLTS Krakatau Posco",
+    "question": "Berapa kapasitas total PLTS Atap yang dibangun KCE di gedung kantor dan pabrik PT Krakatau Posco?",
+    "correct": "1,2 MWp (Megawatt-peak)",
+    "wrongs": [
+      "0,05 MWp",
+      "15 MWp",
+      "120 MWp"
+    ]
+  },
+  {
+    "category": "Lokasi PLTS Krakatau Posco",
+    "question": "Di area fasilitas mana sajakah modul PLTS Atap Krakatau Posco terpasang oleh KCE?",
+    "correct": "Atap Main Office dan Coil Yard Hot Rolling Plant",
+    "wrongs": [
+      "Di dalam ruang bawah tanah boiler",
+      "Di menara cerobong asap blast furnace",
+      "Di dasar kolam pendingin terak baja"
+    ]
+  },
+  {
+    "category": "PLTS Ground-Mounted KCE",
+    "question": "Proyek PLTS yang dibangun di atas permukaan tanah terbuka di area operasional KCE disebut?",
+    "correct": "PLTS Ground-Mounted (Solar Farm)",
+    "wrongs": [
+      "PLTS Bawah Tanah",
+      "PLTS Satelit Orbit",
+      "PLTS Menara Suar"
+    ]
+  },
+  {
+    "category": "Kapasitas Solar Farm KCE",
+    "question": "Berapa kapasitas proyek PLTS Ground-Mounted yang telah dirampungkan KCE untuk kebutuhan industri?",
+    "correct": "4,7 MWp dengan ekspansi tambahan 1 MWp mandiri",
+    "wrongs": [
+      "50 kWp",
+      "100 MWp",
+      "800 MWp"
+    ]
+  },
+  {
+    "category": "PLTS Terapung Waduk Nadra",
+    "question": "Proyek energi surya terapung (Floating Solar PV) KCE di Waduk Nadra dirancang bekerjasama dengan?",
+    "correct": "PT Krakatau Tirta Industri (KTI)",
+    "wrongs": [
+      "Perum Perhutani Jawa Barat",
+      "Dinas Kebersihan Kota Bandung",
+      "Kementerian Kelautan dan Perikanan"
+    ]
+  },
+  {
+    "category": "Kapasitas Rencana Floating Solar",
+    "question": "Berapakah potensi kapasitas rencana pengembangan PLTS Terapung Waduk Nadra?",
+    "correct": "Hingga mencapai 32 MWp",
+    "wrongs": [
+      "Hanya 0,5 MWp",
+      "Lebih dari 1.000 MWp",
+      "3.200 MWp"
+    ]
+  },
+  {
+    "category": "Keuntungan PLTS Terapung",
+    "question": "Apa keunggulan teknis utama memasang panel surya terapung di atas permukaan waduk/danau?",
+    "correct": "Efek pendinginan air meningkatkan efisiensi panel serta mengurangi penguapan air waduk",
+    "wrongs": [
+      "Panel surya dapat berenang mengikuti arah angin kencang",
+      "Tidak memerlukan kabel penyalur listrik ke darat",
+      "Mampu menghasilkan listrik tanpa membutuhkan sinar matahari"
+    ]
+  },
+  {
+    "category": "Skema Zero Investment",
+    "question": "Apa yang dimaksud dengan skema penawaran \"Zero Investment\" PLTS dari KCE untuk pelanggan industri?",
+    "correct": "Klien tidak perlu modal awal; KCE mendanai, membangun, dan merawat PLTS dengan sistem pembayaran berbasis produksi listrik",
+    "wrongs": [
+      "Klien mendapatkan listrik gratis seumur hidup tanpa membayar apapun",
+      "Klien wajib membeli seluruh panel sebelum proyek dimulai",
+      "Klien harus meminjam uang secara tunai ke bank komersial"
+    ]
+  },
+  {
+    "category": "Skema Sewa PLTS (Leasing)",
+    "question": "Pada skema Sewa PLTS (Solar Lease) KCE, bagaimana mekanisme pembayaran pelanggan industri?",
+    "correct": "Pelanggan membayar biaya sewa berkala yang tetap selama masa kontrak pemanfaatan sistem surya",
+    "wrongs": [
+      "Pelanggan membayar dengan barter hasil produksi pabrik",
+      "Pembayaran hanya dilakukan jika cuaca hujan sepanjang bulan",
+      "Pelanggan diwajibkan membeli saham KCE secara langsung"
+    ]
+  },
+  {
+    "category": "Layanan EPC Listrik KCE",
+    "question": "Apa cakupan layanan EPC yang disediakan oleh divisi Jasa Ketenagalistrikan KCE?",
+    "correct": "Engineering (Desain), Procurement (Pengadaan), dan Construction (Pembangunan)",
+    "wrongs": [
+      "Export, Packing, dan Cleaning",
+      "Energy, Petrochemical, dan Carbon",
+      "Education, Public, dan Communication"
+    ]
+  },
+  {
+    "category": "Layanan O&M Listrik KCE",
+    "question": "Apakah kepanjangan dan tujuan dari layanan O&M yang ditawarkan KCE kepada mitra industri?",
+    "correct": "Operation & Maintenance: Pengoperasian dan pemeliharaan berkala agar instalasi listrik berkinerja maksimal",
+    "wrongs": [
+      "Online & Marketing: Penjualan produk ritel secara daring",
+      "Organization & Management: Pelatihan sumber daya manusia umum",
+      "Oil & Mining: Pengeboran minyak bumi lepas pantai"
+    ]
+  },
+  {
+    "category": "Pengujian Transformator",
+    "question": "Salah satu jasa kelistrikan KCE adalah pengujian minyak trafo (DGA - Dissolved Gas Analysis), tujuannya untuk?",
+    "correct": "Mendeteksi potensi gangguan internal trafo sebelum terjadi kegagalan operasi fatal",
+    "wrongs": [
+      "Mengubah minyak trafo menjadi bahan bakar bensin kendaraan",
+      "Membersihkan debu pada bagian luar casing trafo",
+      "Menimbang berat trafo saat dipindahkan"
+    ]
+  },
+  {
+    "category": "Efek Fotovoltaik",
+    "question": "Siapakah ilmuwan fisika yang pertama kali mengamati fenomena efek fotovoltaik pada tahun 1839?",
+    "correct": "Alexandre-Edmond Becquerel",
+    "wrongs": [
+      "Thomas Alva Edison",
+      "Isaac Newton",
+      "Nikola Tesla"
+    ]
+  },
+  {
+    "category": "Bahan Baku Sel Surya",
+    "question": "Material semikonduktor yang paling umum digunakan sebagai bahan utama pembuatan sel surya fotovoltaik adalah?",
+    "correct": "Silikon (Silicon - Si)",
+    "wrongs": [
+      "Aluminium murni",
+      "Tembaga murni",
+      "Plastik polietilena"
+    ]
+  },
+  {
+    "category": "Fungsi Inverter PLTS",
+    "question": "Apakah fungsi krusial dari perangkat Inverter dalam instalasi PLTS KCE?",
+    "correct": "Mengubah arus searah (DC) dari panel surya menjadi arus bolak-balik (AC) standar industri",
+    "wrongs": [
+      "Menyimpan panas sinar matahari untuk malam hari",
+      "Menyaring air hujan yang mengenai panel surya",
+      "Mendinginkan kabel transmisi dengan angin buatan"
+    ]
+  },
+  {
+    "category": "Sistem PLTS On-Grid",
+    "question": "Apakah karakteristik utama dari sistem PLTS On-Grid yang banyak diterapkan KCE di industri?",
+    "correct": "Terhubung langsung dan bersinkronisasi secara paralel dengan jaringan listrik utama PLN/KCE",
+    "wrongs": [
+      "Hanya beroperasi tanpa terhubung ke kabel transmisi manapun",
+      "Hanya bisa menyala menggunakan baterai kering isi ulang",
+      "Membutuhkan bahan bakar solar cadangan setiap 2 jam"
+    ]
+  },
+  {
+    "category": "Sistem BESS (Battery Storage)",
+    "question": "Perangkat penyimpan energi kimia skala besar yang dipadukan dengan PLTS untuk stabilitas pasokan disebut?",
+    "correct": "BESS (Battery Energy Storage System)",
+    "wrongs": [
+      "UPS Kantor Mini",
+      "Kapasitor Bank Statis",
+      "Flywheel Mekanikal Manual"
+    ]
+  },
+  {
+    "category": "Panel Surya Monokristalin",
+    "question": "Dibandingkan polikristalin, panel surya tipe Monokristalin memiliki ciri khas yaitu?",
+    "correct": "Warna sel hitam pekat seragam dengan efisiensi konversi energi yang lebih tinggi",
+    "wrongs": [
+      "Warna biru bercorak marmer dengan harga sangat murah",
+      "Terbuat dari kaca daur ulang transparan",
+      "Hanya mampu menghasilkan tegangan 1,5 Volt"
+    ]
+  },
+  {
+    "category": "Pembersihan Panel Berkala",
+    "question": "Mengapa pembersihan panel surya dari debu industri (soiling) sangat penting dalam pemeliharaan O&M KCE?",
+    "correct": "Lapisan debu menghalangi radiasi cahaya matahari dan dapat menurunkan daya keluaran hingga belasan persen",
+    "wrongs": [
+      "Agar panel surya terlihat mengkilap untuk difoto",
+      "Untuk mencegah panel surya tersapu angin kencang",
+      "Supaya panel surya tidak berubah warna menjadi merah"
+    ]
+  },
+  {
+    "category": "Infrastruktur SPKLU KCE",
+    "question": "Apa nama fasilitas pengisian daya baterai kendaraan listrik umum yang dibangun KCE untuk mendukung ekosistem EV?",
+    "correct": "SPKLU (Stasiun Pengisian Kendaraan Listrik Umum)",
+    "wrongs": [
+      "SPBU Pertamax Plus",
+      "Depo Pengisian Minyak Bumi",
+      "Bengkel Las Karbit"
+    ]
+  },
+  {
+    "category": "Manfaat Kendaraan Listrik",
+    "question": "Mengapa transisi ke kendaraan listrik (EV) di kawasan industri didorong oleh Chandra Asri Group & KCE?",
+    "correct": "Nol emisi gas buang langsung (*tailpipe emission*), mereduksi kebisingan, dan menekan jejak karbon",
+    "wrongs": [
+      "Karena mobil listrik tidak memerlukan ban karet",
+      "Agar kecepatan kendaraan dibatasi maksimal 20 km/jam",
+      "Hanya agar kendaraan terlihat lebih modern"
+    ]
+  },
+  {
+    "category": "Zero Accident Award",
+    "question": "Penghargaan bergengsi yang diraih KCE dari Kementerian Ketenagakerjaan atas keberhasilan keselamatan kerja adalah?",
+    "correct": "Zero Accident Award (Kecelakaan Nihil)",
+    "wrongs": [
+      "Piala Adipura Kencana",
+      "Sertifikat Pembangkit Paling Cepat",
+      "Piagam Efisiensi BBM"
+    ]
+  },
+  {
+    "category": "Sertifikasi SMK3",
+    "question": "KCE telah memperoleh sertifikasi Sistem Manajemen Keselamatan dan Kesehatan Kerja (SMK3) pada kategori?",
+    "correct": "Tingkat Lanjutan (Advanced Level)",
+    "wrongs": [
+      "Tingkat Pemula Tanpa Audit",
+      "Tingkat Percobaan Sementara",
+      "Tingkat Dasar Tanpa Verifikasi"
+    ]
+  },
+  {
+    "category": "Peringkat PROPER KLH",
+    "question": "Peringkat PROPER dari Kementerian Lingkungan Hidup yang berhasil dipertahankan KCE atas kepatuhan lingkungan adalah?",
+    "correct": "PROPER Biru",
+    "wrongs": [
+      "PROPER Hitam",
+      "PROPER Abu-Abu",
+      "PROPER Jingga"
+    ]
+  },
+  {
+    "category": "Target Net Zero Emission",
+    "question": "Kapan target komitmen nasional Indonesia untuk mencapai Net Zero Emission (NZE) yang didukung penuh oleh KCE?",
+    "correct": "Tahun 2060 atau lebih cepat",
+    "wrongs": [
+      "Tahun 2025",
+      "Tahun 2150",
+      "Tahun 3000"
+    ]
+  },
+  {
+    "category": "Definisi Dekarbonisasi",
+    "question": "Apakah yang dimaksud dengan istilah Dekarbonisasi pada sektor industri energi?",
+    "correct": "Proses pengurangan atau penghapusan emisi gas rumah kaca (khususnya CO2) dari proses pembangkitan dan konsumsi energi",
+    "wrongs": [
+      "Pemisahan unsur karbon dari bijih besi menjadi baja tahan karat",
+      "Penyulingan minyak pelumas bekas menjadi solar",
+      "Pembersihan sisa pembakaran pada cerobong pabrik"
+    ]
+  },
+  {
+    "category": "Audit Energi Industri",
+    "question": "Layanan audit energi yang ditawarkan KCE kepada tenant industri bertujuan untuk?",
+    "correct": "Mengidentifikasi peluang penghematan energi dan merekomendasikan solusi efisiensi berbiaya efektif",
+    "wrongs": [
+      "Menghitung pajak tahunan perusahaan",
+      "Memeriksa kehadiran karyawan pabrik",
+      "Menentukan harga jual produk konsumen"
+    ]
+  },
+  {
+    "category": "Sertifikat Energi Terbarukan (REC)",
+    "question": "Instrumen internasional yang membuktikan bahwa 1 MWh listrik dihasilkan dari sumber terbarukan disebut?",
+    "correct": "Renewable Energy Certificate (REC)",
+    "wrongs": [
+      "Surat Izin Penggunaan Surya (SIPS)",
+      "Kwitansi Pembayaran Listrik Bulanan",
+      "Sertifikat Hak Milik Lahan Panel"
+    ]
+  },
+  {
+    "category": "Target Bauran EBT Nasional",
+    "question": "Berapakah target bauran Energi Baru Terbarukan (EBT) nasional dalam Kebijakan Energi Nasional (KEN)?",
+    "correct": "23% pada tahun 2025 dan terus meningkat di tahun-tahun berikutnya",
+    "wrongs": [
+      "5% pada tahun 2030",
+      "100% pada tahun 2024",
+      "0% karena tetap mengandalkan minyak bumi"
+    ]
+  },
+  {
+    "category": "Energi Surya di Indonesia",
+    "question": "Mengapa Indonesia memiliki potensi energi surya yang luar biasa besar sepanjang tahun?",
+    "correct": "Terletak di garis khatulistiwa dengan penyinaran matahari rata-rata 4,8 kWh/m2 per hari",
+    "wrongs": [
+      "Karena Indonesia memiliki 4 musim salju dan gugur",
+      "Karena tidak pernah terjadi pergantian siang dan malam",
+      "Karena Indonesia memiliki wilayah gurun pasir terluas"
+    ]
+  },
+  {
+    "category": "Prinsip Keandalan Daya KCE",
+    "question": "Bagi industri petrokimia dan baja di Cilegon, mengapa stabilitas pasokan listrik KCE sangat kritikal?",
+    "correct": "Penurunan tegangan (voltage dip) seketika dapat memicu *trip* mesin produksi bernilai miliaran rupiah",
+    "wrongs": [
+      "Supaya lampu penerangan jalan tidak padam di sore hari",
+      "Hanya agar meteran listrik berputar stabil",
+      "Supaya tidak perlu membayar biaya abonemen"
+    ]
+  },
+  {
+    "category": "Sinergi Chandra Asri Group",
+    "question": "Keberadaan KCE di dalam ekosistem Chandra Asri Group memperkuat peran grup sebagai?",
+    "correct": "Perusahaan solusi energi dan kimia terintegrasi terkemuka di Asia Tenggara",
+    "wrongs": [
+      "Perusahaan ekspedisi pengiriman paket ritel kilat",
+      "Penyedia telekomunikasi satelit seluler",
+      "Manufaktur perangkat komputer jinjing"
+    ]
+  }
+];
   return raw.map(item => {
     const opts = [item.correct, ...item.wrongs];
     const shuffled = shuffleArray(opts);
@@ -3094,6 +3329,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (langBtn) langBtn.innerText = GAME.lang;
 });
   
-  </script>
+</script>
 </body>
 </html>
