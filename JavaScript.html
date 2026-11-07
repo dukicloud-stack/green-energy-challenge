@@ -599,148 +599,181 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     `;
   }
 
-  // 4. HAIRSTYLES (4 STYLES MATCHING THE REFERENCE IMAGES EXACTLY)
+  // 4. HAIRSTYLES (2 FEMALE & 2 MALE CHARACTERS MATCHING REFERENCE SHEETS 100%)
   let hairBack = '';
   let hairFront = '';
 
   if (isDewi) {
     // =============================================================
-    // FEMALE 2 (Dewi): Neat Bob Cut with Yellow Hair Clips (Ref 1, Top-Left)
+    // FEMALE 2 (Dewi): Soft Wavy Bob with Golden Headband (Ref 1, Bottom-Right)
     // =============================================================
     hairBack = `
-      <path d="M -26 -16 C -36 0, -36 14, -24 22 L 24 22 C 36 14, 36 0, 26 -16 Z"
+      <!-- Shoulder-level soft wavy bob -->
+      <path d="M -26 -12
+               C -36 4, -36 18, -26 26
+               L 26 26
+               C 36 18, 36 4, 26 -12
+               Z"
             fill="${hairDark}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <path d="M -24 16 Q -27 22 -20 25" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 24 16 Q 27 22 20 25" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
     `;
 
     hairFront = `
-      <path d="M -28 -14
+      <!-- Front Hair with Golden Headband -->
+      <path d="M -28 -12
                C -34 -48, -20 -53, 0 -53
-               C 20 -53, 34 -48, 28 -14
-               C 28 2, 27 14, 22 16
-               C 18 16, 18 6, 18 -2
-               C 17 -14, 15 -20, 11 -21
-               C 7 -21, 5 -24, 2 -24
-               C -1 -24, -3 -21, -6 -21
-               C -10 -21, -12 -24, -15 -24
-               C -17 -24, -18 -14, -18 -2
-               C -18 6, -18 16, -22 16
-               C -27 14, -28 2, -28 -14
+               C 20 -53, 34 -48, 28 -12
+               C 28 2, 26 12, 22 18
+               C 18 18, 18 6, 18 0
+               C 17 -14, 14 -21, 9 -21
+               C 5 -21, 2 -18, -2 -18
+               C -6 -18, -10 -22, -15 -22
+               C -17 -22, -18 -14, -18 0
+               C -18 6, -18 18, -22 18
+               C -26 12, -28 2, -28 -12
                Z"
             fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
 
-      <!-- Crown watercolor highlights inside hair bounds -->
-      <path d="M -15 -38 Q 0 -44 15 -38" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <path d="M -8 -40 Q 0 -43 8 -40" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      <!-- Golden Headband across the crown -->
+      <path d="M -27 -24 C -28 -42, 28 -42, 27 -24" stroke="#F59E0B" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M -25 -25 C -26 -40, 26 -40, 25 -25" stroke="#FCD34D" stroke-width="2" fill="none" stroke-linecap="round"/>
 
-      <!-- Pair of yellow clips on Left and Right -->
-      <line x1="-27" y1="-12" x2="-21" y2="-17" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
-      <line x1="-27" y1="-7" x2="-21" y2="-12" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
-      <line x1="27" y1="-12" x2="21" y2="-17" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
-      <line x1="27" y1="-7" x2="21" y2="-12" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+      <!-- Highlights -->
+      <path d="M -14 -44 Q 0 -48 14 -44" stroke="${hairLight}" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M -8 -46 Q 0 -49 8 -46" stroke="${hairGlint}" stroke-width="1.6" stroke-linecap="round" fill="none"/>
     `;
   } else if (isFemale) {
     // =============================================================
-    // FEMALE 1 (Citra): Shoulder-Length Wavy Hair with Layered Bangs & Soft Highlights (Ref 1, Bottom-Right)
+    // FEMALE 1 (Citra): Cute Neat Bob Cut with Yellow Hair Clips (User Ref Image 2)
     // =============================================================
     hairBack = `
-      <!-- Natural flowing shoulder waves framing neck softly -->
-      <path d="M -26 -16
-               C -42 6, -42 28, -32 44
-               C -24 53, -12 55, 0 55
-               C 12 55, 24 53, 32 44
-               C 42 28, 42 6, 26 -16
+      <!-- Chin-length neat bob back layer: ends neatly just below jawline -->
+      <path d="M -26 -12
+               C -35 0, -35 12, -26 18
+               L 26 18
+               C 35 12, 35 0, 26 -12
                Z"
             fill="${hairDark}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <path d="M -26 24 C -32 34, -28 44, -18 48" stroke="${hairLight}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <path d="M 26 24 C 32 34, 28 44, 18 48" stroke="${hairLight}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <line x1="-16" y1="12" x2="-16" y2="18" stroke="${hairLight}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="-8" y1="13" x2="-8" y2="19" stroke="${hairLight}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="8" y2="19" stroke="${hairLight}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="16" y1="12" x2="16" y2="18" stroke="${hairLight}" stroke-width="1.8" stroke-linecap="round"/>
     `;
 
     hairFront = `
-      <!-- Full round crown (apex Y = -53) + cute layered curtain bangs framing cheeks -->
-      <path d="M -28 -14
+      <!-- Front Bob: Soft round crown (apex Y = -52) + cheek frame ending at Y = 12 + side-swept bangs -->
+      <path d="M -28 -12
                C -34 -48, -20 -53, 0 -53
-               C 20 -53, 34 -48, 28 -14
-               C 28 2, 26 12, 22 14
-               C 18 14, 18 4, 18 -4
-               C 18 -14, 16 -20, 11 -20
-               C 8 -20, 6 -24, 3 -24
-               C 0 -24, -2 -20, -5 -20
-               C -9 -20, -11 -24, -14 -24
-               C -16 -24, -18 -14, -18 -4
-               C -18 4, -18 14, -22 14
-               C -26 12, -28 2, -28 -14
+               C 20 -53, 34 -48, 28 -12
+               C 28 0, 26 8, 22 12
+               C 18 12, 18 2, 18 -4
+               C 17 -16, 14 -22, 10 -22
+               C 6 -22, 3 -18, 0 -18
+               C -2 -18, -4 -24, -8 -24
+               C -13 -24, -16 -18, -18 -4
+               C -18 2, -18 12, -22 12
+               C -26 8, -28 0, -28 -12
                Z"
             fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
 
-      <!-- Soft Watercolor Highlights inside crown -->
-      <path d="M -15 -38 Q 0 -44 15 -38" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <path d="M -8 -40 Q 0 -43 8 -40" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      <!-- Vertical watercolor highlights (like in Ref Image 2) -->
+      <line x1="-21" y1="-38" x2="-21" y2="-30" stroke="${hairLight}" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="-16" y1="-42" x2="-16" y2="-34" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="-11" y1="-44" x2="-11" y2="-38" stroke="${hairLight}" stroke-width="2.2" stroke-linecap="round"/>
 
-      <!-- Subtle inner fringe division lines -->
-      <path d="M -14 -24 Q -12 -18 -9 -20" stroke="${hairLight}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <path d="M 3 -24 Q 5 -18 8 -20" stroke="${hairLight}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <line x1="21" y1="-38" x2="21" y2="-30" stroke="${hairLight}" stroke-width="2.6" stroke-linecap="round"/>
+      <line x1="16" y1="-42" x2="16" y2="-34" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round"/>
+      <line x1="11" y1="-44" x2="11" y2="-38" stroke="${hairLight}" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- Soft top curve glint -->
+      <path d="M -8 -44 Q 0 -47 8 -44" stroke="${hairGlint}" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+      <!-- Two Yellow Bobby Pins on Left (Ref Image 2: parallel angled clips) -->
+      <line x1="-27" y1="-10" x2="-20" y2="-15" stroke="#F59E0B" stroke-width="3.2" stroke-linecap="round"/>
+      <line x1="-28" y1="-4" x2="-21" y2="-9" stroke="#F59E0B" stroke-width="3.2" stroke-linecap="round"/>
+
+      <!-- Two Yellow Bobby Pins on Right (Ref Image 2: parallel angled clips) -->
+      <line x1="27" y1="-10" x2="20" y2="-15" stroke="#F59E0B" stroke-width="3.2" stroke-linecap="round"/>
+      <line x1="28" y1="-4" x2="21" y2="-9" stroke="#F59E0B" stroke-width="3.2" stroke-linecap="round"/>
     `;
   } else if (isBudi) {
     // =============================================================
-    // MALE 2 (Budi): Textured Swept-Up Quiff / Undercut (Ref 2, Top-Right)
-    // Boys have clean napes: ZERO hair behind neck
+    // MALE 2 (Budi): Handsome Layered Fringe with Cute Cowlick (Ref 2, Bottom-Right)
+    // Clean boy nape: ZERO hair behind neck
     // =============================================================
     hairBack = '';
-
     hairFront = `
-      <!-- Quiff swept-up silhouette with stylish crest -->
+      <!-- Rounded boy crown with layered fringe framing eyebrows -->
       <path d="M -27 -10
-               C -33 -44, -14 -48, -4 -49
-               C 4 -57, 16 -56, 18 -48
-               C 25 -45, 32 -36, 27 -10
-               C 26 -16, 22 -23, 15 -24
-               C 8 -25, 2 -21, -3 -22
-               C -10 -23, -18 -23, -27 -10
+               C -33 -46, -18 -52, 0 -52
+               C 18 -52, 33 -46, 27 -10
+               C 27 -14, 25 -19, 21 -22
+               C 16 -23, 14 -26, 9 -26
+               C 5 -26, 3 -22, -1 -22
+               C -5 -22, -8 -26, -12 -26
+               C -16 -26, -18 -22, -22 -22
+               C -25 -22, -27 -14, -27 -10
                Z"
             fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-
-      <!-- Quiff wave swirl -->
-      <path d="M -2 -48 C 6 -54, 15 -52, 17 -47" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <path d="M 3 -46 C 9 -51, 15 -49, 15 -44" stroke="${hairGlint}" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <!-- Highlights inside crown -->
-      <path d="M -14 -37 Q -2 -42 14 -37" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <path d="M -8 -39 Q 2 -42 10 -39" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-
-      <!-- Neat Sideburns in front of ears -->
+      
+      <!-- Cute boy cowlick at crown -->
+      <path d="M 3 -52 C 5 -58, 11 -58, 9 -51" stroke="${stroke}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      
+      <!-- Crown highlights -->
+      <path d="M -14 -39 Q 0 -44 14 -39" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <path d="M -8 -41 Q 0 -44 8 -41" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      
+      <!-- Clean Sideburns in front of ears -->
       <path d="M -26 -11 L -26 -4" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
       <path d="M 26 -11 L 26 -4" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
     `;
   } else {
     // =============================================================
-    // MALE 1 (Rizky): Wavy Side-Part Curtain Bangs (Ref 2, Top-Left)
-    // Boys have clean napes: ZERO hair behind neck
+    // MALE 1 (Rizky): EXACT Image 2 (Layered Wavy Side-Part Curtain with Outward Flicks)
+    // Clean boy nape: ZERO hair behind neck
     // =============================================================
     hairBack = '';
-
     hairFront = `
-      <!-- Boy side-part hair: full smooth volume, natural curtain fringe -->
-      <path d="M -27 -10
-               C -33 -46, -18 -52, 0 -52
-               C 18 -52, 33 -46, 27 -10
-               C 27 -15, 23 -19, 18 -21
-               C 14 -21, 10 -25, 6 -24
-               C 2 -23, 1 -19, -2 -19
-               C -5 -19, -7 -25, -11 -25
-               C -15 -25, -18 -21, -22 -20
-               C -25 -20, -27 -15, -27 -10
+      <!-- Silhouette from Image 2:
+           Left outer edge features 2 outward flicks:
+           - Lower flick at X=-33, Y=-23
+           - Upper flick at X=-36, Y=-35
+           Crown has natural rounded volume with soft center-right parting dip
+           Right side frames temple smoothly down to sideburn
+           Bangs have high arched cutout on the right exposing forehead,
+           and layered wavy strands falling across to the left
+      -->
+      <path d="M -26 -10
+               C -27 -18, -26 -23, -33 -23
+               C -27 -27, -27 -33, -36 -35
+               C -30 -42, -22 -51, -10 -51
+               C -2 -51, 3 -47, 6 -48
+               C 17 -49, 32 -43, 27 -10
+               C 26 -15, 23 -20, 17 -22
+               C 12 -23, 9 -28, 6 -28
+               C 3 -28, 2 -23, 0 -23
+               C -2 -23, -4 -28, -7 -28
+               C -12 -28, -14 -22, -18 -22
+               C -22 -22, -24 -16, -26 -10
                Z"
-          fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-
-      <!-- Soft wave line following the natural side parting (warm brown) -->
-      <path d="M -11 -25 Q -6 -21 -2 -19" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M 0 -19 Q 4 -23 8 -23" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-      <!-- Soft Watercolor Highlights INSIDE hair crown -->
-      <path d="M -14 -38 Q 0 -43 14 -38" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-      <path d="M -8 -40 Q 0 -43 8 -40" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-
-      <!-- Neat Boy Sideburns in front of ears -->
+            fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      
+      <!-- Inner strand creases (Image 2) -->
+      <path d="M -7 -28 Q -3 -24 0 -23" stroke="${hairDark}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M -15 -27 Q -12 -23 -10 -21" stroke="${hairDark}" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M 6 -48 Q 4 -43 2 -40" stroke="${hairDark}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      
+      <!-- Upper-left caramel highlight patches (Image 2) -->
+      <path d="M -24 -42 Q -16 -47 -10 -44" stroke="${hairLight}" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <circle cx="-21" cy="-36" r="2.2" fill="${hairLight}"/>
+      <circle cx="-16" cy="-43" r="2" fill="${hairLight}"/>
+      
+      <!-- Upper-right caramel highlight patches (Image 2) -->
+      <circle cx="15" cy="-43" r="2.2" fill="${hairLight}"/>
+      <circle cx="21" cy="-38" r="2" fill="${hairLight}"/>
+      
+      <!-- Clean Sideburns in front of ears -->
       <path d="M -26 -11 L -26 -4" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
       <path d="M 26 -11 L 26 -4" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
     `;
@@ -749,54 +782,49 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
   // Face base oval & ears
   const faceBase = `
     <!-- Ears -->
-    <circle cx="-26" cy="-14" r="5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-    <path d="M -27 -16 Q -24 -14 -27 -12" stroke="${stroke}" stroke-width="1.4" fill="none"/>
-    <circle cx="26" cy="-14" r="5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
-    <path d="M 27 -16 Q 24 -14 27 -12" stroke="${stroke}" stroke-width="1.4" fill="none"/>
+    <circle cx="-25" cy="-8" r="4.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+    <path d="M -26 -10 Q -23 -8 -26 -6" stroke="${stroke}" stroke-width="1.3" fill="none"/>
+    <circle cx="25" cy="-8" r="4.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+    <path d="M 26 -10 Q 23 -8 26 -6" stroke="${stroke}" stroke-width="1.3" fill="none"/>
     <!-- Face Contour -->
-    <ellipse cx="0" cy="-14" rx="26" ry="23" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
+    <ellipse cx="0" cy="-10" rx="26" ry="22.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
   `;
 
-  // 5. FACIAL EXPRESSIONS
+  // 5. FACIAL EXPRESSIONS (ORIGINAL FACES PRESERVED PER USER REQUEST)
   let faceDetails = '';
   if (pose === 'idle') {
     if (isFemale) {
-      // Citra: Sweet almond eyes with cute outer eyelashes and brown brows
       faceDetails = `
-        <!-- Eyebrows cleanly positioned under bangs -->
-        <path d="M -16 -21 Q -10 -25 -4 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M 4 -21 Q 10 -25 16 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M -16 -21 Q -11 -25 -5 -21" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M 5 -21 Q 11 -25 16 -21" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
 
-        <!-- Almond Eyes -->
-        <ellipse cx="-11" cy="-12" rx="8" ry="6.2" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
-        <path d="M -19 -12 Q -11 -18 -3 -12" stroke="${stroke}" stroke-width="2.6" fill="none"/>
-        <path d="M -18 -13 L -21 -16" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/>
-        <path d="M -17 -15 L -19 -18" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/>
-        <ellipse cx="-10.5" cy="-12" rx="3.8" ry="5.2" fill="#181C24"/>
-        <ellipse cx="-9" cy="-14" rx="1.6" ry="2" fill="#FFFFFF"/>
+        <!-- Eyes with delicate feminine eyelashes -->
+        <circle cx="-11" cy="-12" r="8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.4"/>
+        <ellipse cx="-11" cy="-12" rx="4" ry="5.8" fill="#181C24"/>
+        <circle cx="-9.2" cy="-14" r="1.8" fill="#FFFFFF"/>
+        <path d="M -15 -14 Q -19 -18 -18 -21" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <path d="M -12 -18 Q -14 -22 -12 -24" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
 
-        <ellipse cx="11" cy="-12" rx="8" ry="6.2" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
-        <path d="M 3 -12 Q 11 -18 19 -12" stroke="${stroke}" stroke-width="2.6" fill="none"/>
-        <path d="M 18 -13 L 21 -16" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/>
-        <path d="M 17 -15 L 19 -18" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/>
-        <ellipse cx="10.5" cy="-12" rx="3.8" ry="5.2" fill="#181C24"/>
-        <ellipse cx="12" cy="-14" rx="1.6" ry="2" fill="#FFFFFF"/>
+        <circle cx="11" cy="-12" r="8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.4"/>
+        <ellipse cx="11" cy="-12" rx="4" ry="5.8" fill="#181C24"/>
+        <circle cx="12.8" cy="-14" r="1.8" fill="#FFFFFF"/>
+        <path d="M 15 -14 Q 19 -18 18 -21" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <path d="M 12 -18 Q 14 -22 12 -24" stroke="${stroke}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
 
-        <!-- Soft Cheek Blushes -->
+        <!-- Rosy Cheeks -->
         <ellipse cx="-18" cy="-5" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
         <ellipse cx="18" cy="-5" rx="4" ry="2.2" fill="#F87171" opacity="0.4"/>
 
-        <!-- Sweet Smile -->
+        <!-- Sweet Friendly Smile -->
         <path d="M -5 0 Q 0 4.5 5 0" stroke="${stroke}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       `;
     } else {
-      // Boys (Rizky & Budi): Friendly brown eyebrows and large bright round eyes (Ref 2 style)
       faceDetails = `
         <!-- Friendly Brown Eyebrows -->
         <path d="M -16 -21 Q -10 -24 -4 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
         <path d="M 4 -21 Q 10 -24 16 -21" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
-        <!-- Large Round Boy Eyes -->
+        <!-- Large Round Boy Eyes (Original Icon Look) -->
         <circle cx="-11" cy="-12" r="8" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.4"/>
         <ellipse cx="-11" cy="-12" rx="4" ry="5.8" fill="#181C24"/>
         <circle cx="-9.2" cy="-14" r="1.8" fill="#FFFFFF"/>
