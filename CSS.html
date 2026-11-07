@@ -80,10 +80,13 @@ button { font-family: inherit; }
 
 #app-container {
   max-width: 1240px;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 0 16px 28px;
+  padding: 10px 16px 14px;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Top Navbar */
@@ -143,8 +146,18 @@ button { font-family: inherit; }
 .nav-btn.active { background: var(--blue-primary); border-color: var(--blue-primary); color: #FFFFFF; }
 
 /* Screens */
-.game-screen { display: none; padding: 18px 4px 6px; }
-.game-screen.active { display: block; }
+.game-screen {
+  display: none;
+  flex: 1;
+  width: 100%;
+  padding: 14px 4px;
+}
+.game-screen.active {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Welcome Screen */
 .welcome-hero {
@@ -269,6 +282,8 @@ button { font-family: inherit; }
 .btn-cta-main {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 10px;
   padding: 14px 34px;
   border: 3px solid #FFFFFF;
@@ -292,8 +307,10 @@ button { font-family: inherit; }
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border: 2px solid transparent;
   border-radius: 12px;
   background: var(--blue-primary);
@@ -312,8 +329,10 @@ button { font-family: inherit; }
 .btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
-  padding: 11px 20px;
+  padding: 11px 22px;
   border: 2px solid var(--slate-border);
   border-radius: 12px;
   background: #FFFFFF;
@@ -884,37 +903,51 @@ button { font-family: inherit; }
 .celebration-avatar-row {
   display: flex;
   justify-content: center;
-  gap: 18px;
-  margin: 14px 0;
+  align-items: stretch;
+  gap: 32px;
+  margin: 18px auto 24px;
+  max-width: 520px;
 }
 
 .avatar-result-slot {
-  width: 140px;
-  height: 165px;
+  flex: 1;
+  max-width: 220px;
+  min-height: 205px;
   background: var(--light-grey);
   border: 2px solid var(--slate-border);
-  border-radius: 16px;
-  position: relative;
+  border-radius: 18px;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 10px 16px;
+  box-shadow: 0 4px 14px rgba(47, 64, 126, 0.08);
 }
 
-.avatar-result-slot svg { width: 120px; height: 140px; }
+.avatar-result-slot svg { width: 115px; height: 130px; margin: 2px auto; }
+.slot-player-title {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--navy-deep);
+  text-align: center;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
 
 .result-stamp {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 18px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 900;
   color: #FFFFFF;
   white-space: nowrap;
-  box-shadow: 0 4px 10px rgba(20, 41, 74, 0.2);
+  box-shadow: 0 3px 8px rgba(20, 41, 74, 0.18);
   border: 2px solid #FFFFFF;
 }
 
@@ -994,12 +1027,32 @@ button { font-family: inherit; }
 }
 .leader-table tr:hover td { background: var(--blue-light); }
 
+/* Screen Centering & Max Widths */
+#arena-screen.active {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 1100px;
+  margin: auto;
+  width: 100%;
+}
+
+#welcome-screen.active,
+#reg-screen.active,
+#char-screen.active,
+#leaderboard-screen.active {
+  margin: auto;
+}
+
 /* Footer */
 .app-footer {
-  margin-top: 32px;
-  padding: 18px 14px;
-  border-top: 2px solid var(--slate-border);
+  margin-top: auto;
+  padding: 16px 14px 10px;
+  border-top: 1.5px solid var(--slate-border);
   text-align: center;
+  flex-shrink: 0;
+  width: 100%;
 }
 
 .footer-line { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); }
