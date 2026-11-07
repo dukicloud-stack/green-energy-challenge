@@ -42,7 +42,7 @@ const GAME = {
     name: 'Siti Rahma',
     category: 'Pelajar',
     org: 'SMA Negeri 2 Cilegon',
-    charId: 'kce-rizky',
+    charId: 'kce-citra',
     score: 0,
     pulls: 0,
     correct: 0,
@@ -421,6 +421,15 @@ const HERO_ROSTER = [
     image: 'assets/kce-female.png'
   },
   {
+    id: 'kce-dewi',
+    name: 'Dewi',
+    title: 'Operasional Lapangan KCE',
+    gender: 'female',
+    color: '#0D9488',
+    shirt: 'Kemeja Kerja KCE',
+    image: 'assets/kce-female.png'
+  },
+  {
     id: 'kce-rizky',
     name: 'Rizky',
     title: 'Engineer KCE',
@@ -428,18 +437,37 @@ const HERO_ROSTER = [
     color: '#1E293B',
     shirt: 'Kemeja Kerja KCE',
     image: 'assets/kce-male.png'
+  },
+  {
+    id: 'kce-budi',
+    name: 'Budi',
+    title: 'Teknisi Energi Terbarukan',
+    gender: 'male',
+    color: '#D97706',
+    shirt: 'Kemeja Kerja KCE',
+    image: 'assets/kce-male.png'
   }
 ];
 
 
 function getSimpleHero(charId, pose = 'idle', facing = 'right') {
-  const isFemale = (charId === 'citra' || charId === 'female' || charId === 'kce-citra');
+  const isFemale = (charId === 'citra' || charId === 'female' || charId === 'kce-citra' ||
+                    charId === 'dewi' || charId === 'kce-dewi' || charId === 'nadia');
+  const isDewi = (charId === 'dewi' || charId === 'kce-dewi' || charId === 'nadia');
+  const isBudi = (charId === 'budi' || charId === 'kce-budi' || charId === 'dimas');
+
   const flip = (facing === 'left') ? 'transform="scale(-1, 1)"' : '';
 
   const stroke = '#241E1C';
   const sw = 3.0;
   const skin = isFemale ? '#FDDFC8' : '#FBD7BA';
-  const hairColor = isFemale ? '#7D5742' : '#23262D';
+  
+  // Warm chestnut brown from reference images
+  const hairBase = isFemale ? '#663E29' : '#5E3825';
+  const hairDark = '#4B2A19';
+  const hairLight = '#8E5E44';
+  const hairGlint = '#A87456';
+
   const shirt = '#DEEAF7';
   const shirtShadow = '#C3D6EC';
   const pants = '#22385C';
@@ -501,7 +529,6 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
   // 3. ARMS & HANDS
   let arms = '';
   if (pose === 'idle') {
-    // Arms folded behind back
     arms = `
       <!-- Left Sleeve tucking behind back -->
       <path d="M -21 10 C -30 18, -30 28, -21 37 L -17 36 C -23 28, -23 18, -15 12 Z" 
@@ -514,18 +541,14 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
       <path d="M 20 20 Q 23 27 18 34" stroke="${stroke}" stroke-width="1.5" fill="none"/>
     `;
   } else if (pose === 'pull') {
-    // Both arms reaching forward, perfectly gripping the horizontal arena rope at Y=135!
     arms = `
       <!-- Back Arm (Darker sleeve shadow) -->
       <path d="M -10 10 L 22 34 L 22 42 L -10 20 Z" fill="${shirtShadow}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <!-- Back Hand Fist Clamping Rope -->
       <circle cx="26" cy="38" r="6.5" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
 
       <!-- Front Arm (Reaching forward) -->
       <path d="M 12 10 L 44 34 L 44 42 L 10 20 Z" fill="${shirt}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <!-- Sleeve cuff line -->
       <line x1="38" y1="31" x2="38" y2="41" stroke="${stroke}" stroke-width="1.8"/>
-      <!-- Front Hand Fist Clamping Rope -->
       <rect x="42" y="32" width="14" height="13" rx="4" fill="${skin}" stroke="${stroke}" stroke-width="${sw}"/>
       <line x1="47" y1="33" x2="47" y2="44" stroke="${stroke}" stroke-width="1.5"/>
       <path d="M 42 33 Q 47 29 52 33" stroke="${stroke}" stroke-width="${sw}" fill="none"/>
@@ -551,51 +574,149 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
     `;
   }
 
-  // 4. HEAD, HAIR (FULL, VOLUMINOUS, NO BALDNESS!), AND EARS
+  // 4. HAIRSTYLES (4 STYLES MATCHING THE REFERENCE IMAGES EXACTLY)
   let hairBack = '';
   let hairFront = '';
 
-  if (isFemale) {
-    // Citra: Long wavy brown hair flowing behind shoulders with volume
+  if (isDewi) {
+    // =============================================================
+    // FEMALE 2 (Dewi): Neat Bob Cut with Yellow Hair Clips (Ref 1, Top-Left)
+    // =============================================================
     hairBack = `
+      <!-- Bob back layer curving neatly at jaw level -->
       <path d="M -26 -16
-               C -46 0, -48 24, -40 38
-               C -36 46, -42 52, -34 56
-               C -26 60, -18 56, -14 52
-               L 14 52
-               C 18 56, 26 60, 34 56
-               C 42 52, 36 46, 40 38
-               C 48 24, 46 0, 26 -16
+               C -35 0, -35 14, -24 22
+               L 24 22
+               C 35 14, 35 0, 26 -16
                Z"
-            fill="${hairColor}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+            fill="${hairDark}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
     `;
 
-    // Citra: Bangs sweeping across forehead with playful side flip curl on top!
     hairFront = `
+      <!-- Neat Bob Volume with soft rounded cheek ends -->
       <path d="M -28 -14
                C -32 -48, 32 -48, 28 -14
-               C 28 -18, 22 -22, 14 -22
-               C 4 -22, -4 -20, -14 -24
+               C 29 2, 27 16, 22 18
+               C 18 18, 18 8, 18 0
+               C 16 -16, 12 -23, 6 -23
+               C 0 -23, -6 -19, -12 -23
+               C -16 -23, -18 0, -18 0
+               C -18 8, -18 18, -22 18
+               C -27 16, -29 2, -28 -14
+               Z"
+            fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      
+      <!-- Naturally Layered Fringe Above Eyebrows -->
+      <path d="M -16 -23 Q -8 -20 0 -23" stroke="${hairLight}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 0 -23 Q 8 -20 16 -23" stroke="${hairLight}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+      <!-- Soft Watercolor Highlights along Crown -->
+      <path d="M -16 -37 Q 0 -44 16 -37" stroke="${hairLight}" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M -10 -40 Q 0 -45 10 -40" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+      <!-- Pair of Yellow Bobby Pins on Left (Ref 1 Top-Left: angled up towards crown) -->
+      <line x1="-27" y1="-12" x2="-21" y2="-17" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+      <line x1="-27" y1="-7" x2="-21" y2="-12" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+
+      <!-- Pair of Yellow Bobby Pins on Right (Ref 1 Top-Left: angled up towards crown) -->
+      <line x1="27" y1="-12" x2="21" y2="-17" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+      <line x1="27" y1="-7" x2="21" y2="-12" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+    `;
+  } else if (isFemale) {
+    // =============================================================
+    // FEMALE 1 (Citra): Shoulder-Length Wavy Hair with Layered Bangs & Soft Highlights (Ref 1, Bottom-Right)
+    // =============================================================
+    hairBack = `
+      <!-- Flowing Wavy Back Hair with smooth curves -->
+      <path d="M -26 -16
+               C -44 4, -46 26, -38 42
+               C -34 49, -26 53, -15 53
+               L 15 53
+               C 26 53, 34 49, 38 42
+               C 46 26, 44 4, 26 -16
+               Z"
+            fill="${hairDark}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+      <path d="M -34 26 Q -38 38 -28 46" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 34 26 Q 38 38 28 46" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+    `;
+
+    hairFront = `
+      <!-- Main Hair Volume with smoothly swept bangs framing the forehead -->
+      <path d="M -28 -14
+               C -32 -48, 32 -48, 28 -14
+               C 28 -18, 22 -23, 14 -23
+               C 4 -23, -4 -20, -14 -24
                C -22 -27, -26 -20, -28 -14
                Z"
-            fill="${hairColor}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
-      <!-- Cute Side Flick Hair Strand on Top -->
-      <path d="M 12 -33 C 18 -42, 26 -40, 24 -34 C 21 -31, 16 -30, 12 -33" 
-            stroke="${stroke}" stroke-width="2.4" fill="${hairColor}" stroke-linejoin="round"/>
-      <!-- Cheek-framing locks -->
+            fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+
+      <!-- Naturally Layered Bangs (Smooth curves, zero messy sticking strands) -->
+      <path d="M -16 -24 Q -7 -22 2 -24" stroke="${hairLight}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 2 -24 Q 10 -22 18 -24" stroke="${hairGlint}" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      
+      <!-- Subtle Watercolor Highlights on Crown -->
+      <path d="M -16 -37 Q 0 -44 16 -37" stroke="${hairLight}" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M -10 -40 Q 0 -45 10 -40" stroke="${hairGlint}" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+      <!-- Cheek framing soft locks -->
       <path d="M -26 -14 C -28 -4, -28 4, -24 10" stroke="${stroke}" stroke-width="${sw}" fill="none"/>
       <path d="M 26 -14 C 28 -4, 28 4, 24 10" stroke="${stroke}" stroke-width="${sw}" fill="none"/>
     `;
-  } else {
-    // Rizky: Full, stylish, voluminous short black hair with neat side-part sweeping bangs!
+  } else if (isBudi) {
+    // =============================================================
+    // MALE 2 (Budi): Textured Swept-Up Quiff / Undercut (Ref 2, Top-Right)
+    // =============================================================
     hairFront = `
+      <!-- Base Head Shape with Upward Swept Quiff Crest -->
+      <path d="M -28 -14
+               C -32 -48, -12 -48, -4 -48
+               C 4 -58, 18 -55, 18 -47
+               C 24 -46, 28 -38, 28 -14
+               C 28 -18, 24 -23, 16 -24
+               C 8 -24, 2 -21, -6 -23
+               C -16 -24, -24 -20, -28 -14
+               Z"
+            fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+
+      <!-- Quiff Crest Curved Swirl -->
+      <path d="M -2 -48 C 6 -54, 15 -52, 17 -47" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 3 -46 C 10 -51, 16 -49, 16 -44" stroke="${hairGlint}" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Layered Short Bangs across Forehead -->
+      <path d="M -16 -23 Q -10 -20 -4 -23" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M 2 -23 Q 8 -20 14 -24" stroke="${hairLight}" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+      <!-- Soft Highlights on Crown -->
+      <path d="M -16 -37 Q -4 -44 14 -38" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <path d="M -10 -40 Q 2 -45 10 -41" stroke="${hairGlint}" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+
+      <!-- Neat Sideburns -->
+      <path d="M -26 -14 L -26 -7" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
+      <path d="M 26 -14 L 26 -7" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
+    `;
+  } else {
+    // =============================================================
+    // MALE 1 (Rizky): Wavy Side-Part Curtain Bangs (Ref 2, Top-Left)
+    // =============================================================
+    hairFront = `
+      <!-- Full Wavy Volume with Side Parting -->
       <path d="M -28 -14
                C -32 -48, 32 -48, 28 -14
-               C 28 -18, 20 -23, 10 -24
-               C 0 -25, -12 -23, -20 -25
-               C -25 -26, -27 -20, -28 -14
+               C 28 -18, 20 -24, 10 -24
+               C 2 -25, -6 -21, -14 -24
+               C -20 -26, -26 -21, -28 -14
                Z"
-            fill="${hairColor}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+            fill="${hairBase}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
+
+      <!-- Soft Curved Bang Layers following side part -->
+      <path d="M -12 -24 Q -4 -21 6 -24" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M 8 -24 Q 15 -21 22 -17" stroke="${stroke}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+      <!-- Subtle Highlights following the natural wave of hair -->
+      <path d="M -16 -36 Q -6 -43 14 -37" stroke="${hairLight}" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+      <path d="M -8 -39 Q 0 -44 10 -41" stroke="${hairGlint}" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+      <path d="M 12 -28 Q 18 -32 24 -24" stroke="${hairLight}" stroke-width="2" stroke-linecap="round" fill="none"/>
+
       <!-- Sideburns -->
       <path d="M -26 -14 L -26 -7" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
       <path d="M 26 -14 L 26 -7" stroke="${stroke}" stroke-width="${sw}" stroke-linecap="round"/>
@@ -620,8 +741,8 @@ function getSimpleHero(charId, pose = 'idle', facing = 'right') {
       // Citra: Sweet almond eyes with cute outer eyelashes and brown brows
       faceDetails = `
         <!-- Eyebrows -->
-        <path d="M -17 -23 Q -11 -27 -5 -23" stroke="${hairColor}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M 5 -23 Q 11 -27 17 -23" stroke="${hairColor}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M -17 -23 Q -11 -27 -5 -23" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 5 -23 Q 11 -27 17 -23" stroke="${hairBase}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
 
         <!-- Almond Eyes -->
         <ellipse cx="-11" cy="-14" rx="8" ry="6.2" fill="#FFFFFF" stroke="${stroke}" stroke-width="2.2"/>
