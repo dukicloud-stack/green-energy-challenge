@@ -920,6 +920,7 @@ button { font-family: inherit; }
 .overlay-modal.active { display: flex; }
 
 .celebration-box {
+  position: relative;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -2115,4 +2116,54 @@ button { font-family: inherit; }
   padding: 6px;
   text-decoration: underline;
 }
+
+/* Victory Modal Close Button & Home Action CTA */
+.btn-victory-modal-close {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid #CBD5E1;
+  color: #475569;
+  font-size: 1.35rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 50;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  user-select: none;
+  line-height: 1;
+}
+
+.btn-victory-modal-close:hover {
+  background: #EF4444;
+  border-color: #DC2626;
+  color: #FFFFFF;
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+}
+
+.btn-victory-modal-close:active {
+  transform: scale(0.92);
+}
+
+.victory-actions-secondary-row .btn-home-cta {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  color: var(--navy-deep);
+}
+
+.victory-actions-secondary-row .btn-home-cta:hover {
+  background: #0284C7;
+  border-color: #0284C7;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
+}
+
 </style>

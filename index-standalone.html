@@ -931,6 +931,7 @@ button { font-family: inherit; }
 .overlay-modal.active { display: flex; }
 
 .celebration-box {
+  position: relative;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -2127,6 +2128,55 @@ button { font-family: inherit; }
   text-decoration: underline;
 }
 
+/* Victory Modal Close Button & Home Action CTA */
+.btn-victory-modal-close {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid #CBD5E1;
+  color: #475569;
+  font-size: 1.35rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 50;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  user-select: none;
+  line-height: 1;
+}
+
+.btn-victory-modal-close:hover {
+  background: #EF4444;
+  border-color: #DC2626;
+  color: #FFFFFF;
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
+}
+
+.btn-victory-modal-close:active {
+  transform: scale(0.92);
+}
+
+.victory-actions-secondary-row .btn-home-cta {
+  background: #F8FAFC;
+  border-color: #94A3B8;
+  color: var(--navy-deep);
+}
+
+.victory-actions-secondary-row .btn-home-cta:hover {
+  background: #0284C7;
+  border-color: #0284C7;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.28);
+}
+
 </style>
 </head>
 <body>
@@ -2656,6 +2706,9 @@ button { font-family: inherit; }
   <div id="victory-modal" class="overlay-modal">
     <div id="victory-card-box" class="celebration-box blue-theme">
       
+      <!-- Close Button Corner: Back Home -->
+      <button type="button" class="btn-victory-modal-close" onclick="backToHomeFromVictory()" aria-label="Tutup dan Kembali ke Menu Utama" title="Tutup / Menu Utama">✕</button>
+
       <!-- Top Header Banner (Horizontal Trophy + Title + Subtitle) -->
       <div class="victory-header-banner">
         <div class="victory-trophy-badge">
@@ -2674,17 +2727,17 @@ button { font-family: inherit; }
         </div>
       </div>
 
-      <!-- Main Landscape Stadium Grid (Winner Left | Center Hub | Loser Right) -->
+      <!-- Main Landscape Stadium Grid (Player 1 Left | Center Hub | Player 2 Right) -->
       <div class="victory-landscape-grid">
         
-        <!-- Left: Winner Avatar Card -->
-        <div class="avatar-result-slot winner-card-slot">
-          <div class="slot-player-title" id="victory-winner-name">Player 1</div>
-          <div id="victory-winner-avatar"></div>
-          <span id="victory-winner-stamp" class="result-stamp winner">JUARA 🏆</span>
+        <!-- Left: Player 1 Avatar Card (ALWAYS PLAYER 1 ON LEFT) -->
+        <div class="avatar-result-slot winner-card-slot" id="victory-p1-slot">
+          <div class="slot-player-title" id="victory-p1-name">Player 1</div>
+          <div id="victory-p1-avatar"></div>
+          <span id="victory-p1-stamp" class="result-stamp winner">JUARA 🏆</span>
         </div>
 
-        <!-- Center: Stadium Hub (Pill + 2x2 Stats Grid + Actions) -->
+        <!-- Center: Stadium Hub (KPI + 2x2 Stats Grid + Actions) -->
         <div class="victory-center-hub">
           <!-- Match Overview Header Badge -->
           <div class="victory-hub-header">
@@ -2707,11 +2760,11 @@ button { font-family: inherit; }
             </div>
             <div class="match-metric-card">
               <h5>Total Tarikan</h5>
-              <p id="m-stat-pulls">6</p>
+              <p id="m-stat-pulls">0</p>
             </div>
           </div>
 
-          <!-- Action Buttons Row -->
+          <!-- Actions -->
           <div class="victory-actions-row">
             <button class="btn-start-tug" onclick="closeVictoryModal(); confirmAndStartMatch();">
               <span data-i18n="rematch">⚔️ TANDING ULANG</span>
@@ -2723,22 +2776,24 @@ button { font-family: inherit; }
               <button class="btn-secondary btn-compact" onclick="closeVictoryModal(); openLeaderboard();">
                 <span data-i18n="leaderboard">PAPAN PERINGKAT</span>
               </button>
+              <button class="btn-secondary btn-compact btn-home-cta" onclick="backToHomeFromVictory();">
+                <span>🏠 MENU UTAMA</span>
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Right: Loser Avatar Card -->
-        <div class="avatar-result-slot loser-card-slot">
-          <div class="slot-player-title" id="victory-loser-name">Player 2</div>
-          <div id="victory-loser-avatar"></div>
-          <span id="victory-loser-stamp" class="result-stamp loser">NICE TRY! 👍</span>
+        <!-- Right: Player 2 Avatar Card (ALWAYS PLAYER 2 ON RIGHT) -->
+        <div class="avatar-result-slot loser-card-slot" id="victory-p2-slot">
+          <div class="slot-player-title" id="victory-p2-name">Player 2</div>
+          <div id="victory-p2-avatar"></div>
+          <span id="victory-p2-stamp" class="result-stamp loser">NICE TRY! 👍</span>
         </div>
 
       </div>
 
     </div>
   </div>
-
 
   <!-- ====================================================================
        TOUCHSCREEN VIRTUAL KEYBOARD DRAWER
@@ -4682,10 +4737,17 @@ function showVictoryModal(winner) {
   const box = document.getElementById('victory-card-box');
   const title = document.getElementById('victory-title');
   const sub = document.getElementById('victory-subtitle');
-  const winnerAvatar = document.getElementById('victory-winner-avatar');
-  const loserAvatar = document.getElementById('victory-loser-avatar');
-  const winnerStamp = document.getElementById('victory-winner-stamp');
-  const loserStamp = document.getElementById('victory-loser-stamp');
+
+  // ALWAYS Left: Player 1, ALWAYS Right: Player 2
+  const p1Slot = document.getElementById('victory-p1-slot');
+  const p1Name = document.getElementById('victory-p1-name');
+  const p1Avatar = document.getElementById('victory-p1-avatar');
+  const p1Stamp = document.getElementById('victory-p1-stamp');
+
+  const p2Slot = document.getElementById('victory-p2-slot');
+  const p2Name = document.getElementById('victory-p2-name');
+  const p2Avatar = document.getElementById('victory-p2-avatar');
+  const p2Stamp = document.getElementById('victory-p2-stamp');
 
   const hero1 = HERO_ROSTER.find(h => h.id === GAME.p1.charId) || HERO_ROSTER[0];
   const hero2 = HERO_ROSTER.find(h => h.id === GAME.p2.charId) || HERO_ROSTER[1];
@@ -4695,6 +4757,10 @@ function showVictoryModal(winner) {
   document.getElementById('m-stat-duration').innerText = GAME.matchDuration + 's';
   document.getElementById('m-stat-pulls').innerText = (GAME.p1.pulls + GAME.p2.pulls);
 
+  // Set Names: P1 ALWAYS LEFT, P2 ALWAYS RIGHT
+  if (p1Name) p1Name.innerText = `${GAME.p1.name} (Player 1)`;
+  if (p2Name) p2Name.innerText = `${GAME.p2.name} (Player 2)`;
+
   if (winner === 1) {
     box.className = 'celebration-box blue-theme';
     title.innerText = 'PLAYER 1 JUARA!';
@@ -4702,14 +4768,23 @@ function showVictoryModal(winner) {
     sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
     sub.style.color = '#E2E8F0';
 
-    winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'celebrate', 'right');
-    const wTitle = document.getElementById('victory-winner-name'); if (wTitle) wTitle.innerText = `${GAME.p1.name} (Player 1)`;
-    winnerStamp.innerText = 'JUARA 🏆';
-    winnerStamp.style.background = 'var(--blue-primary)';
+    // Player 1 (Left): WINNER
+    if (p1Slot) p1Slot.className = 'avatar-result-slot winner-card-slot';
+    if (p1Avatar) p1Avatar.innerHTML = renderHeroSVG(hero1.id, 'celebrate', 'right');
+    if (p1Stamp) {
+      p1Stamp.className = 'result-stamp winner';
+      p1Stamp.innerText = 'JUARA 🏆';
+      p1Stamp.style.background = 'var(--blue-primary)';
+    }
 
-    loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'sad', 'left');
-    const lTitle = document.getElementById('victory-loser-name'); if (lTitle) lTitle.innerText = `${GAME.p2.name} (Player 2)`;
-    loserStamp.innerText = 'NICE TRY! 👍';
+    // Player 2 (Right): LOSER
+    if (p2Slot) p2Slot.className = 'avatar-result-slot loser-card-slot';
+    if (p2Avatar) p2Avatar.innerHTML = renderHeroSVG(hero2.id, 'sad', 'left');
+    if (p2Stamp) {
+      p2Stamp.className = 'result-stamp loser';
+      p2Stamp.innerText = 'NICE TRY! 👍';
+      p2Stamp.style.background = '#64748B';
+    }
 
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
@@ -4718,25 +4793,49 @@ function showVictoryModal(winner) {
     sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
     sub.style.color = '#E2E8F0';
 
-    winnerAvatar.innerHTML = renderHeroSVG(hero2.id, 'celebrate', 'left');
-    const wTitle2 = document.getElementById('victory-winner-name'); if (wTitle2) wTitle2.innerText = `${GAME.p2.name} (Player 2)`;
-    winnerStamp.innerText = 'JUARA 🏆';
-    winnerStamp.style.background = 'var(--green-energy)';
+    // Player 1 (Left): LOSER
+    if (p1Slot) p1Slot.className = 'avatar-result-slot loser-card-slot';
+    if (p1Avatar) p1Avatar.innerHTML = renderHeroSVG(hero1.id, 'sad', 'right');
+    if (p1Stamp) {
+      p1Stamp.className = 'result-stamp loser';
+      p1Stamp.innerText = 'NICE TRY! 👍';
+      p1Stamp.style.background = '#64748B';
+    }
 
-    loserAvatar.innerHTML = renderHeroSVG(hero1.id, 'sad', 'right');
-    const lTitle2 = document.getElementById('victory-loser-name'); if (lTitle2) lTitle2.innerText = `${GAME.p1.name} (Player 1)`;
-    loserStamp.innerText = 'NICE TRY! 👍';
+    // Player 2 (Right): WINNER
+    if (p2Slot) p2Slot.className = 'avatar-result-slot winner-card-slot';
+    if (p2Avatar) p2Avatar.innerHTML = renderHeroSVG(hero2.id, 'celebrate', 'left');
+    if (p2Stamp) {
+      p2Stamp.className = 'result-stamp winner';
+      p2Stamp.innerText = 'JUARA 🏆';
+      p2Stamp.style.background = 'var(--green-energy)';
+    }
 
   } else {
+    // PERTANDINGAN SERI / TIE
     box.className = 'celebration-box';
     title.innerText = 'PERTANDINGAN SERI!';
     title.style.color = '#FBBF24';
     sub.innerText = 'Kedua tim memiliki kekuatan energi yang seimbang!';
     sub.style.color = '#E2E8F0';
-    winnerAvatar.innerHTML = renderHeroSVG(hero1.id, 'idle', 'right');
-    loserAvatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
-    winnerStamp.innerText = `${GAME.p1.name} (SERI)`;
-    loserStamp.innerText = `${GAME.p2.name} (SERI)`;
+
+    // Player 1 (Left): SERI
+    if (p1Slot) p1Slot.className = 'avatar-result-slot';
+    if (p1Avatar) p1Avatar.innerHTML = renderHeroSVG(hero1.id, 'idle', 'right');
+    if (p1Stamp) {
+      p1Stamp.className = 'result-stamp';
+      p1Stamp.innerText = 'SERI 🤝';
+      p1Stamp.style.background = 'var(--blue-primary)';
+    }
+
+    // Player 2 (Right): SERI
+    if (p2Slot) p2Slot.className = 'avatar-result-slot';
+    if (p2Avatar) p2Avatar.innerHTML = renderHeroSVG(hero2.id, 'idle', 'left');
+    if (p2Stamp) {
+      p2Stamp.className = 'result-stamp';
+      p2Stamp.innerText = 'SERI 🤝';
+      p2Stamp.style.background = 'var(--green-energy)';
+    }
   }
 
   if (modal) modal.classList.add('active');
@@ -4762,6 +4861,15 @@ function showVictoryModal(winner) {
 function closeVictoryModal() {
   const modal = document.getElementById('victory-modal');
   if (modal) modal.classList.remove('active');
+  if ('speechSynthesis' in window) {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+  }
+}
+
+function backToHomeFromVictory() {
+  SFX.click();
+  closeVictoryModal();
+  showScreen('welcome-screen');
 }
 
 // ==========================================================================
