@@ -1085,3 +1085,69 @@ button { font-family: inherit; }
 }
 
 </style>
+/* User Reference Image 1: Dual Result Status Pill */
+.result-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #334155;
+  border: 3px solid #FFFFFF;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  margin: 12px auto 16px;
+  max-width: 95%;
+}
+
+.result-status-pill .pill-winner {
+  background: #10B981;
+  color: #FFFFFF;
+  font-weight: 900;
+  font-size: 1.05rem;
+  padding: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-right: 2.5px solid #FFFFFF;
+}
+
+.result-status-pill .pill-loser {
+  background: #475569;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 8px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* User Reference Image 2: Golden Amber Start Tug of War Pill Button */
+.btn-start-tug {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 290px;
+  padding: 14px 34px;
+  background: #EAA000;
+  background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+  color: #0F285F !important;
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border: 3.5px solid #FFFFFF;
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.38), 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-start-tug:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(217, 119, 6, 0.5);
+}
+
+.btn-start-tug:active {
+  transform: translateY(1px) scale(0.98);
+}
