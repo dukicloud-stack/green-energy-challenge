@@ -70,7 +70,7 @@ const I18N = {
     welcomeCTA: 'MULAI DUEL 2 PEMAIN',
     leaderboard: 'PAPAN PERINGKAT',
     regTitle: 'PENDAFTARAN 2 PEMAIN',
-    regSub: 'Isi profil Pemain 1 (Tim Biru) dan Pemain 2 (Tim Hijau) sebelum bertanding!',
+    regSub: 'Masukkan nama Player 1 dan Player 2 sebelum bertanding!',
     lblName1: 'Nama Lengkap Pemain 1 *',
     lblName2: 'Nama Lengkap Pemain 2 *',
     lblOrg1: 'Sekolah / Instansi / Perusahaan',
@@ -80,8 +80,8 @@ const I18N = {
     btnToChars: 'PILIH KARAKTER ENERGI',
     charTitle: 'PILIH KARAKTER ENERGI',
     charSub: 'Pilih pahlawan energi favoritmu (warna baju kuning, hijau, atau biru muda!)',
-    colBluet: 'TIM BIRU: PILIH PAHLAWAN PEMAIN 1',
-    colGreent: 'TIM HIJAU: PILIH PAHLAWAN PEMAIN 2',
+    colBluet: 'PLAYER 1: PILIH PAHLAWAN',
+    colGreent: 'PLAYER 2: PILIH PAHLAWAN',
     readyVs: '⚡ TARIK TAMBANG ⚡',
     btnStartMatch: 'MULAI TARIK TAMBANG!',
     rematch: '⚔️ TANDING ULANG',
@@ -104,7 +104,7 @@ const I18N = {
     welcomeCTA: 'START 2-PLAYER DUEL',
     leaderboard: 'LEADERBOARD',
     regTitle: '2-PLAYER REGISTRATION',
-    regSub: 'Fill in the profiles of Player 1 (Blue Team) and Player 2 (Green Team) before the match!',
+    regSub: 'Fill in Player 1 and Player 2 names before the match!',
     lblName1: 'Player 1 Full Name *',
     lblName2: 'Player 2 Full Name *',
     lblOrg1: 'School / Institution / Company',
@@ -737,8 +737,7 @@ function drawBattlefield() {
 
     <!-- Subtle Center Reference Line -->
     <line x1="500" y1="12" x2="500" y2="208" stroke="#FBB03B" stroke-width="2" stroke-dasharray="6 6" opacity="0.8"/>
-    <text x="500" y="25" font-family="inherit" font-size="11" font-weight="900" fill="#D97706" text-anchor="middle" letter-spacing="1">GARIS TENGAH</text>
-
+    
     <!-- Rope Layer -->
     <path d="${ropeD}" stroke="#B45309" stroke-width="12" stroke-linecap="round" fill="none"/>
     <path d="${ropeD}" stroke="#FCD34D" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
@@ -915,8 +914,8 @@ function confirmAndStartMatch() {
   const p1Label = document.getElementById('prep-p1-label');
   const p2Label = document.getElementById('prep-p2-label');
 
-  if (p1Label) p1Label.innerText = `${GAME.p1.name} (Tim Biru)`;
-  if (p2Label) p2Label.innerText = `${GAME.p2.name} (Tim Hijau)`;
+  if (p1Label) p1Label.innerText = `${GAME.p1.name} (Player 1)`;
+  if (p2Label) p2Label.innerText = `${GAME.p2.name} (Player 2)`;
   if (overlay) overlay.classList.add('active');
 
   let count = 3;
@@ -1020,8 +1019,7 @@ function renderP1Question() {
   const feedback = document.getElementById('p1-status-feedback');
 
   if (qBadge) qBadge.innerText = `P1: ${GAME.p1.name} (Soal #${GAME.p1.qIndex + 1})`;
-  if (qCat) qCat.innerText = q.category;
-  if (qText) qText.innerText = q.question;
+    if (qText) qText.innerText = q.question;
   if (feedback) feedback.className = 'q-status-feedback';
 
   document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
@@ -1060,7 +1058,7 @@ function handleP1Answer(chosenIdx, btnEl, q) {
 
     if (feedback) {
       feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Tim Biru!';
+      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 1!';
     }
 
     // Hero pose: P1 pulls, P2 stumbles slightly (does NOT fall!)
@@ -1197,8 +1195,7 @@ function renderP2Question() {
   const feedback = document.getElementById('p2-status-feedback');
 
   if (qBadge) qBadge.innerText = `P2: ${GAME.p2.name} (Soal #${GAME.p2.qIndex + 1})`;
-  if (qCat) qCat.innerText = q.category;
-  if (qText) qText.innerText = q.question;
+    if (qText) qText.innerText = q.question;
   if (feedback) feedback.className = 'q-status-feedback';
 
   document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
@@ -1237,7 +1234,7 @@ function handleP2Answer(chosenIdx, btnEl, q) {
 
     if (feedback) {
       feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Tim Hijau!';
+      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 2!';
     }
 
     // Hero pose: P2 pulls, P1 stumbles slightly (does NOT fall!)
@@ -1397,9 +1394,9 @@ function showVictoryModal(winner) {
 
   if (winner === 1) {
     box.className = 'celebration-box blue-theme';
-    title.innerText = 'TIM BIRU JUARA!';
+    title.innerText = 'PLAYER 1 JUARA!';
     title.style.color = 'var(--blue-primary)';
-    sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Tim Biru tak terbendung!`;
+    sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
 
     winnerAvatar.innerHTML = renderHeroSVG(GAME.p1.charId, 'celebrate', 'right');
     winnerStamp.innerText = `${GAME.p1.name} (JUARA 🏆)`;
@@ -1409,9 +1406,9 @@ function showVictoryModal(winner) {
     loserStamp.innerText = `${GAME.p2.name} (NICE TRY! 👍)`;
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
-    title.innerText = 'TIM HIJAU JUARA!';
+    title.innerText = 'PLAYER 2 JUARA!';
     title.style.color = 'var(--green-energy)';
-    sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Tim Hijau mendominasi!`;
+    sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
 
     winnerAvatar.innerHTML = renderHeroSVG(GAME.p2.charId, 'celebrate', 'left');
     winnerStamp.innerText = `${GAME.p2.name} (JUARA 🏆)`;
@@ -1614,10 +1611,10 @@ function getFallbackQuestions() {
 
 function getFallbackLeaderboard() {
   return [
-    { winner: 'Budi Pratama (Tim Biru)', score: 600, duration: 42, date: 'Hari ini' },
-    { winner: 'Siti Rahma (Tim Hijau)', score: 500, duration: 48, date: 'Hari ini' },
+    { winner: 'Budi Pratama (Player 1)', score: 600, duration: 42, date: 'Hari ini' },
+    { winner: 'Siti Rahma (Player 2)', score: 500, duration: 48, date: 'Hari ini' },
     { winner: 'Rian & Aditya (Seri)', score: 400, duration: 60, date: 'Kemarin' },
-    { winner: 'Dewi Lestari (Tim Biru)', score: 400, duration: 38, date: 'Kemarin' }
+    { winner: 'Dewi Lestari (Player 1)', score: 400, duration: 38, date: 'Kemarin' }
   ];
 }
 

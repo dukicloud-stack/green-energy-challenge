@@ -772,11 +772,7 @@ button { font-family: inherit; }
   to { transform: scale(1.08); }
 }
 
-.q-category-tag {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-muted);
-}
+.q-category-tag { display: none !important; }
 
 .q-question-text {
   font-size: 1.1rem;
@@ -1118,33 +1114,33 @@ button { font-family: inherit; }
       <div class="reg-screen-inner">
         <div class="reg-header">
           <h2 data-i18n="regTitle">PENDAFTARAN 2 PEMAIN</h2>
-          <p data-i18n="regSub">Masukkan nama Pemain 1 dan Pemain 2 untuk memulai duel tarik tambang</p>
+          <p data-i18n="regSub">Masukkan nama Player 1 dan Player 2 untuk memulai duel tarik tambang</p>
         </div>
 
         <div class="players-registration-container">
-          <!-- PLAYER 1 (BLUE TEAM) -->
+          <!-- PLAYER 1 -->
           <div class="player-card-panel blue-team">
             <div class="player-card-header">
-              <h3 style="font-size:1.3rem; color:var(--cap-blue); font-weight:900;">PEMAIN 1</h3>
-              <span class="team-badge-tag blue"><span class="team-dot blue"></span>TIM BIRU</span>
+              <h3 style="font-size:1.3rem; color:var(--cap-blue); font-weight:900;">PLAYER 1</h3>
+              <span class="team-badge-tag blue"><span class="team-dot blue"></span>Player 1</span>
             </div>
 
             <div class="form-group" style="margin-bottom:0;">
-              <label for="reg-p1-name" data-i18n="lblName1" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Pemain 1 *</label>
-              <input type="text" id="reg-p1-name" value="Budi Pratama" placeholder="Ketik nama Pemain 1..." style="font-size:1.1rem; padding:14px 16px;">
+              <label for="reg-p1-name" data-i18n="lblName1" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Player 1 *</label>
+              <input type="text" id="reg-p1-name" value="Budi Pratama" placeholder="Ketik nama Player 1..." style="font-size:1.1rem; padding:14px 16px;">
             </div>
           </div>
 
-          <!-- PLAYER 2 (GREEN TEAM) -->
+          <!-- PLAYER 2 -->
           <div class="player-card-panel green-team">
             <div class="player-card-header">
-              <h3 style="font-size:1.3rem; color:var(--green-energy); font-weight:900;">PEMAIN 2</h3>
-              <span class="team-badge-tag green"><span class="team-dot green"></span>TIM HIJAU</span>
+              <h3 style="font-size:1.3rem; color:var(--green-energy); font-weight:900;">PLAYER 2</h3>
+              <span class="team-badge-tag green"><span class="team-dot green"></span>Player 2</span>
             </div>
 
             <div class="form-group" style="margin-bottom:0;">
-              <label for="reg-p2-name" data-i18n="lblName2" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Pemain 2 *</label>
-              <input type="text" id="reg-p2-name" value="Siti Rahma" placeholder="Ketik nama Pemain 2..." style="font-size:1.1rem; padding:14px 16px;">
+              <label for="reg-p2-name" data-i18n="lblName2" style="font-weight:800; font-size:0.92rem; margin-bottom:8px; display:block;">Nama Lengkap Player 2 *</label>
+              <input type="text" id="reg-p2-name" value="Siti Rahma" placeholder="Ketik nama Player 2..." style="font-size:1.1rem; padding:14px 16px;">
             </div>
           </div>
         </div>
@@ -1172,7 +1168,7 @@ button { font-family: inherit; }
         <div>
           <div class="char-column-header blue">
             <span class="team-dot blue"></span>
-            <span data-i18n="colBluet">TIM BIRU: PILIH PAHLAWAN PEMAIN 1</span>
+            <span data-i18n="colBluet">PLAYER 1: PILIH PAHLAWAN</span>
           </div>
           <div id="p1-char-grid" class="character-grid-mini"></div>
         </div>
@@ -1180,7 +1176,7 @@ button { font-family: inherit; }
         <div>
           <div class="char-column-header green">
             <span class="team-dot green"></span>
-            <span data-i18n="colGreent">TIM HIJAU: PILIH PAHLAWAN PEMAIN 2</span>
+            <span data-i18n="colGreent">PLAYER 2: PILIH PAHLAWAN</span>
           </div>
           <div id="p2-char-grid" class="character-grid-mini"></div>
         </div>
@@ -1191,8 +1187,8 @@ button { font-family: inherit; }
         <div class="ready-hero-card">
           <div id="ready-p1-avatar" class="ready-hero-avatar"></div>
           <div>
-            <span class="team-badge-tag blue" style="font-size:0.75rem;">TIM BIRU</span>
-            <h4 id="ready-p1-name" style="font-size:1.2rem; font-weight:900; color:var(--cap-blue); margin-top:2px;">Pemain 1</h4>
+            <span class="team-badge-tag blue" style="font-size:0.75rem;">Player 1</span>
+            <h4 id="ready-p1-name" style="font-size:1.2rem; font-weight:900; color:var(--cap-blue); margin-top:2px;">Player 1</h4>
           </div>
         </div>
 
@@ -1203,8 +1199,8 @@ button { font-family: inherit; }
         <div class="ready-hero-card" style="flex-direction:row-reverse; text-align:right;">
           <div id="ready-p2-avatar" class="ready-hero-avatar"></div>
           <div>
-            <span class="team-badge-tag green" style="font-size:0.75rem;">TIM HIJAU</span>
-            <h4 id="ready-p2-name" style="font-size:1.2rem; font-weight:900; color:var(--green-energy); margin-top:2px;">Pemain 2</h4>
+            <span class="team-badge-tag green" style="font-size:0.75rem;">Player 2</span>
+            <h4 id="ready-p2-name" style="font-size:1.2rem; font-weight:900; color:var(--green-energy); margin-top:2px;">Player 2</h4>
           </div>
         </div>
       </div>
@@ -1226,8 +1222,8 @@ button { font-family: inherit; }
         <div class="arena-player-pill blue">
           <span class="team-dot blue" style="width:14px;height:14px;"></span>
           <div>
-            <div class="arena-player-name" id="arena-p1-name">Pemain 1</div>
-            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">TIM BIRU</div>
+            <div class="arena-player-name" id="arena-p1-name">Player 1</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 1</div>
           </div>
           <div class="arena-player-score" id="arena-p1-score" style="margin-left:auto;">0</div>
         </div>
@@ -1239,14 +1235,14 @@ button { font-family: inherit; }
         <div class="arena-player-pill green">
           <div class="arena-player-score" id="arena-p2-score">0</div>
           <div style="text-align:right; margin-left:auto;">
-            <div class="arena-player-name" id="arena-p2-name">Pemain 2</div>
-            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">TIM HIJAU</div>
+            <div class="arena-player-name" id="arena-p2-name">Player 2</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 2</div>
           </div>
           <span class="team-dot green" style="width:14px;height:14px;"></span>
         </div>
       </div>
 
-      <!-- Battlefield Arena (Straight Clean Rope Gripped by Hands) -->
+      <!-- Battlefield Arena (Straight Clean Rope Gripped by Hands, Center Marker Line without Text) -->
       <div class="tug-battlefield-wrapper">
         <svg id="arena-battlefield-svg" class="tug-battlefield-svg" viewBox="0 0 1000 220" preserveAspectRatio="none">
           <!-- Rendered by drawBattlefield() -->
@@ -1258,14 +1254,13 @@ button { font-family: inherit; }
         <!-- PLAYER 1 QUESTION POD -->
         <div class="player-question-card blue-card" id="p1-question-card">
           <div class="q-card-header">
-            <span class="q-player-badge blue" id="p1-q-badge">P1: Pemain 1 (#1)</span>
+            <span class="q-player-badge blue" id="p1-q-badge">Player 1 (#1)</span>
             <div class="q-timer-badge" id="p1-timer-badge">
               <span>⏱️</span> <span id="p1-timer-val">30s</span>
             </div>
-            <span class="q-category-tag" id="p1-q-category">PLTS Atap</span>
           </div>
 
-          <h3 class="q-question-text" id="p1-q-text">Memuat pertanyaan Pemain 1...</h3>
+          <h3 class="q-question-text" id="p1-q-text">Memuat pertanyaan Player 1...</h3>
 
           <div class="q-answers-container" id="p1-answers-grid"></div>
 
@@ -1275,14 +1270,13 @@ button { font-family: inherit; }
         <!-- PLAYER 2 QUESTION POD -->
         <div class="player-question-card green-card" id="p2-question-card">
           <div class="q-card-header">
-            <span class="q-player-badge green" id="p2-q-badge">P2: Pemain 2 (#1)</span>
+            <span class="q-player-badge green" id="p2-q-badge">Player 2 (#1)</span>
             <div class="q-timer-badge" id="p2-timer-badge">
               <span>⏱️</span> <span id="p2-timer-val">30s</span>
             </div>
-            <span class="q-category-tag" id="p2-q-category">Bauran EBT</span>
           </div>
 
-          <h3 class="q-question-text" id="p2-q-text">Memuat pertanyaan Pemain 2...</h3>
+          <h3 class="q-question-text" id="p2-q-text">Memuat pertanyaan Player 2...</h3>
 
           <div class="q-answers-container" id="p2-answers-grid"></div>
 
@@ -1338,9 +1332,9 @@ button { font-family: inherit; }
   <div id="arena-prep-overlay" class="overlay-modal arena-countdown-overlay">
     <div class="countdown-card">
       <div class="countdown-matchup">
-        <span class="player-tag blue" id="prep-p1-label">Budi Pratama (Tim Biru)</span>
+        <span class="player-tag blue" id="prep-p1-label">Budi Pratama (Player 1)</span>
         <span class="vs-pill">VS</span>
-        <span class="player-tag green" id="prep-p2-label">Siti Rahma (Tim Hijau)</span>
+        <span class="player-tag green" id="prep-p2-label">Siti Rahma (Player 2)</span>
       </div>
       <div id="prep-countdown" class="countdown-big-number">3</div>
     </div>
@@ -1360,7 +1354,7 @@ button { font-family: inherit; }
         </svg>
       </div>
 
-      <h2 id="victory-title" style="font-size:2.2rem; font-weight:900; margin-bottom:4px;">TIM BIRU JUARA!</h2>
+      <h2 id="victory-title" style="font-size:2.2rem; font-weight:900; margin-bottom:4px;">PLAYER 1 JUARA!</h2>
       <p id="victory-subtitle" style="font-size:1.05rem; color:var(--text-muted); margin-bottom:12px;">Selamat atas tarikan energi bersih yang perkasa!</p>
 
       <!-- Winner Cheering & Loser Fallen Down Avatar Row -->
@@ -1377,11 +1371,11 @@ button { font-family: inherit; }
 
       <div class="match-stats-grid">
         <div class="match-metric-card">
-          <h5>Skor Tim Biru</h5>
+          <h5>Skor Player 1</h5>
           <p id="m-stat-p1score" style="color:var(--cap-blue);">0</p>
         </div>
         <div class="match-metric-card">
-          <h5>Skor Tim Hijau</h5>
+          <h5>Skor Player 2</h5>
           <p id="m-stat-p2score" style="color:var(--green-energy);">0</p>
         </div>
         <div class="match-metric-card">
@@ -1481,7 +1475,7 @@ const I18N = {
     welcomeCTA: 'MULAI DUEL 2 PEMAIN',
     leaderboard: 'PAPAN PERINGKAT',
     regTitle: 'PENDAFTARAN 2 PEMAIN',
-    regSub: 'Isi profil Pemain 1 (Tim Biru) dan Pemain 2 (Tim Hijau) sebelum bertanding!',
+    regSub: 'Masukkan nama Player 1 dan Player 2 sebelum bertanding!',
     lblName1: 'Nama Lengkap Pemain 1 *',
     lblName2: 'Nama Lengkap Pemain 2 *',
     lblOrg1: 'Sekolah / Instansi / Perusahaan',
@@ -1491,8 +1485,8 @@ const I18N = {
     btnToChars: 'PILIH KARAKTER ENERGI',
     charTitle: 'PILIH KARAKTER ENERGI',
     charSub: 'Pilih pahlawan energi favoritmu (warna baju kuning, hijau, atau biru muda!)',
-    colBluet: 'TIM BIRU: PILIH PAHLAWAN PEMAIN 1',
-    colGreent: 'TIM HIJAU: PILIH PAHLAWAN PEMAIN 2',
+    colBluet: 'PLAYER 1: PILIH PAHLAWAN',
+    colGreent: 'PLAYER 2: PILIH PAHLAWAN',
     readyVs: '⚡ TARIK TAMBANG ⚡',
     btnStartMatch: 'MULAI TARIK TAMBANG!',
     rematch: '⚔️ TANDING ULANG',
@@ -1515,7 +1509,7 @@ const I18N = {
     welcomeCTA: 'START 2-PLAYER DUEL',
     leaderboard: 'LEADERBOARD',
     regTitle: '2-PLAYER REGISTRATION',
-    regSub: 'Fill in the profiles of Player 1 (Blue Team) and Player 2 (Green Team) before the match!',
+    regSub: 'Fill in Player 1 and Player 2 names before the match!',
     lblName1: 'Player 1 Full Name *',
     lblName2: 'Player 2 Full Name *',
     lblOrg1: 'School / Institution / Company',
@@ -2148,8 +2142,7 @@ function drawBattlefield() {
 
     <!-- Subtle Center Reference Line -->
     <line x1="500" y1="12" x2="500" y2="208" stroke="#FBB03B" stroke-width="2" stroke-dasharray="6 6" opacity="0.8"/>
-    <text x="500" y="25" font-family="inherit" font-size="11" font-weight="900" fill="#D97706" text-anchor="middle" letter-spacing="1">GARIS TENGAH</text>
-
+    
     <!-- Rope Layer -->
     <path d="${ropeD}" stroke="#B45309" stroke-width="12" stroke-linecap="round" fill="none"/>
     <path d="${ropeD}" stroke="#FCD34D" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 10"/>
@@ -2326,8 +2319,8 @@ function confirmAndStartMatch() {
   const p1Label = document.getElementById('prep-p1-label');
   const p2Label = document.getElementById('prep-p2-label');
 
-  if (p1Label) p1Label.innerText = `${GAME.p1.name} (Tim Biru)`;
-  if (p2Label) p2Label.innerText = `${GAME.p2.name} (Tim Hijau)`;
+  if (p1Label) p1Label.innerText = `${GAME.p1.name} (Player 1)`;
+  if (p2Label) p2Label.innerText = `${GAME.p2.name} (Player 2)`;
   if (overlay) overlay.classList.add('active');
 
   let count = 3;
@@ -2431,8 +2424,7 @@ function renderP1Question() {
   const feedback = document.getElementById('p1-status-feedback');
 
   if (qBadge) qBadge.innerText = `P1: ${GAME.p1.name} (Soal #${GAME.p1.qIndex + 1})`;
-  if (qCat) qCat.innerText = q.category;
-  if (qText) qText.innerText = q.question;
+    if (qText) qText.innerText = q.question;
   if (feedback) feedback.className = 'q-status-feedback';
 
   document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
@@ -2471,7 +2463,7 @@ function handleP1Answer(chosenIdx, btnEl, q) {
 
     if (feedback) {
       feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Tim Biru!';
+      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 1!';
     }
 
     // Hero pose: P1 pulls, P2 stumbles slightly (does NOT fall!)
@@ -2608,8 +2600,7 @@ function renderP2Question() {
   const feedback = document.getElementById('p2-status-feedback');
 
   if (qBadge) qBadge.innerText = `P2: ${GAME.p2.name} (Soal #${GAME.p2.qIndex + 1})`;
-  if (qCat) qCat.innerText = q.category;
-  if (qText) qText.innerText = q.question;
+    if (qText) qText.innerText = q.question;
   if (feedback) feedback.className = 'q-status-feedback';
 
   document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
@@ -2648,7 +2639,7 @@ function handleP2Answer(chosenIdx, btnEl, q) {
 
     if (feedback) {
       feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Tim Hijau!';
+      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 2!';
     }
 
     // Hero pose: P2 pulls, P1 stumbles slightly (does NOT fall!)
@@ -2808,9 +2799,9 @@ function showVictoryModal(winner) {
 
   if (winner === 1) {
     box.className = 'celebration-box blue-theme';
-    title.innerText = 'TIM BIRU JUARA!';
+    title.innerText = 'PLAYER 1 JUARA!';
     title.style.color = 'var(--blue-primary)';
-    sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Tim Biru tak terbendung!`;
+    sub.innerText = `Selamat kepada ${GAME.p1.name}! Tarikan energi Player 1 tak terbendung!`;
 
     winnerAvatar.innerHTML = renderHeroSVG(GAME.p1.charId, 'celebrate', 'right');
     winnerStamp.innerText = `${GAME.p1.name} (JUARA 🏆)`;
@@ -2820,9 +2811,9 @@ function showVictoryModal(winner) {
     loserStamp.innerText = `${GAME.p2.name} (NICE TRY! 👍)`;
   } else if (winner === 2) {
     box.className = 'celebration-box green-theme';
-    title.innerText = 'TIM HIJAU JUARA!';
+    title.innerText = 'PLAYER 2 JUARA!';
     title.style.color = 'var(--green-energy)';
-    sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Tim Hijau mendominasi!`;
+    sub.innerText = `Selamat kepada ${GAME.p2.name}! Tarikan energi Player 2 mendominasi!`;
 
     winnerAvatar.innerHTML = renderHeroSVG(GAME.p2.charId, 'celebrate', 'left');
     winnerStamp.innerText = `${GAME.p2.name} (JUARA 🏆)`;
@@ -3025,10 +3016,10 @@ function getFallbackQuestions() {
 
 function getFallbackLeaderboard() {
   return [
-    { winner: 'Budi Pratama (Tim Biru)', score: 600, duration: 42, date: 'Hari ini' },
-    { winner: 'Siti Rahma (Tim Hijau)', score: 500, duration: 48, date: 'Hari ini' },
+    { winner: 'Budi Pratama (Player 1)', score: 600, duration: 42, date: 'Hari ini' },
+    { winner: 'Siti Rahma (Player 2)', score: 500, duration: 48, date: 'Hari ini' },
     { winner: 'Rian & Aditya (Seri)', score: 400, duration: 60, date: 'Kemarin' },
-    { winner: 'Dewi Lestari (Tim Biru)', score: 400, duration: 38, date: 'Kemarin' }
+    { winner: 'Dewi Lestari (Player 1)', score: 400, duration: 38, date: 'Kemarin' }
   ];
 }
 
