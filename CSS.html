@@ -730,6 +730,43 @@ button { font-family: inherit; }
   box-shadow: var(--card-shadow);
 }
 
+.arena-center-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-arena-exit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.btn-arena-exit:hover {
+  background: #FEE2E2;
+  border-color: #FCA5A5;
+  color: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.15);
+}
+
+.btn-arena-exit:active {
+  transform: translateY(1px);
+}
+
 /* Battlefield Canvas */
 .tug-battlefield-wrapper {
   position: relative;

@@ -741,6 +741,43 @@ button { font-family: inherit; }
   box-shadow: var(--card-shadow);
 }
 
+.arena-center-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-arena-exit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #64748B;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.btn-arena-exit:hover {
+  background: #FEE2E2;
+  border-color: #FCA5A5;
+  color: #DC2626;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.15);
+}
+
+.btn-arena-exit:active {
+  transform: translateY(1px);
+}
+
 /* Battlefield Canvas */
 .tug-battlefield-wrapper {
   position: relative;
@@ -2184,7 +2221,7 @@ button { font-family: inherit; }
   <div id="app-container">
     <!-- Top Global Navigation Bar -->
     <header class="top-navbar">
-      <div class="brand-wrapper" onclick="showScreen('welcome-screen')">
+      <div class="brand-wrapper" onclick="exitMatchToHome()" title="Kembali ke Beranda" style="cursor:pointer;">
         <img src="assets/kce-logo-lockup.png" alt="PT Krakatau Chandra Energi" class="kce-brand-logo" onerror="this.src=KCE_ASSETS.logoFallback">
       </div>
 
@@ -2590,8 +2627,13 @@ button { font-family: inherit; }
           <div class="arena-player-score" id="arena-p1-score" style="margin-left:auto;">0</div>
         </div>
 
-        <div class="arena-round-pill" id="arena-round-indicator">
-          Ronde 1 / 10
+        <div class="arena-center-controls">
+          <div class="arena-round-pill" id="arena-round-indicator">
+            Ronde 1 / 10
+          </div>
+          <button type="button" class="btn-arena-exit" onclick="exitMatchToHome()" title="Keluar dan Kembali ke Menu Utama" aria-label="Keluar ke Menu Utama">
+            ✕ Keluar
+          </button>
         </div>
 
         <div class="arena-player-pill green">
@@ -3019,6 +3061,8 @@ class AudioEngine {
     this.ctx = null;
     this.bgmTimer = null;
     this.lastTickTime = 0;
+    this.activeVoiceAudio = null;
+    this.voiceSpeechTimeout = null;
   }
   init() {
     if (!this.ctx) {
@@ -3168,15 +3212,18 @@ class AudioEngine {
 
   playCongratulationsVoice(winnerLabel, winnerName) {
     if (!GAME.soundEnabled) return;
+    this.stopCelebrationVoice();
     try {
       const audio = new Audio();
+      this.activeVoiceAudio = audio;
       audio.volume = 1.0;
       audio.src = 'assets/congratulations.wav';
       const p = audio.play();
       if (p) {
         p.catch(() => {
-          if (KCE_ASSETS.congratulationsAudio) {
+          if (KCE_ASSETS.congratulationsAudio && this.activeVoiceAudio === audio) {
             const fb = new Audio(KCE_ASSETS.congratulationsAudio);
+            this.activeVoiceAudio = fb;
             fb.volume = 1.0;
             fb.play().catch(e => console.log('Audio fallback error:', e));
           }
@@ -3186,6 +3233,7 @@ class AudioEngine {
       if (KCE_ASSETS.congratulationsAudio) {
         try {
           const fb = new Audio(KCE_ASSETS.congratulationsAudio);
+          this.activeVoiceAudio = fb;
           fb.volume = 1.0;
           fb.play().catch(err => console.log('Audio error:', err));
         } catch(err2) {}
@@ -3193,7 +3241,8 @@ class AudioEngine {
     }
 
     // Voice announcement via SpeechSynthesis after the vocal track
-    setTimeout(() => {
+    this.voiceSpeechTimeout = setTimeout(() => {
+      this.voiceSpeechTimeout = null;
       if ('speechSynthesis' in window && GAME.soundEnabled) {
         try {
           window.speechSynthesis.cancel();
@@ -3208,6 +3257,25 @@ class AudioEngine {
         } catch(e) {}
       }
     }, 1100);
+  }
+
+  stopCelebrationVoice() {
+    if (this.voiceSpeechTimeout) {
+      clearTimeout(this.voiceSpeechTimeout);
+      this.voiceSpeechTimeout = null;
+    }
+    if (this.activeVoiceAudio) {
+      try {
+        this.activeVoiceAudio.pause();
+        this.activeVoiceAudio.currentTime = 0;
+      } catch(e) {}
+      this.activeVoiceAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch(e) {}
+    }
   }
 
   playCelebrationFanfare() {
@@ -3450,6 +3518,10 @@ class AudioEngine {
     GAME.bgmPlaying = false;
     const btn = document.getElementById('btn-bgm-toggle');
     if (btn) btn.classList.remove('active');
+  }
+  stopAll() {
+    this.stopBattleBgm();
+    this.stopCelebrationVoice();
   }
   toggleBgm() {
     if (GAME.bgmPlaying) {
@@ -4129,6 +4201,23 @@ function showScreen(screenId) {
   SFX.click();
   closeVirtualKeyboard();
   closeVoiceInput();
+
+  // If navigating away from arena, cleanly shut down battle audio, timers & victory modals
+  if (screenId !== 'arena-screen') {
+    SFX.stopBattleBgm();
+    SFX.stopCelebrationVoice();
+    if (GAME.p1 && GAME.p1.timerInterval) {
+      clearInterval(GAME.p1.timerInterval);
+      GAME.p1.timerInterval = null;
+    }
+    if (GAME.p2 && GAME.p2.timerInterval) {
+      clearInterval(GAME.p2.timerInterval);
+      GAME.p2.timerInterval = null;
+    }
+    GAME.isGameOver = true;
+    closeVictoryModal();
+  }
+
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
   const target = document.getElementById(screenId);
   if (target) {
@@ -4861,15 +4950,28 @@ function showVictoryModal(winner) {
 function closeVictoryModal() {
   const modal = document.getElementById('victory-modal');
   if (modal) modal.classList.remove('active');
-  if ('speechSynthesis' in window) {
-    try { window.speechSynthesis.cancel(); } catch(e) {}
+  SFX.stopCelebrationVoice();
+}
+
+function exitMatchToHome() {
+  SFX.click();
+  SFX.stopBattleBgm();
+  SFX.stopCelebrationVoice();
+  if (GAME.p1 && GAME.p1.timerInterval) {
+    clearInterval(GAME.p1.timerInterval);
+    GAME.p1.timerInterval = null;
   }
+  if (GAME.p2 && GAME.p2.timerInterval) {
+    clearInterval(GAME.p2.timerInterval);
+    GAME.p2.timerInterval = null;
+  }
+  GAME.isGameOver = true;
+  closeVictoryModal();
+  showScreen('welcome-screen');
 }
 
 function backToHomeFromVictory() {
-  SFX.click();
-  closeVictoryModal();
-  showScreen('welcome-screen');
+  exitMatchToHome();
 }
 
 // ==========================================================================

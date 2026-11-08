@@ -143,6 +143,8 @@ class AudioEngine {
     this.ctx = null;
     this.bgmTimer = null;
     this.lastTickTime = 0;
+    this.activeVoiceAudio = null;
+    this.voiceSpeechTimeout = null;
   }
   init() {
     if (!this.ctx) {
@@ -292,15 +294,18 @@ class AudioEngine {
 
   playCongratulationsVoice(winnerLabel, winnerName) {
     if (!GAME.soundEnabled) return;
+    this.stopCelebrationVoice();
     try {
       const audio = new Audio();
+      this.activeVoiceAudio = audio;
       audio.volume = 1.0;
       audio.src = 'assets/congratulations.wav';
       const p = audio.play();
       if (p) {
         p.catch(() => {
-          if (KCE_ASSETS.congratulationsAudio) {
+          if (KCE_ASSETS.congratulationsAudio && this.activeVoiceAudio === audio) {
             const fb = new Audio(KCE_ASSETS.congratulationsAudio);
+            this.activeVoiceAudio = fb;
             fb.volume = 1.0;
             fb.play().catch(e => console.log('Audio fallback error:', e));
           }
@@ -310,6 +315,7 @@ class AudioEngine {
       if (KCE_ASSETS.congratulationsAudio) {
         try {
           const fb = new Audio(KCE_ASSETS.congratulationsAudio);
+          this.activeVoiceAudio = fb;
           fb.volume = 1.0;
           fb.play().catch(err => console.log('Audio error:', err));
         } catch(err2) {}
@@ -317,7 +323,8 @@ class AudioEngine {
     }
 
     // Voice announcement via SpeechSynthesis after the vocal track
-    setTimeout(() => {
+    this.voiceSpeechTimeout = setTimeout(() => {
+      this.voiceSpeechTimeout = null;
       if ('speechSynthesis' in window && GAME.soundEnabled) {
         try {
           window.speechSynthesis.cancel();
@@ -332,6 +339,25 @@ class AudioEngine {
         } catch(e) {}
       }
     }, 1100);
+  }
+
+  stopCelebrationVoice() {
+    if (this.voiceSpeechTimeout) {
+      clearTimeout(this.voiceSpeechTimeout);
+      this.voiceSpeechTimeout = null;
+    }
+    if (this.activeVoiceAudio) {
+      try {
+        this.activeVoiceAudio.pause();
+        this.activeVoiceAudio.currentTime = 0;
+      } catch(e) {}
+      this.activeVoiceAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch(e) {}
+    }
   }
 
   playCelebrationFanfare() {
@@ -574,6 +600,10 @@ class AudioEngine {
     GAME.bgmPlaying = false;
     const btn = document.getElementById('btn-bgm-toggle');
     if (btn) btn.classList.remove('active');
+  }
+  stopAll() {
+    this.stopBattleBgm();
+    this.stopCelebrationVoice();
   }
   toggleBgm() {
     if (GAME.bgmPlaying) {
@@ -1253,6 +1283,23 @@ function showScreen(screenId) {
   SFX.click();
   closeVirtualKeyboard();
   closeVoiceInput();
+
+  // If navigating away from arena, cleanly shut down battle audio, timers & victory modals
+  if (screenId !== 'arena-screen') {
+    SFX.stopBattleBgm();
+    SFX.stopCelebrationVoice();
+    if (GAME.p1 && GAME.p1.timerInterval) {
+      clearInterval(GAME.p1.timerInterval);
+      GAME.p1.timerInterval = null;
+    }
+    if (GAME.p2 && GAME.p2.timerInterval) {
+      clearInterval(GAME.p2.timerInterval);
+      GAME.p2.timerInterval = null;
+    }
+    GAME.isGameOver = true;
+    closeVictoryModal();
+  }
+
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
   const target = document.getElementById(screenId);
   if (target) {
@@ -1985,15 +2032,28 @@ function showVictoryModal(winner) {
 function closeVictoryModal() {
   const modal = document.getElementById('victory-modal');
   if (modal) modal.classList.remove('active');
-  if ('speechSynthesis' in window) {
-    try { window.speechSynthesis.cancel(); } catch(e) {}
+  SFX.stopCelebrationVoice();
+}
+
+function exitMatchToHome() {
+  SFX.click();
+  SFX.stopBattleBgm();
+  SFX.stopCelebrationVoice();
+  if (GAME.p1 && GAME.p1.timerInterval) {
+    clearInterval(GAME.p1.timerInterval);
+    GAME.p1.timerInterval = null;
   }
+  if (GAME.p2 && GAME.p2.timerInterval) {
+    clearInterval(GAME.p2.timerInterval);
+    GAME.p2.timerInterval = null;
+  }
+  GAME.isGameOver = true;
+  closeVictoryModal();
+  showScreen('welcome-screen');
 }
 
 function backToHomeFromVictory() {
-  SFX.click();
-  closeVictoryModal();
-  showScreen('welcome-screen');
+  exitMatchToHome();
 }
 
 // ==========================================================================
