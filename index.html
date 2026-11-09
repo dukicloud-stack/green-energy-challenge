@@ -4305,6 +4305,8 @@ class AudioEngine {
     }
   }
 }
+const SFX = new AudioEngine();
+window.SFX = SFX;
 
 
 // ==========================================================================
@@ -4972,14 +4974,14 @@ function drawBattlefield() {
 // ==========================================================================
 
 function showScreen(screenId) {
-  SFX.click();
-  closeVirtualKeyboard();
-  closeVoiceInput();
+  try { if (typeof SFX !== 'undefined' && SFX) SFX.click(); } catch(e) {}
+  try { closeVirtualKeyboard(); } catch(e) {}
+  try { closeVoiceInput(); } catch(e) {}
 
   // If navigating away from arena, cleanly shut down battle audio, timers & victory modals
   if (screenId !== 'arena-screen') {
-    SFX.stopBattleBgm();
-    SFX.stopCelebrationVoice();
+    try { if (typeof SFX !== 'undefined' && SFX) SFX.stopBattleBgm(); } catch(e) {}
+    try { if (typeof SFX !== 'undefined' && SFX) SFX.stopCelebrationVoice(); } catch(e) {}
     if (GAME.p1 && GAME.p1.timerInterval) {
       clearInterval(GAME.p1.timerInterval);
       GAME.p1.timerInterval = null;
@@ -4989,15 +4991,17 @@ function showScreen(screenId) {
       GAME.p2.timerInterval = null;
     }
     GAME.isGameOver = true;
-    closeVictoryModal();
+    try { closeVictoryModal(); } catch(e) {}
 
     // Play upbeat Home BGM when on menu/welcome/registration/leaderboard screens
-    if (GAME.soundEnabled && SFX.currentBgmType !== 'home') {
-      SFX.startHomeBgm();
-    }
+    try {
+      if (GAME.soundEnabled && typeof SFX !== 'undefined' && SFX && SFX.currentBgmType !== 'home') {
+        SFX.startHomeBgm();
+      }
+    } catch(e) {}
   } else {
     // When entering arena, stop home BGM
-    SFX.stopHomeBgm();
+    try { if (typeof SFX !== 'undefined' && SFX) SFX.stopHomeBgm(); } catch(e) {}
   }
 
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
@@ -5007,10 +5011,11 @@ function showScreen(screenId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   if (screenId === 'char-screen') {
-    renderCharacterGrids();
-    SFX.playChooseCharacterVoice();
+    try { renderCharacterGrids(); } catch(e) {}
+    try { if (typeof SFX !== 'undefined' && SFX) SFX.playChooseCharacterVoice(); } catch(e) {}
   }
 }
+window.showScreen = showScreen;
 
 function toggleLanguage() {
   GAME.lang = (GAME.lang === 'ID') ? 'EN' : 'ID';
@@ -6807,12 +6812,16 @@ document.addEventListener('fullscreenchange', () => {
 
 // User interaction audio unlock: starts Home BGM on first touch/click
 function handleFirstUserInteraction() {
-  SFX.init();
-  const arenaScreen = document.getElementById('arena-screen');
-  const isArena = arenaScreen && arenaScreen.classList.contains('active');
-  if (!isArena && !GAME.bgmPlaying && GAME.soundEnabled) {
-    SFX.startHomeBgm();
-  }
+  try {
+    if (typeof SFX !== 'undefined' && SFX) {
+      SFX.init();
+      const arenaScreen = document.getElementById('arena-screen');
+      const isArena = arenaScreen && arenaScreen.classList.contains('active');
+      if (!isArena && !GAME.bgmPlaying && GAME.soundEnabled) {
+        SFX.startHomeBgm();
+      }
+    }
+  } catch(e) {}
   document.removeEventListener('click', handleFirstUserInteraction);
   document.removeEventListener('touchstart', handleFirstUserInteraction);
   document.removeEventListener('keydown', handleFirstUserInteraction);
@@ -6837,6 +6846,29 @@ function handleUrlNavigation() {
       }
     }, 150);
   }
+}
+
+// Global browser window exports for inline HTML onclick handlers
+if (typeof window !== 'undefined') {
+  window.SFX = SFX;
+  window.showScreen = showScreen;
+  window.toggleLanguage = toggleLanguage;
+  window.toggleAudio = toggleAudio;
+  window.toggleFullscreen = toggleFullscreen;
+  window.openLeaderboard = openLeaderboard;
+  window.submit2PlayerRegistration = submit2PlayerRegistration;
+  window.confirmAndStartMatch = confirmAndStartMatch;
+  window.exitMatchToHome = exitMatchToHome;
+  window.backToHomeFromVictory = backToHomeFromVictory;
+  window.closeVictoryModal = closeVictoryModal;
+  window.openVirtualKeyboard = openVirtualKeyboard;
+  window.closeVirtualKeyboard = closeVirtualKeyboard;
+  window.clearActiveInput = clearActiveInput;
+  window.startVoiceInput = startVoiceInput;
+  window.closeVoiceInput = closeVoiceInput;
+  window.retryVoiceInput = retryVoiceInput;
+  window.applyVoiceName = applyVoiceName;
+  window.triggerVoiceFromKeyboard = triggerVoiceFromKeyboard;
 }
 
 if (document.readyState === 'loading') {
