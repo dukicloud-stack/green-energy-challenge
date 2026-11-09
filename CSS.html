@@ -1506,20 +1506,531 @@ button { font-family: inherit; }
 .footer-line strong { color: var(--navy-deep); font-weight: 800; }
 .footer-tagline { margin-top: 4px; font-size: 0.75rem; font-weight: 700; color: var(--blue-primary); letter-spacing: 0.04em; }
 
-/* Responsive */
-@media (max-width: 860px) {
-  .dual-questions-grid { grid-template-columns: 1fr; }
-  .players-registration-container { grid-template-columns: 1fr; }
-  .char-select-columns { grid-template-columns: 1fr; }
-  .character-grid-mini { grid-template-columns: repeat(3, 1fr); }
+/* Responsive for Small Mobile Phones (< 520px) */
+@media (max-width: 520px) {
+  .dual-questions-grid { grid-template-columns: 1fr !important; }
+  .players-registration-container { grid-template-columns: 1fr !important; }
+  .char-select-columns { grid-template-columns: 1fr !important; }
+  .character-grid-mini { grid-template-columns: repeat(2, 1fr) !important; }
   .arena-top-bar { flex-wrap: wrap; justify-content: center; }
-  .arena-player-pill { min-width: 0; width: 45%; }
+  .arena-player-pill { min-width: 0; width: 100%; }
   .match-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .q-answers-container { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 540px) {
-  .q-answers-container { grid-template-columns: 1fr; }
-  .arena-player-pill { width: 100%; }
+/* ==========================================================================
+   40-INCH PORTRAIT MONITOR & VERTICAL KIOSK TOTEM DISPLAY SYSTEM
+   Optimized for 9:16 vertical displays (1080x1920, 1440x2560, 2160x3840)
+   Two-Player Simultaneous Duel: Player 1 (Left) & Player 2 (Right) Side-by-Side
+   ========================================================================== */
+
+@media (orientation: portrait), (max-aspect-ratio: 13/16) {
+  /* Kiosk Viewport Sizing & Touch Ergonomics */
+  html, body {
+    min-height: 100vh;
+    touch-action: manipulation;
+  }
+
+  body {
+    background-size: 32px 32px;
+  }
+
+  #app-container {
+    max-width: 1020px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 16px 22px 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Top Navigation Bar on 40" Portrait Kiosk */
+  .top-navbar {
+    padding: 14px 22px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+    border-radius: 20px;
+    border-width: 2.5px;
+    box-shadow: 0 6px 20px rgba(47, 64, 126, 0.1);
+  }
+  .kce-brand-logo {
+    height: 48px;
+  }
+  .nav-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+
+  /* ---------------- WELCOME SCREEN (PORTRAIT 40") ---------------- */
+  #welcome-screen.active {
+    margin: auto 0;
+    width: 100%;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .welcome-hero {
+    max-width: 960px;
+    width: 100%;
+    padding: 44px 32px 38px;
+    border-radius: 28px;
+    border-width: 2.5px;
+    box-shadow: 0 12px 36px rgba(47, 64, 126, 0.12);
+  }
+  .hero-pill-badge {
+    padding: 8px 22px;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 5.2vw, 3.8rem);
+    line-height: 1.1;
+    margin: 6px 0 14px;
+  }
+  .hero-subtitle {
+    font-size: 1.22rem;
+    max-width: 720px;
+    line-height: 1.5;
+    margin: 0 auto 16px;
+  }
+  .kce-tagline-img {
+    height: 58px;
+    margin: 10px auto 26px;
+  }
+  .welcome-preview-stage {
+    max-width: 660px;
+    margin: 6px auto 32px;
+    gap: 16px;
+  }
+  .preview-char-box {
+    width: 165px;
+    height: 185px;
+  }
+  .preview-rope-box {
+    height: 44px;
+    margin-bottom: 54px;
+  }
+  .preview-vs-bubble {
+    width: 62px;
+    height: 62px;
+    font-size: 1.25rem;
+    border-width: 3px;
+  }
+  .btn-cta-main {
+    min-height: 74px;
+    font-size: 1.35rem;
+    font-weight: 900;
+    padding: 18px 44px;
+    border-radius: var(--radius-full);
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(67, 117, 189, 0.35);
+  }
+  .welcome-hero .btn-secondary {
+    min-height: 56px;
+    font-size: 1.12rem;
+    padding: 14px 36px;
+    border-radius: var(--radius-full);
+    max-width: 380px;
+  }
+
+  /* ---------------- REGISTRATION SCREEN (PORTRAIT 40") ---------------- */
+  #reg-screen {
+    min-height: 75vh;
+    padding: 20px 0;
+  }
+  .reg-screen-inner {
+    max-width: 960px;
+    width: 100%;
+  }
+  .reg-header h2 {
+    font-size: 2.8rem;
+    margin-bottom: 8px;
+  }
+  .reg-header p {
+    font-size: 1.2rem;
+    margin-top: 6px;
+    margin-bottom: 24px;
+  }
+  .players-registration-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    margin-bottom: 30px;
+  }
+  .player-card-panel {
+    padding: 24px 20px 24px;
+    border-radius: 22px;
+    border-width: 2.5px;
+  }
+  .player-card-panel .card-team-pill {
+    font-size: 0.95rem;
+    padding: 6px 16px;
+  }
+  .player-card-panel .panel-label {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .input-touch-wrapper input {
+    height: 62px;
+    font-size: 1.28rem;
+    font-weight: 800;
+    padding: 12px 18px;
+    border-radius: 14px;
+  }
+  .btn-input-touch-trigger {
+    height: 48px;
+    padding: 0 16px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+  .reg-actions .btn-primary {
+    min-height: 64px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    padding: 0 38px;
+    border-radius: var(--radius-full);
+  }
+  .reg-actions .btn-secondary {
+    min-height: 64px;
+    font-size: 1.15rem;
+    padding: 0 28px;
+    border-radius: var(--radius-full);
+  }
+
+  /* ---------------- TOUCH KEYBOARD DRAWER (PORTRAIT 40") ---------------- */
+  .virtual-keyboard-drawer {
+    max-width: 1000px !important;
+    width: 100% !important;
+    border-radius: 28px 28px 0 0;
+    padding: 16px 20px 26px;
+    box-shadow: 0 -16px 56px rgba(0, 0, 0, 0.6);
+  }
+  .kbd-header-bar {
+    padding: 0 6px 12px;
+    margin-bottom: 14px;
+  }
+  .kbd-target-indicator {
+    font-size: 1.12rem;
+  }
+  .btn-kbd-header-action {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+  .btn-kbd-header-close {
+    padding: 8px 20px;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+  .kbd-rows-wrapper {
+    gap: 10px;
+  }
+  .kbd-row {
+    gap: 8px;
+  }
+  .kbd-key {
+    height: 60px;
+    font-size: 1.45rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 0 #0F172A;
+  }
+  .kbd-key.key-wide {
+    font-size: 1rem;
+  }
+  .kbd-key.key-space {
+    font-size: 1.05rem;
+  }
+
+  /* ---------------- CHARACTER SELECT SCREEN (PORTRAIT 40") ---------------- */
+  #char-screen.active {
+    max-width: 980px !important;
+    width: 100% !important;
+  }
+  .char-select-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 18px !important;
+    max-width: 980px !important;
+    margin: 0 auto;
+  }
+  .char-column-header {
+    padding: 12px 18px;
+    font-size: 1.05rem;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+  .character-grid-mini {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .char-card-mini {
+    padding: 14px 10px 14px;
+    border-radius: 18px;
+    border-width: 2.5px;
+  }
+  .avatar-mini-box {
+    height: 110px;
+    max-height: 110px;
+  }
+  .avatar-mini-box svg,
+  .avatar-mini-box img {
+    height: 100%;
+    max-height: 110px;
+  }
+  .char-card-name {
+    font-size: 1.05rem;
+    margin-top: 6px;
+  }
+  .char-ready-stage {
+    margin: 20px 0 16px;
+    padding: 14px 20px;
+    border-radius: 20px;
+  }
+  .btn-start-tug {
+    min-height: 68px;
+    font-size: 1.3rem;
+    font-weight: 900;
+    padding: 18px 44px;
+    border-radius: var(--radius-full);
+  }
+
+  /* ---------------- ARENA SCREEN (QUIZ & BATTLEFIELD) ---------------- */
+  #arena-screen.active {
+    max-width: 1000px !important;
+    width: 100% !important;
+    gap: 14px;
+  }
+  .arena-top-bar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .arena-player-pill {
+    min-width: 220px;
+    padding: 10px 18px;
+    border-radius: 16px;
+    border-width: 2.5px;
+  }
+  .arena-player-name {
+    font-size: 1.1rem;
+  }
+  .arena-player-score {
+    font-size: 1.75rem;
+  }
+  .arena-center-controls {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .arena-round-pill {
+    padding: 8px 20px;
+    font-size: 1.05rem;
+    border-width: 2px;
+  }
+  .btn-arena-exit {
+    padding: 8px 16px;
+    font-size: 0.92rem;
+  }
+
+  /* Battlefield Canvas (Grand Portrait Stadium) */
+  .tug-battlefield-wrapper {
+    height: clamp(240px, 15vh, 280px);
+    border-radius: 20px;
+    border-width: 2.5px;
+    margin-bottom: 12px;
+  }
+  .tug-battlefield-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Dual Questions Grid (Strict 2-Column Side-by-Side for 2 Players) */
+  .dual-questions-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  .player-question-card {
+    padding: 20px 20px 22px;
+    border-radius: 22px;
+    border-width: 3px;
+    box-shadow: 0 6px 20px rgba(47, 64, 126, 0.1);
+  }
+  .q-player-badge {
+    font-size: 0.92rem;
+    padding: 5px 14px;
+  }
+  .q-timer-badge {
+    font-size: 1.05rem;
+    padding: 6px 14px;
+  }
+  .q-question-text {
+    font-size: 1.22rem !important;
+    min-height: 78px !important;
+    line-height: 1.42 !important;
+    margin: 8px 0 16px !important;
+  }
+  .q-answers-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .btn-dual-answer {
+    min-height: 66px !important;
+    padding: 14px 18px !important;
+    font-size: 1.12rem !important;
+    font-weight: 700 !important;
+    border-radius: 16px !important;
+    border-width: 2.5px !important;
+    line-height: 1.35 !important;
+  }
+  .dual-ans-letter {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 1.15rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* ---------------- VICTORY MODAL (PORTRAIT 40") ---------------- */
+  .celebration-box {
+    max-width: 980px !important;
+    width: 96vw !important;
+    max-height: 94vh !important;
+    padding: 26px 22px !important;
+    border-radius: 28px !important;
+    gap: 16px;
+  }
+  .victory-header-banner {
+    margin-bottom: 10px;
+    gap: 16px;
+  }
+  .victory-trophy-badge {
+    width: 58px;
+    height: 58px;
+  }
+  .victory-title-wrap h2 {
+    font-size: 2.4rem;
+  }
+  .victory-title-wrap p {
+    font-size: 1.15rem;
+  }
+  .victory-landscape-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+  .avatar-result-slot {
+    flex: 0 0 210px !important;
+    width: 210px !important;
+    min-height: 310px !important;
+    padding: 16px 12px 18px !important;
+    border-radius: 22px !important;
+  }
+  .avatar-result-slot svg {
+    height: 175px !important;
+  }
+  .slot-player-title {
+    font-size: 1.05rem !important;
+  }
+  .result-stamp {
+    font-size: 0.95rem !important;
+    padding: 6px 18px !important;
+  }
+  .victory-center-hub {
+    flex: 1 1 360px !important;
+    padding: 20px 20px 22px !important;
+    border-radius: 24px !important;
+    gap: 16px !important;
+  }
+  .match-stats-grid {
+    gap: 10px;
+  }
+  .match-metric-card {
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+  .match-metric-card h5 {
+    font-size: 0.85rem;
+  }
+  .match-metric-card p {
+    font-size: 1.6rem;
+  }
+  .victory-actions-row .btn-start-tug {
+    min-height: 62px;
+    font-size: 1.25rem;
+    padding: 14px 28px;
+  }
+  .victory-actions-secondary-row {
+    gap: 8px;
+  }
+  .victory-actions-secondary-row .btn-secondary {
+    min-height: 52px;
+    font-size: 0.95rem;
+    padding: 10px 14px;
+  }
+
+  /* ---------------- LEADERBOARD SCREEN ---------------- */
+  .leaderboard-card {
+    padding: 30px 24px;
+    border-radius: 26px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .leader-table th, .leader-table td {
+    padding: 15px 14px;
+    font-size: 1.05rem;
+  }
+  .leaderboard-card .btn-primary {
+    min-height: 60px;
+    font-size: 1.18rem;
+    border-radius: var(--radius-full);
+  }
+
+  /* Footer */
+  .app-footer {
+    padding: 18px 16px 14px;
+  }
+  .footer-line {
+    font-size: 0.92rem;
+  }
+  .footer-tagline {
+    font-size: 0.85rem;
+  }
+}
+
+/* Fallback class-based styling for kiosk shells (body.kiosk-portrait) */
+body.kiosk-portrait .dual-questions-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 16px !important;
+}
+body.kiosk-portrait .players-registration-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 20px !important;
+}
+body.kiosk-portrait .char-select-columns {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 18px !important;
+}
+body.kiosk-portrait .character-grid-mini {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
 }
 
 /* Dual Result Status Pill */

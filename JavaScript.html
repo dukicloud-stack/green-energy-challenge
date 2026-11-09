@@ -3070,4 +3070,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+// ==========================================================================
+// 40-INCH PORTRAIT & KIOSK DISPLAY MANAGER
+// Auto-detects portrait orientation (9:16) and supports ?portrait=1 URL param
+// ==========================================================================
+function updateDisplayModeClass() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const forcePortrait = urlParams.get('portrait') === '1' || urlParams.get('kiosk') === 'portrait';
+  const isPortrait = forcePortrait || (window.innerHeight > window.innerWidth);
+  document.body.classList.toggle('kiosk-portrait', isPortrait);
+  document.body.classList.toggle('kiosk-landscape', !isPortrait);
+}
+
+window.addEventListener('resize', updateDisplayModeClass);
+window.addEventListener('orientationchange', updateDisplayModeClass);
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.querySelector('button[onclick="toggleFullscreen()"]');
+  if (btn) {
+    if (document.fullscreenElement) {
+      btn.innerHTML = '⤓';
+      btn.title = 'Keluar Layar Penuh';
+      btn.classList.add('active');
+    } else {
+      btn.innerHTML = '⛶';
+      btn.title = 'Layar Penuh / Kiosk';
+      btn.classList.remove('active');
+    }
+  }
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateDisplayModeClass);
+} else {
+  updateDisplayModeClass();
+}
+
 </script>
