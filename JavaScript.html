@@ -3101,10 +3101,28 @@ document.addEventListener('fullscreenchange', () => {
   }
 });
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', updateDisplayModeClass);
-} else {
+function handleUrlNavigation() {
   updateDisplayModeClass();
+  const p = new URLSearchParams(window.location.search);
+  const scr = p.get('screen');
+  if (scr) {
+    setTimeout(() => {
+      if (scr === 'victory') {
+        showScreen('arena-screen');
+        showVictoryModal(1);
+      } else if (scr === 'arena') {
+        confirmAndStartMatch();
+      } else {
+        showScreen(scr);
+      }
+    }, 150);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', handleUrlNavigation);
+} else {
+  handleUrlNavigation();
 }
 
 </script>
