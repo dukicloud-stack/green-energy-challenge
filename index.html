@@ -3571,6 +3571,8 @@ class AudioEngine {
   constructor() {
     this.ctx = null;
     this.bgmTimer = null;
+    this.homeBgmTimer = null;
+    this.currentBgmType = null;
     this.lastTickTime = 0;
     this.activeVoiceAudio = null;
     this.voiceSpeechTimeout = null;
@@ -3789,6 +3791,52 @@ class AudioEngine {
     }
   }
 
+  playChooseCharacterVoice() {
+    if (!GAME.soundEnabled) return;
+    this.init();
+
+    // 1. Sparkling arcade character-select chime fanfare (Eb4 -> G4 -> Bb4 -> Eb5)
+    if (this.ctx) {
+      const now = this.ctx.currentTime;
+      const notes = [311.13, 392.00, 466.16, 622.25];
+      notes.forEach((freq, i) => {
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = (i === notes.length - 1) ? 'triangle' : 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.08);
+          gain.gain.setValueAtTime(0.18, now + i * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.08);
+          osc.stop(now + i * 0.08 + 0.35);
+        } catch(e) {}
+      });
+    }
+
+    // 2. Announcer voice: "Choose your character!"
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance('Choose your character!');
+        utter.lang = 'en-US';
+        utter.rate = 1.05;
+        utter.pitch = 1.1;
+        utter.volume = 1.0;
+
+        const voices = window.speechSynthesis.getVoices();
+        const enVoice = voices.find(v => (v.lang && v.lang.startsWith('en') && (v.name.includes('Natural') || v.name.includes('David') || v.name.includes('Google') || v.name.includes('Guy')))) 
+                     || voices.find(v => v.lang && v.lang.startsWith('en'));
+        if (enVoice) utter.voice = enVoice;
+
+        setTimeout(() => {
+          try { window.speechSynthesis.speak(utter); } catch(e) {}
+        }, 120);
+      }
+    } catch(e) {}
+  }
+
   playCelebrationFanfare() {
     if (!GAME.soundEnabled || !this.ctx) return;
     this.init();
@@ -3911,16 +3959,204 @@ class AudioEngine {
       noise.stop(now + 3.8);
     } catch(e) {}
   }
-  startBattleBgm() {
+  startHomeBgm() {
     if (!GAME.soundEnabled) return;
     this.stopBattleBgm();
+    this.stopHomeBgm();
     this.init();
     if (!this.ctx) return;
+    this.currentBgmType = 'home';
     GAME.bgmPlaying = true;
     const btn = document.getElementById('btn-bgm-toggle');
     if (btn) btn.classList.add('active');
 
-    // 132 BPM arcade tournament synth battle track!
+    // Upbeat, sunny, joyful 120 BPM green energy menu theme!
+    const tempo = 120;
+    const stepDuration = 60 / tempo / 4; // 16th note = 0.125s
+    let currentStep = 0;
+
+    // 4-Bar Chord Progression: C Major -> G Major -> A Minor -> F Major (Bouncy Walking Bass)
+    const homeBassPatterns = [
+      // Bar 1: C Major (C - C - G - C - E - G - A - B)
+      65.41, 0, 130.81, 0, 98.00, 0, 130.81, 0,
+      82.41, 0, 98.00, 0, 110.00, 0, 123.47, 0,
+      // Bar 2: G Major (G - G - D - G - B - D - F - G)
+      98.00, 0, 196.00, 0, 146.83, 0, 196.00, 0,
+      123.47, 0, 146.83, 0, 87.31, 0, 98.00, 0,
+      // Bar 3: A Minor (A - A - E - A - C - E - G - A)
+      110.00, 0, 220.00, 0, 164.81, 0, 220.00, 0,
+      130.81, 0, 164.81, 0, 98.00, 0, 110.00, 0,
+      // Bar 4: F Major (F - F - C - F - A - C - D - B)
+      87.31, 0, 174.61, 0, 130.81, 0, 174.61, 0,
+      110.00, 0, 130.81, 0, 146.83, 0, 123.47, 0
+    ];
+
+    // Catchy Marimba / Bright Chime Melody (64 steps)
+    const homeLeadNotes = [
+      // Bar 1 (C Major)
+      392.00, 0, 0, 523.25, 0, 0, 659.25, 0,
+      587.33, 0, 0, 523.25, 0, 0, 392.00, 0,
+      // Bar 2 (G Major)
+      493.88, 0, 0, 587.33, 0, 0, 698.46, 0,
+      659.25, 0, 0, 587.33, 0, 0, 493.88, 0,
+      // Bar 3 (A Minor)
+      523.25, 0, 0, 659.25, 0, 0, 880.00, 0,
+      783.99, 0, 0, 659.25, 0, 0, 523.25, 0,
+      // Bar 4 (F Major)
+      698.46, 0, 0, 659.25, 0, 0, 587.33, 0,
+      523.25, 0, 0, 587.33, 0, 0, 392.00, 0
+    ];
+
+    // Cheerful off-beat staccato chords [freq1, freq2]
+    const homeChords = [
+      // Bar 1: C Major (E4 + G4)
+      [329.63, 392.00],
+      // Bar 2: G Major (D4 + G4)
+      [293.66, 392.00],
+      // Bar 3: A Minor (C4 + E4)
+      [261.63, 329.63],
+      // Bar 4: F Major (C4 + F4)
+      [261.63, 349.23]
+    ];
+
+    this.homeBgmTimer = setInterval(() => {
+      if (!GAME.bgmPlaying || !this.ctx || this.currentBgmType !== 'home') return;
+      const now = this.ctx.currentTime;
+      const step = currentStep % 64;
+      const bar = Math.floor(step / 16);
+
+      // 1. Warm Bouncy Kick (on beat 1 and 3: steps 0, 8, 16, 24, 32, 40, 48, 56)
+      if (step % 8 === 0) {
+        try {
+          const kOsc = this.ctx.createOscillator();
+          const kGain = this.ctx.createGain();
+          kOsc.frequency.setValueAtTime(120, now);
+          kOsc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
+          kGain.gain.setValueAtTime(0.20, now);
+          kGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          kOsc.connect(kGain);
+          kGain.connect(this.ctx.destination);
+          kOsc.start(now);
+          kOsc.stop(now + 0.08);
+        } catch(e) {}
+      }
+
+      // 2. Playful Snare / Handclap (on beat 2 and 4: steps 4, 12, 20, 28, 36, 44, 52, 60)
+      if (step % 8 === 4) {
+        try {
+          const sOsc = this.ctx.createOscillator();
+          const sGain = this.ctx.createGain();
+          sOsc.type = 'triangle';
+          sOsc.frequency.setValueAtTime(260, now);
+          sGain.gain.setValueAtTime(0.08, now);
+          sGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          sOsc.connect(sGain);
+          sGain.connect(this.ctx.destination);
+          sOsc.start(now);
+          sOsc.stop(now + 0.06);
+        } catch(e) {}
+      }
+
+      // 3. Crisp Shaker / Woodblock on off-beat 8ths (steps 2, 6, 10, 14...)
+      if (step % 4 === 2) {
+        try {
+          const hOsc = this.ctx.createOscillator();
+          const hGain = this.ctx.createGain();
+          hOsc.type = 'triangle';
+          hOsc.frequency.setValueAtTime(1600, now);
+          hGain.gain.setValueAtTime(0.025, now);
+          hGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
+          hOsc.connect(hGain);
+          hGain.connect(this.ctx.destination);
+          hOsc.start(now);
+          hOsc.stop(now + 0.025);
+        } catch(e) {}
+      }
+
+      // 4. Staccato Joyful Off-beat Chords (on steps 2, 6, 10, 14 of each bar)
+      if (step % 4 === 2) {
+        const chord = homeChords[bar];
+        if (chord) {
+          chord.forEach(f => {
+            try {
+              const cOsc = this.ctx.createOscillator();
+              const cGain = this.ctx.createGain();
+              cOsc.type = 'sine';
+              cOsc.frequency.setValueAtTime(f, now);
+              cGain.gain.setValueAtTime(0.035, now);
+              cGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+              cOsc.connect(cGain);
+              cGain.connect(this.ctx.destination);
+              cOsc.start(now);
+              cOsc.stop(now + 0.06);
+            } catch(e) {}
+          });
+        }
+      }
+
+      // 5. Walking Bass Synth
+      const bFreq = homeBassPatterns[step];
+      if (bFreq && bFreq > 0) {
+        try {
+          const bOsc = this.ctx.createOscillator();
+          const bGain = this.ctx.createGain();
+          bOsc.type = 'triangle';
+          bOsc.frequency.setValueAtTime(bFreq, now);
+          bGain.gain.setValueAtTime(0.11, now);
+          bGain.gain.exponentialRampToValueAtTime(0.01, now + stepDuration * 0.9);
+          bOsc.connect(bGain);
+          bGain.connect(this.ctx.destination);
+          bOsc.start(now);
+          bOsc.stop(now + stepDuration * 0.9);
+        } catch(e) {}
+      }
+
+      // 6. Marimba / Chime Lead Melody
+      const mFreq = homeLeadNotes[step];
+      if (mFreq && mFreq > 0) {
+        try {
+          const mOsc = this.ctx.createOscillator();
+          const mGain = this.ctx.createGain();
+          mOsc.type = 'sine';
+          mOsc.frequency.setValueAtTime(mFreq, now);
+          mGain.gain.setValueAtTime(0.068, now);
+          mGain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 1.4);
+          mOsc.connect(mGain);
+          mGain.connect(this.ctx.destination);
+          mOsc.start(now);
+          mOsc.stop(now + stepDuration * 1.4);
+        } catch(e) {}
+      }
+
+      currentStep++;
+    }, stepDuration * 1000);
+  }
+
+  stopHomeBgm() {
+    if (this.homeBgmTimer) {
+      clearInterval(this.homeBgmTimer);
+      this.homeBgmTimer = null;
+    }
+    if (this.currentBgmType === 'home') {
+      this.currentBgmType = null;
+      GAME.bgmPlaying = false;
+      const btn = document.getElementById('btn-bgm-toggle');
+      if (btn) btn.classList.remove('active');
+    }
+  }
+
+  startBattleBgm() {
+    if (!GAME.soundEnabled) return;
+    this.stopHomeBgm();
+    this.stopBattleBgm();
+    this.init();
+    if (!this.ctx) return;
+    this.currentBgmType = 'battle';
+    GAME.bgmPlaying = true;
+    const btn = document.getElementById('btn-bgm-toggle');
+    if (btn) btn.classList.add('active');
+
+    // 132 BPM arcade tournament synth battle track! (in-game battle sound preserved)
     const tempo = 132;
     const stepDuration = 60 / tempo / 4; // 16th note ~ 0.1136s
     let currentStep = 0;
@@ -3948,7 +4184,7 @@ class AudioEngine {
     ];
 
     this.bgmTimer = setInterval(() => {
-      if (!GAME.bgmPlaying || !this.ctx) return;
+      if (!GAME.bgmPlaying || !this.ctx || this.currentBgmType !== 'battle') return;
       const now = this.ctx.currentTime;
       const step = currentStep % 64;
 
@@ -4021,28 +4257,55 @@ class AudioEngine {
       currentStep++;
     }, stepDuration * 1000);
   }
+
   stopBattleBgm() {
     if (this.bgmTimer) {
       clearInterval(this.bgmTimer);
       this.bgmTimer = null;
     }
+    if (this.currentBgmType === 'battle') {
+      this.currentBgmType = null;
+      GAME.bgmPlaying = false;
+      const btn = document.getElementById('btn-bgm-toggle');
+      if (btn) btn.classList.remove('active');
+    }
+  }
+
+  stopAllBgm() {
+    if (this.bgmTimer) {
+      clearInterval(this.bgmTimer);
+      this.bgmTimer = null;
+    }
+    if (this.homeBgmTimer) {
+      clearInterval(this.homeBgmTimer);
+      this.homeBgmTimer = null;
+    }
+    this.currentBgmType = null;
     GAME.bgmPlaying = false;
     const btn = document.getElementById('btn-bgm-toggle');
     if (btn) btn.classList.remove('active');
   }
+
   stopAll() {
-    this.stopBattleBgm();
+    this.stopAllBgm();
     this.stopCelebrationVoice();
   }
+
   toggleBgm() {
     if (GAME.bgmPlaying) {
-      this.stopBattleBgm();
+      this.stopAllBgm();
     } else {
-      this.startBattleBgm();
+      const arenaScreen = document.getElementById('arena-screen');
+      const isArena = arenaScreen && arenaScreen.classList.contains('active');
+      if (isArena) {
+        this.startBattleBgm();
+      } else {
+        this.startHomeBgm();
+      }
     }
   }
 }
-const SFX = new AudioEngine();
+
 
 // ==========================================================================
 // ==========================================================================
@@ -4727,6 +4990,14 @@ function showScreen(screenId) {
     }
     GAME.isGameOver = true;
     closeVictoryModal();
+
+    // Play upbeat Home BGM when on menu/welcome/registration/leaderboard screens
+    if (GAME.soundEnabled && SFX.currentBgmType !== 'home') {
+      SFX.startHomeBgm();
+    }
+  } else {
+    // When entering arena, stop home BGM
+    SFX.stopHomeBgm();
   }
 
   document.querySelectorAll('.game-screen').forEach(scr => scr.classList.remove('active'));
@@ -4735,7 +5006,10 @@ function showScreen(screenId) {
     target.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  if (screenId === 'char-screen') renderCharacterGrids();
+  if (screenId === 'char-screen') {
+    renderCharacterGrids();
+    SFX.playChooseCharacterVoice();
+  }
 }
 
 function toggleLanguage() {
@@ -4834,6 +5108,7 @@ function renderCharacterGrids() {
 
 function confirmAndStartMatch() {
   SFX.click();
+  SFX.stopHomeBgm();
 
   GAME.ropeOffset = 0;
   GAME.isGameOver = false;
@@ -6529,6 +6804,22 @@ document.addEventListener('fullscreenchange', () => {
     }
   }
 });
+
+// User interaction audio unlock: starts Home BGM on first touch/click
+function handleFirstUserInteraction() {
+  SFX.init();
+  const arenaScreen = document.getElementById('arena-screen');
+  const isArena = arenaScreen && arenaScreen.classList.contains('active');
+  if (!isArena && !GAME.bgmPlaying && GAME.soundEnabled) {
+    SFX.startHomeBgm();
+  }
+  document.removeEventListener('click', handleFirstUserInteraction);
+  document.removeEventListener('touchstart', handleFirstUserInteraction);
+  document.removeEventListener('keydown', handleFirstUserInteraction);
+}
+document.addEventListener('click', handleFirstUserInteraction);
+document.addEventListener('touchstart', handleFirstUserInteraction);
+document.addEventListener('keydown', handleFirstUserInteraction);
 
 function handleUrlNavigation() {
   updateDisplayModeClass();
