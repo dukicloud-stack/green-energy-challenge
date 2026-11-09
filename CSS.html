@@ -668,6 +668,7 @@ button { font-family: inherit; }
   padding: 14px;
   margin: 18px auto;
   max-width: 900px;
+  box-sizing: border-box;
 }
 
 .ready-hero-card {
@@ -678,7 +679,8 @@ button { font-family: inherit; }
   border: 2px solid var(--slate-border);
   border-radius: 14px;
   padding: 8px 16px;
-  min-width: 190px;
+  min-width: 180px;
+  box-sizing: border-box;
 }
 
 .ready-hero-avatar { width: 65px; height: 75px; }
@@ -686,6 +688,23 @@ button { font-family: inherit; }
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.ready-vs-badge .vs-short-text {
+  display: none;
+}
+.ready-vs-badge .vs-full-text {
+  display: inline;
+}
+
+.char-actions-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 14px;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
@@ -2196,26 +2215,144 @@ body.kiosk-portrait-sim .character-grid-mini {
   gap: 6px !important;
 }
 
-body.kiosk-portrait-sim .arena-top-bar {
+body.kiosk-portrait-sim .char-ready-stage {
   display: flex !important;
   flex-direction: row !important;
-  flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: space-between !important;
-  gap: 5px !important;
+  gap: 6px !important;
+  width: 100% !important;
+  padding: 8px 10px !important;
+  margin: 10px 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+body.kiosk-portrait-sim .char-ready-stage .ready-hero-card {
+  min-width: 0 !important;
+  flex: 1 1 0 !important;
+  padding: 6px 8px !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .char-ready-stage .ready-hero-avatar {
+  width: 38px !important;
+  height: 38px !important;
+  flex-shrink: 0 !important;
+}
+
+body.kiosk-portrait-sim .char-ready-stage .ready-hero-card h4 {
+  font-size: 0.82rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+body.kiosk-portrait-sim .char-ready-stage .ready-vs-badge .vs-full-text {
+  display: none !important;
+}
+
+body.kiosk-portrait-sim .char-ready-stage .ready-vs-badge .vs-short-text {
+  display: inline-block !important;
+  font-size: 0.82rem !important;
+  font-weight: 900 !important;
+  color: var(--navy-deep) !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid var(--slate-border) !important;
+  padding: 4px 8px !important;
+  border-radius: var(--radius-full) !important;
+  white-space: nowrap !important;
+}
+
+body.kiosk-portrait-sim .char-actions-row {
+  display: flex !important;
+  flex-direction: column-reverse !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .char-actions-row .btn-start-tug {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 50px !important;
+  font-size: 1rem !important;
+  padding: 12px 18px !important;
+  border-radius: var(--radius-full) !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .char-actions-row .btn-secondary {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  font-size: 0.88rem !important;
+  padding: 10px 16px !important;
+  border-radius: var(--radius-full) !important;
+  box-sizing: border-box !important;
+}
+
+/* 2-Tier HUD Grid in Simulator */
+body.kiosk-portrait-sim .arena-top-bar {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6px !important;
   width: 100% !important;
   padding: 6px 8px !important;
   box-sizing: border-box !important;
 }
 
-body.kiosk-portrait-sim .arena-player-pill {
+body.kiosk-portrait-sim .arena-center-controls {
+  grid-column: 1 / -1 !important;
+  order: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  gap: 8px !important;
+  margin-bottom: 2px !important;
+}
+
+body.kiosk-portrait-sim .arena-center-controls .arena-round-pill {
+  padding: 5px 12px !important;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+}
+
+body.kiosk-portrait-sim .arena-center-controls .btn-arena-exit {
+  padding: 5px 12px !important;
+  font-size: 0.78rem !important;
+  height: 32px !important;
+}
+
+body.kiosk-portrait-sim .arena-player-pill.blue {
+  grid-column: 1 !important;
+  order: 2 !important;
+  width: 100% !important;
   min-width: 0 !important;
-  flex: 1 1 0 !important;
-  padding: 4px 8px !important;
+  padding: 6px 10px !important;
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
-  overflow: hidden !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
+}
+
+body.kiosk-portrait-sim .arena-player-pill.green {
+  grid-column: 2 !important;
+  order: 3 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 6px 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-sizing: border-box !important;
+  border-radius: 12px !important;
 }
 
 body.kiosk-portrait-sim .arena-player-pill > div:not(.arena-player-score) {
@@ -2224,26 +2361,41 @@ body.kiosk-portrait-sim .arena-player-pill > div:not(.arena-player-score) {
   overflow: hidden !important;
 }
 
+body.kiosk-portrait-sim .arena-player-pill.blue .arena-player-score {
+  margin-left: auto !important;
+}
+
+body.kiosk-portrait-sim .arena-player-pill.green .arena-player-score {
+  margin-right: 0 !important;
+}
+
 body.kiosk-portrait-sim .arena-player-name {
-  font-size: 0.82rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 800 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   line-height: 1.2 !important;
 }
 
+body.kiosk-portrait-sim .arena-player-role {
+  display: block !important;
+  font-size: 0.68rem !important;
+  color: var(--text-muted) !important;
+  line-height: 1 !important;
+}
+
 body.kiosk-portrait-sim .arena-player-score {
-  font-size: 1.2rem !important;
+  font-size: 1.3rem !important;
   font-weight: 900 !important;
   flex-shrink: 0 !important;
 }
 
 body.kiosk-portrait-sim .tug-battlefield-wrapper {
-  height: 110px !important;
-}
-
-body.kiosk-portrait-sim .arena-player-role {
-  display: none !important;
+  height: 100px !important;
+  width: 100% !important;
+  margin: 4px 0 !important;
+  border-radius: 14px !important;
 }
 
 body.kiosk-portrait-sim .reg-actions {
@@ -2620,17 +2772,84 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   }
 
   .char-ready-stage {
-    padding: 10px 12px !important;
-    margin: 10px 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
     width: 100% !important;
+    padding: 8px 10px !important;
+    margin: 10px 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .char-ready-stage .ready-hero-card {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    overflow: hidden !important;
     box-sizing: border-box !important;
   }
 
-  .btn-start-tug {
+  .char-ready-stage .ready-hero-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .char-ready-stage .ready-hero-card h4 {
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .char-ready-stage .ready-vs-badge .vs-full-text {
+    display: none !important;
+  }
+
+  .char-ready-stage .ready-vs-badge .vs-short-text {
+    display: inline-block !important;
+    font-size: 0.82rem !important;
+    font-weight: 900 !important;
+    color: var(--navy-deep) !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid var(--slate-border) !important;
+    padding: 4px 8px !important;
+    border-radius: var(--radius-full) !important;
+    white-space: nowrap !important;
+  }
+
+  .char-actions-row {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    align-items: stretch !important;
+    gap: 8px !important;
     width: 100% !important;
+    margin-top: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .char-actions-row .btn-start-tug {
+    width: 100% !important;
+    min-width: 0 !important;
     min-height: 50px !important;
     font-size: 1rem !important;
-    justify-content: center !important;
+    padding: 12px 18px !important;
+    border-radius: var(--radius-full) !important;
+    box-sizing: border-box !important;
+  }
+
+  .char-actions-row .btn-secondary {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    font-size: 0.88rem !important;
+    padding: 10px 16px !important;
+    border-radius: var(--radius-full) !important;
+    box-sizing: border-box !important;
   }
 
   /* ---------------- ARENA SCREEN (MOBILE) ---------------- */
@@ -2643,14 +2862,11 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     overflow-x: hidden !important;
   }
 
-  /* Responsive Arena Score Bar: Never overflows */
+  /* Responsive Arena Score Bar: 2-Tier HUD Grid */
   .arena-top-bar {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 5px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
     width: 100% !important;
     padding: 6px 8px !important;
     border-radius: 14px !important;
@@ -2659,20 +2875,60 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     box-sizing: border-box !important;
   }
 
-  .arena-player-role {
-    display: none !important;
+  .arena-center-controls {
+    grid-column: 1 / -1 !important;
+    order: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-bottom: 2px !important;
   }
 
-  .arena-player-pill {
-    min-width: 0 !important;
-    flex: 1 1 0 !important;
-    padding: 4px 8px !important;
-    border-radius: 12px !important;
+  .arena-center-controls .arena-round-pill {
+    padding: 5px 12px !important;
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    border-radius: 8px !important;
     border-width: 1.5px !important;
+  }
+
+  .arena-center-controls .btn-arena-exit {
+    padding: 5px 12px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    border-radius: 8px !important;
+    border-width: 1.5px !important;
+    height: 32px !important;
+  }
+
+  .arena-player-pill.blue {
+    grid-column: 1 !important;
+    order: 2 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 6px 10px !important;
     display: flex !important;
     align-items: center !important;
     gap: 6px !important;
-    overflow: hidden !important;
+    box-sizing: border-box !important;
+    border-radius: 12px !important;
+    border-width: 1.5px !important;
+  }
+
+  .arena-player-pill.green {
+    grid-column: 2 !important;
+    order: 3 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 6px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
+    border-radius: 12px !important;
+    border-width: 1.5px !important;
   }
 
   .arena-player-pill > div:not(.arena-player-score) {
@@ -2681,8 +2937,16 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     overflow: hidden !important;
   }
 
+  .arena-player-pill.blue .arena-player-score {
+    margin-left: auto !important;
+  }
+
+  .arena-player-pill.green .arena-player-score {
+    margin-right: 0 !important;
+  }
+
   .arena-player-name {
-    font-size: 0.82rem !important;
+    font-size: 0.85rem !important;
     font-weight: 800 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
@@ -2690,33 +2954,17 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     line-height: 1.2 !important;
   }
 
+  .arena-player-role {
+    display: block !important;
+    font-size: 0.68rem !important;
+    color: var(--text-muted) !important;
+    line-height: 1 !important;
+  }
+
   .arena-player-score {
-    font-size: 1.2rem !important;
+    font-size: 1.3rem !important;
     font-weight: 900 !important;
     flex-shrink: 0 !important;
-  }
-
-  .arena-center-controls {
-    display: flex !important;
-    gap: 4px !important;
-    flex-shrink: 0 !important;
-    align-items: center !important;
-  }
-
-  .arena-round-pill {
-    padding: 4px 8px !important;
-    font-size: 0.72rem !important;
-    font-weight: 800 !important;
-    border-radius: 8px !important;
-    border-width: 1.5px !important;
-  }
-
-  .btn-arena-exit {
-    padding: 4px 8px !important;
-    font-size: 0.72rem !important;
-    font-weight: 800 !important;
-    border-radius: 8px !important;
-    border-width: 1.5px !important;
   }
 
   /* Battlefield Rope on Mobile */
