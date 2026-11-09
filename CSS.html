@@ -2033,6 +2033,160 @@ body.kiosk-portrait .character-grid-mini {
   grid-template-columns: repeat(2, 1fr) !important;
 }
 
+/* ==========================================================================
+   40-INCH PORTRAIT MONITOR VIEW & SIMULATOR SYSTEM
+   Allows viewing and testing the 40" Portrait Kiosk layout on any device/monitor
+   ========================================================================== */
+
+/* Navbar Button Active State */
+#btn-portrait-toggle.active {
+  background: linear-gradient(135deg, #0284C7 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #38BDF8 !important;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6) !important;
+}
+
+/* Floating Banner when in 40" Portrait Monitor Mode */
+.portrait-sim-banner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 2px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  animation: bannerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-pill-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 900px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sim-badge {
+  background: linear-gradient(135deg, #0284C7 0%, #2563EB 100%);
+  color: #FFFFFF;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.45);
+}
+
+.sim-desc {
+  color: #E2E8F0;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.btn-exit-sim {
+  background: rgba(239, 68, 68, 0.18);
+  color: #FCA5A5;
+  border: 1.5px solid rgba(239, 68, 68, 0.5);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-exit-sim:hover {
+  background: #EF4444;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+/* 40-Inch Portrait Monitor Bezel & Frame when viewed on landscape/desktop */
+body.kiosk-portrait-sim {
+  background-color: #0B1120 !important;
+  background-image: radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.15) 0%, transparent 65%), radial-gradient(#1E293B 1.5px, transparent 1.5px) !important;
+  background-size: 100% 100%, 28px 28px !important;
+  min-height: 100vh !important;
+}
+
+body.kiosk-portrait-sim #app-container {
+  max-width: 560px !important;
+  width: 95vw !important;
+  min-height: calc(100vh - 70px) !important;
+  margin: 14px auto 30px !important;
+  padding: 14px 18px 22px !important;
+  background: #F8FAFC !important;
+  border-radius: 36px !important;
+  border: 10px solid #1E293B !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+  position: relative !important;
+  overflow-x: hidden !important;
+}
+
+/* Dual Column Ergonomics in Simulator */
+body.kiosk-portrait-sim .dual-questions-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+body.kiosk-portrait-sim .players-registration-container {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 14px !important;
+}
+
+body.kiosk-portrait-sim .char-select-columns {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+body.kiosk-portrait-sim .character-grid-mini {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 8px !important;
+}
+
+body.kiosk-portrait-sim .tug-battlefield-wrapper {
+  height: 180px !important;
+}
+
+body.kiosk-portrait-sim .victory-landscape-grid {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+}
+
+body.kiosk-portrait-sim .avatar-result-slot {
+  flex: 0 0 135px !important;
+  width: 135px !important;
+  padding: 12px 8px !important;
+}
+
+body.kiosk-portrait-sim .avatar-result-slot svg {
+  width: 95px !important;
+  height: 115px !important;
+}
+
+body.kiosk-portrait-sim .virtual-keyboard-drawer {
+  max-width: 560px !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(105%) !important;
+}
+
+body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
+  transform: translateX(-50%) translateY(0) !important;
+}
+
 /* Dual Result Status Pill */
 .result-status-pill {
   display: inline-flex;

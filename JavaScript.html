@@ -3353,15 +3353,78 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==========================================================================
-// 40-INCH PORTRAIT & KIOSK DISPLAY MANAGER
+// 40-INCH PORTRAIT & KIOSK DISPLAY MANAGER & SIMULATOR
 // Auto-detects portrait orientation (9:16) and supports ?portrait=1 URL param
 // ==========================================================================
 function updateDisplayModeClass() {
   const urlParams = new URLSearchParams(window.location.search);
   const forcePortrait = urlParams.get('portrait') === '1' || urlParams.get('kiosk') === 'portrait';
-  const isPortrait = forcePortrait || (window.innerHeight > window.innerWidth);
-  document.body.classList.toggle('kiosk-portrait', isPortrait);
-  document.body.classList.toggle('kiosk-landscape', !isPortrait);
+  const isRealPortrait = window.innerHeight > window.innerWidth;
+
+  if (forcePortrait || document.body.classList.contains('kiosk-portrait-sim')) {
+    document.body.classList.add('kiosk-portrait-sim');
+    document.body.classList.add('kiosk-portrait');
+    document.body.classList.remove('kiosk-landscape');
+    const btn = document.getElementById('btn-portrait-toggle');
+    if (btn) {
+      btn.classList.add('active');
+      btn.title = 'Kembali ke Monitor Standar (Landscape)';
+    }
+
+    let banner = document.getElementById('portrait-sim-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'portrait-sim-banner';
+      banner.className = 'portrait-sim-banner';
+      banner.innerHTML = `
+        <div class="sim-pill-content">
+          <span class="sim-badge">🖥️ MONITOR POTRAIT 40"</span>
+          <span class="sim-desc">Mode Simulasi Layar Vertikal 9:16 (1080×1920)</span>
+          <button type="button" class="btn-exit-sim" onclick="togglePortraitMode()" title="Kembali ke Mode Normal">✕ Keluar Preview</button>
+        </div>
+      `;
+      document.body.prepend(banner);
+    }
+    banner.style.display = 'flex';
+  } else {
+    document.body.classList.toggle('kiosk-portrait', isRealPortrait);
+    document.body.classList.toggle('kiosk-landscape', !isRealPortrait);
+    const banner = document.getElementById('portrait-sim-banner');
+    if (banner) banner.style.display = 'none';
+    const btn = document.getElementById('btn-portrait-toggle');
+    if (btn) {
+      btn.classList.remove('active');
+      btn.title = 'Lihat Tampilan Monitor Potrait 40" (9:16)';
+    }
+  }
+}
+
+function togglePortraitMode() {
+  try { if (typeof SFX !== 'undefined' && SFX) SFX.click(); } catch(e) {}
+
+  const currentlySim = document.body.classList.contains('kiosk-portrait-sim');
+  const willBeSim = !currentlySim;
+
+  if (willBeSim) {
+    document.body.classList.add('kiosk-portrait-sim');
+  } else {
+    document.body.classList.remove('kiosk-portrait-sim');
+  }
+
+  // Update URL search param ?portrait=1 smoothly without reload
+  try {
+    const url = new URL(window.location.href);
+    if (willBeSim) {
+      url.searchParams.set('portrait', '1');
+    } else {
+      url.searchParams.delete('portrait');
+      url.searchParams.delete('kiosk');
+    }
+    window.history.replaceState({}, '', url.toString());
+  } catch(e) {}
+
+  updateDisplayModeClass();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 window.addEventListener('resize', updateDisplayModeClass);
@@ -3440,6 +3503,7 @@ if (typeof window !== 'undefined') {
   window.retryVoiceInput = retryVoiceInput;
   window.applyVoiceName = applyVoiceName;
   window.triggerVoiceFromKeyboard = triggerVoiceFromKeyboard;
+  window.togglePortraitMode = togglePortraitMode;
 }
 
 if (document.readyState === 'loading') {
