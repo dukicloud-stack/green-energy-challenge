@@ -1535,7 +1535,7 @@ button { font-family: inherit; }
    Two-Player Simultaneous Duel: Player 1 (Left) & Player 2 (Right) Side-by-Side
    ========================================================================== */
 
-@media (orientation: portrait), (max-aspect-ratio: 13/16) {
+@media (min-width: 768px) and (orientation: portrait), (min-width: 768px) and (max-aspect-ratio: 13/16) {
   /* Kiosk Viewport Sizing & Touch Ergonomics */
   html, body {
     min-height: 100vh;
@@ -2023,30 +2023,34 @@ button { font-family: inherit; }
   }
 }
 
-/* Fallback class-based styling for kiosk shells (body.kiosk-portrait) */
-body.kiosk-portrait .dual-questions-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 16px !important;
-}
-body.kiosk-portrait .players-registration-container {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 20px !important;
-}
-body.kiosk-portrait .char-select-columns {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 18px !important;
-}
-body.kiosk-portrait .character-grid-mini {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
+/* ==========================================================================
+   KIOSK DUAL-COLUMN FOR LARGE 40" DISPLAYS (>= 768px)
+   ========================================================================== */
+@media (min-width: 768px) {
+  body.kiosk-portrait .dual-questions-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  body.kiosk-portrait .players-registration-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+  }
+  body.kiosk-portrait .char-select-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 18px !important;
+  }
+  body.kiosk-portrait .character-grid-mini {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
 /* ==========================================================================
-   40-INCH PORTRAIT MONITOR VIEW & SIMULATOR SYSTEM
-   Allows viewing and testing the 40" Portrait Kiosk layout on any device/monitor
+   40-INCH PORTRAIT & MOBILE PHONE SIMULATOR SYSTEM
+   Allows viewing and testing the clean mobile / vertical layout on desktop
    ========================================================================== */
 
 /* Navbar Button Active State */
@@ -2057,7 +2061,7 @@ body.kiosk-portrait .character-grid-mini {
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.6) !important;
 }
 
-/* Floating Banner when in 40" Portrait Monitor Mode */
+/* Floating Banner when in Portrait Simulator Mode */
 .portrait-sim-banner {
   position: sticky;
   top: 0;
@@ -2119,83 +2123,858 @@ body.kiosk-portrait .character-grid-mini {
   transform: translateY(-1px);
 }
 
-/* 40-Inch Portrait Monitor Bezel & Frame when viewed on landscape/desktop */
+/* Smartphone / Kiosk Portrait Frame on Desktop */
 body.kiosk-portrait-sim {
   background-color: #0B1120 !important;
   background-image: radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.15) 0%, transparent 65%), radial-gradient(#1E293B 1.5px, transparent 1.5px) !important;
   background-size: 100% 100%, 28px 28px !important;
   min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
 body.kiosk-portrait-sim #app-container {
-  max-width: 560px !important;
+  max-width: 440px !important;
   width: 95vw !important;
-  min-height: calc(100vh - 70px) !important;
-  margin: 14px auto 30px !important;
-  padding: 14px 18px 22px !important;
+  min-height: calc(100vh - 60px) !important;
+  margin: 10px auto 20px !important;
+  padding: 10px 14px 18px !important;
   background: #F8FAFC !important;
   border-radius: 36px !important;
   border: 10px solid #1E293B !important;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 25px 70px rgba(0, 0, 0, 0.75) !important;
   position: relative !important;
   overflow-x: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  box-sizing: border-box !important;
 }
 
-/* Dual Column Ergonomics in Simulator */
-body.kiosk-portrait-sim .dual-questions-grid {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+/* Simulator: Apply Clean Mobile Rules */
+body.kiosk-portrait-sim .players-registration-container {
+  display: flex !important;
+  flex-direction: column !important;
   gap: 12px !important;
 }
 
-body.kiosk-portrait-sim .players-registration-container {
+body.kiosk-portrait-sim .dual-questions-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+body.kiosk-portrait-sim .player-question-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 10px 12px 12px !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .q-question-text {
+  font-size: 0.88rem !important;
+  min-height: auto !important;
+  margin: 4px 0 8px !important;
+  line-height: 1.35 !important;
+}
+
+body.kiosk-portrait-sim .q-answers-container {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  gap: 14px !important;
+  gap: 6px !important;
+}
+
+body.kiosk-portrait-sim .btn-dual-answer {
+  min-height: 46px !important;
+  padding: 6px 8px !important;
+  font-size: 0.78rem !important;
+  line-height: 1.25 !important;
 }
 
 body.kiosk-portrait-sim .char-select-columns {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  display: flex !important;
+  flex-direction: column !important;
   gap: 12px !important;
 }
 
 body.kiosk-portrait-sim .character-grid-mini {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 8px !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 6px !important;
+}
+
+body.kiosk-portrait-sim .arena-top-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 5px !important;
+  width: 100% !important;
+  padding: 6px 8px !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .arena-player-pill {
+  min-width: 0 !important;
+  flex: 1 1 0 !important;
+  padding: 4px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  overflow: hidden !important;
+}
+
+body.kiosk-portrait-sim .arena-player-pill > div:not(.arena-player-score) {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+
+body.kiosk-portrait-sim .arena-player-name {
+  font-size: 0.82rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.2 !important;
+}
+
+body.kiosk-portrait-sim .arena-player-score {
+  font-size: 1.2rem !important;
+  font-weight: 900 !important;
+  flex-shrink: 0 !important;
 }
 
 body.kiosk-portrait-sim .tug-battlefield-wrapper {
-  height: 180px !important;
+  height: 110px !important;
 }
 
-body.kiosk-portrait-sim .victory-landscape-grid {
+body.kiosk-portrait-sim .arena-player-role {
+  display: none !important;
+}
+
+body.kiosk-portrait-sim .reg-actions {
   display: flex !important;
-  flex-direction: row !important;
-  align-items: stretch !important;
-  gap: 10px !important;
+  flex-direction: column-reverse !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 6px !important;
 }
 
-body.kiosk-portrait-sim .avatar-result-slot {
-  flex: 0 0 135px !important;
-  width: 135px !important;
-  padding: 12px 8px !important;
+body.kiosk-portrait-sim .reg-actions .btn-primary {
+  width: 100% !important;
+  min-height: 50px !important;
+  font-size: 1rem !important;
+  justify-content: center !important;
 }
 
-body.kiosk-portrait-sim .avatar-result-slot svg {
-  width: 95px !important;
-  height: 115px !important;
+body.kiosk-portrait-sim .reg-actions .btn-secondary {
+  width: 100% !important;
+  min-height: 42px !important;
+  font-size: 0.88rem !important;
+  justify-content: center !important;
 }
 
 body.kiosk-portrait-sim .virtual-keyboard-drawer {
-  max-width: 560px !important;
+  max-width: 440px !important;
   left: 50% !important;
   transform: translateX(-50%) translateY(105%) !important;
 }
 
 body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   transform: translateX(-50%) translateY(0) !important;
+}
+
+/* ==========================================================================
+   MOBILE & SMARTPHONE SYSTEM (< 768px)
+   "Versi HP yang Rapi, Ergonomis, & User-Friendly"
+   Eliminates all horizontal overflow, scrunched inputs, and giant white voids
+   ========================================================================== */
+@media (max-width: 767px), (max-device-width: 767px) {
+  html, body {
+    min-height: 100vh;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    background-size: 20px 20px !important;
+  }
+
+  #app-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100vh !important;
+    padding: 8px 12px 18px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Compact Top Navbar on Mobile */
+  .top-navbar {
+    padding: 8px 12px !important;
+    margin: 2px 0 8px !important;
+    border-radius: 14px !important;
+    border-width: 1.5px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .kce-brand-logo {
+    height: 30px !important;
+  }
+
+  .nav-actions {
+    gap: 5px !important;
+  }
+
+  .nav-btn {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 0.78rem !important;
+    border-radius: 8px !important;
+    border-width: 1.5px !important;
+  }
+
+  .nav-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* Screens general */
+  .game-screen {
+    padding: 4px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ---------------- WELCOME SCREEN (MOBILE) ---------------- */
+  #welcome-screen.active {
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .welcome-hero {
+    padding: 20px 14px 18px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 6px 20px rgba(47, 64, 126, 0.08) !important;
+  }
+
+  .hero-pill-badge {
+    font-size: 0.72rem !important;
+    padding: 4px 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .hero-pill-badge img {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .hero-title {
+    font-size: 1.75rem !important;
+    line-height: 1.2 !important;
+    margin: 4px 0 8px !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.86rem !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    margin: 0 auto 10px !important;
+  }
+
+  .kce-tagline-img {
+    height: 38px !important;
+    margin: 4px auto 12px !important;
+  }
+
+  .welcome-preview-stage {
+    max-width: 100% !important;
+    gap: 4px !important;
+    margin: 4px auto 16px !important;
+    align-items: flex-end !important;
+  }
+
+  .preview-char-box {
+    width: 90px !important;
+    height: 105px !important;
+  }
+
+  .preview-rope-box {
+    height: 26px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .preview-vs-bubble {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 0.85rem !important;
+    border-width: 2px !important;
+  }
+
+  .btn-cta-main {
+    min-height: 52px !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    padding: 12px 20px !important;
+    width: 100% !important;
+    border-radius: var(--radius-full) !important;
+    box-shadow: 0 6px 20px rgba(67, 117, 189, 0.3) !important;
+  }
+
+  .welcome-hero .btn-secondary {
+    min-height: 44px !important;
+    font-size: 0.88rem !important;
+    padding: 10px 16px !important;
+    width: 100% !important;
+    border-radius: var(--radius-full) !important;
+    margin-top: 8px !important;
+  }
+
+  /* ---------------- REGISTRATION SCREEN (MOBILE) ---------------- */
+  #reg-screen {
+    min-height: auto !important;
+    padding: 4px 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  .reg-screen-inner {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .reg-header {
+    margin-bottom: 12px !important;
+    text-align: center !important;
+  }
+
+  .reg-header h2 {
+    font-size: 1.55rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .reg-header p {
+    font-size: 0.84rem !important;
+    line-height: 1.4 !important;
+    margin: 2px 0 10px !important;
+  }
+
+  /* Stacked Player 1 & Player 2 on Mobile */
+  .players-registration-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-bottom: 14px !important;
+  }
+
+  .player-card-panel {
+    width: 100% !important;
+    padding: 14px 14px 16px !important;
+    border-radius: 16px !important;
+    border-width: 2px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .player-card-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 8px !important;
+  }
+
+  .player-card-header h3 {
+    font-size: 1.15rem !important;
+    margin: 0 !important;
+  }
+
+  .player-card-panel .card-team-pill,
+  .player-card-panel .team-badge-tag {
+    font-size: 0.75rem !important;
+    padding: 3px 10px !important;
+  }
+
+  .player-card-panel .form-group label {
+    font-size: 0.82rem !important;
+    margin-bottom: 6px !important;
+    font-weight: 800 !important;
+  }
+
+  /* Full-width touch input wrapper */
+  .input-touch-wrapper {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 4px 6px 4px 12px !important;
+    border-radius: 12px !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
+  }
+
+  .input-touch-wrapper input {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    font-size: 1rem !important;
+    height: 44px !important;
+    padding: 6px 4px !important;
+    color: var(--navy-deep) !important;
+  }
+
+  .input-touch-actions {
+    display: flex !important;
+    gap: 5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .btn-touch-action {
+    padding: 7px 10px !important;
+    font-size: 0.76rem !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+  }
+
+  .reg-actions {
+    display: flex !important;
+    flex-direction: column-reverse !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  .reg-actions .btn-primary {
+    width: 100% !important;
+    min-height: 50px !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    padding: 0 18px !important;
+    border-radius: var(--radius-full) !important;
+    justify-content: center !important;
+  }
+
+  .reg-actions .btn-secondary {
+    width: 100% !important;
+    min-height: 42px !important;
+    font-size: 0.88rem !important;
+    padding: 0 16px !important;
+    border-radius: var(--radius-full) !important;
+    justify-content: center !important;
+  }
+
+  /* ---------------- CHARACTER SELECT SCREEN (MOBILE) ---------------- */
+  #char-screen.active {
+    width: 100% !important;
+    padding: 4px 0 !important;
+  }
+
+  .char-select-columns {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .char-select-column {
+    width: 100% !important;
+    padding: 12px 10px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .char-column-header h3 {
+    font-size: 0.95rem !important;
+  }
+
+  .character-grid-mini {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .char-card-mini {
+    padding: 6px 3px !important;
+    border-radius: 10px !important;
+  }
+
+  .avatar-mini-box {
+    height: 58px !important;
+  }
+
+  .char-card-name {
+    font-size: 0.72rem !important;
+  }
+
+  .char-ready-stage {
+    padding: 10px 12px !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .btn-start-tug {
+    width: 100% !important;
+    min-height: 50px !important;
+    font-size: 1rem !important;
+    justify-content: center !important;
+  }
+
+  /* ---------------- ARENA SCREEN (MOBILE) ---------------- */
+  #arena-screen.active {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 8px !important;
+    padding: 4px 0 !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Responsive Arena Score Bar: Never overflows */
+  .arena-top-bar {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 5px !important;
+    width: 100% !important;
+    padding: 6px 8px !important;
+    border-radius: 14px !important;
+    border-width: 1.5px !important;
+    margin-bottom: 4px !important;
+    box-sizing: border-box !important;
+  }
+
+  .arena-player-role {
+    display: none !important;
+  }
+
+  .arena-player-pill {
+    min-width: 0 !important;
+    flex: 1 1 0 !important;
+    padding: 4px 8px !important;
+    border-radius: 12px !important;
+    border-width: 1.5px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    overflow: hidden !important;
+  }
+
+  .arena-player-pill > div:not(.arena-player-score) {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .arena-player-name {
+    font-size: 0.82rem !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
+  }
+
+  .arena-player-score {
+    font-size: 1.2rem !important;
+    font-weight: 900 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .arena-center-controls {
+    display: flex !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+    align-items: center !important;
+  }
+
+  .arena-round-pill {
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    border-radius: 8px !important;
+    border-width: 1.5px !important;
+  }
+
+  .btn-arena-exit {
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    border-radius: 8px !important;
+    border-width: 1.5px !important;
+  }
+
+  /* Battlefield Rope on Mobile */
+  .tug-battlefield-wrapper {
+    height: 110px !important;
+    width: 100% !important;
+    margin: 4px 0 !important;
+    border-radius: 14px !important;
+    border-width: 1.5px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .tug-battlefield-svg {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Stacked Dual Questions on Mobile: Zero Horizontal Cutoff */
+  .dual-questions-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .player-question-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 12px 12px !important;
+    border-radius: 16px !important;
+    border-width: 2px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 4px 14px rgba(47, 64, 126, 0.06) !important;
+  }
+
+  .q-card-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 4px !important;
+  }
+
+  .q-player-badge {
+    font-size: 0.75rem !important;
+    padding: 3px 8px !important;
+    font-weight: 800 !important;
+  }
+
+  .q-timer-badge {
+    font-size: 0.78rem !important;
+    font-weight: 900 !important;
+    padding: 3px 8px !important;
+  }
+
+  .q-question-text {
+    font-size: 0.88rem !important;
+    line-height: 1.35 !important;
+    font-weight: 800 !important;
+    margin: 4px 0 8px !important;
+    min-height: auto !important;
+  }
+
+  .q-answers-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .btn-dual-answer {
+    min-height: 46px !important;
+    padding: 6px 8px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.25 !important;
+    border-radius: 10px !important;
+    border-width: 1.5px !important;
+    gap: 6px !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+  }
+
+  .dual-ans-letter {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 0.75rem !important;
+    font-weight: 900 !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* ---------------- VICTORY MODAL (MOBILE) ---------------- */
+  .celebration-box {
+    width: 95vw !important;
+    max-width: 480px !important;
+    padding: 16px 12px 18px !important;
+    border-radius: 20px !important;
+    max-height: 94vh !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  .victory-header-banner h2 {
+    font-size: 1.45rem !important;
+  }
+
+  .victory-header-banner p {
+    font-size: 0.82rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .victory-landscape-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .avatar-result-slot {
+    flex: 0 0 85px !important;
+    width: 85px !important;
+    padding: 6px 4px !important;
+    border-radius: 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .avatar-result-slot svg {
+    width: 65px !important;
+    height: 85px !important;
+  }
+
+  .avatar-result-slot .slot-player-title {
+    font-size: 0.72rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .victory-center-hub {
+    flex: 1 1 auto !important;
+    padding: 10px 8px !important;
+    border-radius: 14px !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  .match-stats-grid {
+    gap: 6px !important;
+  }
+
+  .match-metric-card {
+    padding: 8px 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .match-metric-card h5 {
+    font-size: 0.72rem !important;
+  }
+
+  .match-metric-card p {
+    font-size: 1.15rem !important;
+  }
+
+  .victory-actions-row .btn-start-tug {
+    min-height: 48px !important;
+    font-size: 0.98rem !important;
+  }
+
+  .victory-actions-secondary-row .btn-secondary {
+    min-height: 42px !important;
+    font-size: 0.82rem !important;
+    padding: 6px 10px !important;
+  }
+
+  /* ---------------- TOUCH KEYBOARD DRAWER (MOBILE) ---------------- */
+  .virtual-keyboard-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    transform: translateY(105%) !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 10px 8px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .virtual-keyboard-drawer.active {
+    transform: translateY(0) !important;
+  }
+
+  .kbd-header-bar {
+    padding: 0 4px 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .kbd-target-indicator {
+    font-size: 0.85rem !important;
+  }
+
+  .btn-kbd-header-action {
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
+  .btn-kbd-header-close {
+    padding: 5px 12px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .kbd-rows-wrapper {
+    gap: 6px !important;
+  }
+
+  .kbd-row {
+    gap: 4px !important;
+  }
+
+  .kbd-key {
+    height: 42px !important;
+    font-size: 1.1rem !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 0 #0F172A !important;
+  }
+
+  .kbd-key.key-wide {
+    font-size: 0.78rem !important;
+  }
+
+  .kbd-key.key-action-next {
+    font-size: 0.8rem !important;
+  }
+
+  /* Footer on Mobile */
+  .app-footer {
+    padding: 10px 12px 6px !important;
+    margin-top: auto !important;
+  }
+
+  .footer-line {
+    font-size: 0.74rem !important;
+  }
+
+  .footer-tagline {
+    font-size: 0.7rem !important;
+  }
 }
 
 /* Dual Result Status Pill */
@@ -3290,7 +4069,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
           <span class="team-dot blue" style="width:14px;height:14px;"></span>
           <div>
             <div class="arena-player-name" id="arena-p1-name">Player 1</div>
-            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 1</div>
+            <div class="arena-player-role" style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 1</div>
           </div>
           <div class="arena-player-score" id="arena-p1-score" style="margin-left:auto;">0</div>
         </div>
@@ -3308,7 +4087,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
           <div class="arena-player-score" id="arena-p2-score">0</div>
           <div style="text-align:right; margin-left:auto;">
             <div class="arena-player-name" id="arena-p2-name">Player 2</div>
-            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 2</div>
+            <div class="arena-player-role" style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">Player 2</div>
           </div>
           <span class="team-dot green" style="width:14px;height:14px;"></span>
         </div>
