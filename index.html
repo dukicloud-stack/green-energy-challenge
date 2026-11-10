@@ -892,16 +892,18 @@ button { font-family: inherit; }
 
 .q-answers-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btn-dual-answer {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border: 2px solid var(--slate-border);
   border-radius: 12px;
   background: #FFFFFF;
@@ -911,6 +913,10 @@ button { font-family: inherit; }
   text-align: left;
   cursor: pointer;
   transition: var(--transition-fast);
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .btn-dual-answer:hover:not(:disabled) {
@@ -935,7 +941,16 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  flex: none;
+  flex: 0 0 30px;
+}
+
+.dual-ans-text {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
+  hyphens: auto !important;
+  line-height: 1.35 !important;
 }
 
 .btn-dual-answer.correct {
@@ -991,16 +1006,16 @@ button { font-family: inherit; }
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  padding: 8px 12px;
-  width: min(920px, 98vw);
-  max-width: 940px;
+  padding: 8px 10px;
+  width: min(480px, 94vw);
+  max-width: 480px;
   max-height: 96vh;
   text-align: center;
   margin: auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .celebration-box.blue-theme,
@@ -1013,14 +1028,14 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
   text-align: center;
   margin-bottom: 2px;
 }
 
 .victory-trophy-badge {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   flex-shrink: 0;
   filter: drop-shadow(0 4px 12px rgba(245, 158, 11, 0.4));
 }
@@ -1037,7 +1052,7 @@ button { font-family: inherit; }
 }
 
 .victory-title-wrap h2 {
-  font-size: 2.1rem;
+  font-size: 1.85rem;
   font-weight: 900;
   line-height: 1.15;
   margin: 0;
@@ -1051,72 +1066,82 @@ button { font-family: inherit; }
 }
 
 .victory-title-wrap p {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: #E2E8F0;
-  margin: 4px 0 0;
+  margin: 3px 0 0;
   font-weight: 600;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* 3-Column Landscape Layout (Winner Left | Center Hub | Loser Right) */
-.victory-landscape-grid {
+/* Portrait Flow: Dual Podium Top + Stats Hub Below */
+.victory-portrait-grid {
   display: flex;
-  justify-content: center;
-  align-items: stretch;
-  gap: 16px;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dual Podium Row: Player 1 (Left) & Player 2 (Right) Side-by-Side */
+.victory-podium-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   width: 100%;
   box-sizing: border-box;
 }
 
 /* Character Slots */
 .avatar-result-slot {
-  flex: 0 0 190px;
-  width: 190px;
   background: #FFFFFF;
-  border: 2.5px solid var(--slate-border);
-  border-radius: 20px;
+  border: 2px solid var(--slate-border);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 10px 14px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
-  min-height: 280px;
+  padding: 10px 8px 12px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  min-height: 180px;
   box-sizing: border-box;
 }
 
 .avatar-result-slot.winner-card-slot {
-  background: #FFFFFF;
-  border: 3px solid var(--blue-primary);
-  box-shadow: 0 12px 36px rgba(2, 132, 199, 0.35);
+  border: 2.5px solid var(--blue-primary);
+  box-shadow: 0 10px 28px rgba(2, 132, 199, 0.35);
 }
 .celebration-box.blue-theme .avatar-result-slot.winner-card-slot {
-  background: #FFFFFF;
   border-color: var(--blue-primary);
-  box-shadow: 0 12px 36px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 10px 28px rgba(2, 132, 199, 0.35);
 }
 .celebration-box.green-theme .avatar-result-slot.winner-card-slot {
-  background: #FFFFFF;
   border-color: var(--green-energy);
-  box-shadow: 0 12px 36px rgba(16, 185, 129, 0.35);
+  box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
 }
 
 .avatar-result-slot.loser-card-slot {
-  background: #FFFFFF;
-  border: 2.5px solid #CBD5E1;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  border: 2px solid #CBD5E1;
+  opacity: 0.92;
+}
+
+.avatar-result-svg-wrap {
+  height: 105px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .avatar-result-slot svg {
   width: auto;
   max-width: 100%;
-  height: 155px;
+  height: 100px;
   display: block;
   margin: 2px auto;
 }
 
 .slot-player-title {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 800;
   color: var(--navy-deep);
   text-align: center;
@@ -1131,14 +1156,14 @@ button { font-family: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 18px;
+  padding: 4px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 900;
   color: #FFFFFF;
   white-space: nowrap;
-  box-shadow: 0 3px 8px rgba(20, 41, 74, 0.15);
-  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(20, 41, 74, 0.15);
+  border: 1.5px solid #FFFFFF;
   margin-top: 4px;
 }
 
@@ -1156,18 +1181,17 @@ button { font-family: inherit; }
 
 /* Center Hub */
 .victory-center-hub {
-  flex: 1 1 420px;
-  max-width: 460px;
-  min-width: 300px;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 14px;
+  gap: 10px;
   background: #FFFFFF;
   border: 2px solid #E2E8F0;
-  border-radius: 22px;
-  padding: 18px 20px 20px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  border-radius: 20px;
+  padding: 14px 14px 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   animation: hubSoftEnter 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -1935,56 +1959,67 @@ button { font-family: inherit; }
 
   /* ---------------- VICTORY MODAL (PORTRAIT 40") ---------------- */
   .celebration-box {
-    max-width: 980px !important;
-    width: 96vw !important;
+    max-width: 580px !important;
+    width: min(580px, 94vw) !important;
     max-height: 94vh !important;
-    padding: 26px 22px !important;
+    padding: 22px 18px !important;
     border-radius: 28px !important;
-    gap: 16px;
+    gap: 14px !important;
   }
   .victory-header-banner {
-    margin-bottom: 10px;
-    gap: 16px;
+    margin-bottom: 8px !important;
+    gap: 14px !important;
   }
   .victory-trophy-badge {
-    width: 58px;
-    height: 58px;
+    width: 54px !important;
+    height: 54px !important;
   }
   .victory-title-wrap h2 {
-    font-size: 2.4rem;
+    font-size: 2.2rem !important;
   }
   .victory-title-wrap p {
-    font-size: 1.15rem;
-  }
-  .victory-landscape-grid {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    align-items: stretch !important;
-    gap: 16px !important;
-  }
-  .avatar-result-slot {
-    flex: 0 0 210px !important;
-    width: 210px !important;
-    min-height: 310px !important;
-    padding: 16px 12px 18px !important;
-    border-radius: 22px !important;
-  }
-  .avatar-result-slot svg {
-    height: 175px !important;
-  }
-  .slot-player-title {
     font-size: 1.05rem !important;
   }
-  .result-stamp {
+  .victory-portrait-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .victory-podium-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .avatar-result-slot {
+    width: 100% !important;
+    min-height: 220px !important;
+    padding: 14px 12px 16px !important;
+    border-radius: 22px !important;
+  }
+  .avatar-result-svg-wrap {
+    height: 135px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .avatar-result-slot svg {
+    height: 130px !important;
+  }
+  .slot-player-title {
     font-size: 0.95rem !important;
-    padding: 6px 18px !important;
+  }
+  .result-stamp {
+    font-size: 0.88rem !important;
+    padding: 5px 16px !important;
   }
   .victory-center-hub {
-    flex: 1 1 360px !important;
-    padding: 20px 20px 22px !important;
+    width: 100% !important;
+    padding: 16px 18px 20px !important;
     border-radius: 24px !important;
-    gap: 16px !important;
+    gap: 12px !important;
   }
   .match-stats-grid {
     gap: 10px;
@@ -2199,19 +2234,30 @@ body.kiosk-portrait-sim .q-question-text {
   min-height: auto !important;
   margin: 4px 0 8px !important;
   line-height: 1.35 !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
 }
 
 body.kiosk-portrait-sim .q-answers-container {
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 6px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 body.kiosk-portrait-sim .btn-dual-answer {
-  min-height: 46px !important;
-  padding: 6px 8px !important;
-  font-size: 0.78rem !important;
-  line-height: 1.25 !important;
+  min-height: 44px !important;
+  padding: 8px 12px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body.kiosk-portrait-sim .dual-ans-text {
+  font-size: 0.82rem !important;
+  line-height: 1.3 !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere !important;
 }
 
 body.kiosk-portrait-sim .char-select-columns {
@@ -2601,7 +2647,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   }
 
   /* ---------------- REGISTRATION SCREEN (MOBILE) ---------------- */
-  #reg-screen {
+  #reg-screen.active {
     min-height: auto !important;
     padding: 4px 0 !important;
     margin: 0 !important;
@@ -3038,89 +3084,164 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     font-weight: 800 !important;
     margin: 4px 0 8px !important;
     min-height: auto !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
   }
 
   .q-answers-container {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 7px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
   .btn-dual-answer {
     min-height: 46px !important;
-    padding: 6px 8px !important;
-    font-size: 0.78rem !important;
-    line-height: 1.25 !important;
+    padding: 8px 12px !important;
     border-radius: 10px !important;
     border-width: 1.5px !important;
-    gap: 6px !important;
+    gap: 8px !important;
     text-align: left !important;
     box-sizing: border-box !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .dual-ans-letter {
-    width: 22px !important;
-    height: 22px !important;
-    font-size: 0.75rem !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.78rem !important;
     font-weight: 900 !important;
     border-radius: 6px !important;
-    flex-shrink: 0 !important;
+    flex: 0 0 24px !important;
   }
 
-  /* ---------------- VICTORY MODAL (MOBILE) ---------------- */
+  .dual-ans-text {
+    font-size: 0.85rem !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  /* ---------------- VICTORY MODAL (MOBILE PORTRAIT) ---------------- */
   .celebration-box {
-    width: 95vw !important;
-    max-width: 480px !important;
-    padding: 16px 12px 18px !important;
+    width: min(440px, 94vw) !important;
+    max-width: 440px !important;
+    padding: 14px 10px 16px !important;
     border-radius: 20px !important;
     max-height: 94vh !important;
     overflow-y: auto !important;
     box-sizing: border-box !important;
+    gap: 10px !important;
+  }
+
+  .victory-header-banner {
+    gap: 10px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .victory-trophy-badge {
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .victory-header-banner h2 {
-    font-size: 1.45rem !important;
+    font-size: 1.55rem !important;
+    line-height: 1.15 !important;
   }
 
   .victory-header-banner p {
-    font-size: 0.82rem !important;
-    margin-bottom: 8px !important;
+    font-size: 0.8rem !important;
+    margin: 2px 0 0 !important;
   }
 
-  .victory-landscape-grid {
+  .victory-portrait-grid {
     display: flex !important;
-    flex-direction: row !important;
-    align-items: stretch !important;
-    gap: 6px !important;
-    margin-bottom: 10px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .victory-podium-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
   }
 
   .avatar-result-slot {
-    flex: 0 0 85px !important;
-    width: 85px !important;
-    padding: 6px 4px !important;
-    border-radius: 14px !important;
+    width: 100% !important;
+    min-height: 175px !important;
+    padding: 8px 6px 10px !important;
+    border-radius: 16px !important;
     box-sizing: border-box !important;
+  }
+
+  .avatar-result-svg-wrap {
+    height: 100px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .avatar-result-slot svg {
-    width: 65px !important;
-    height: 85px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    height: 95px !important;
   }
 
   .avatar-result-slot .slot-player-title {
-    font-size: 0.72rem !important;
-    margin-bottom: 4px !important;
+    font-size: 0.78rem !important;
+    margin-bottom: 2px !important;
+  }
+
+  .result-stamp {
+    font-size: 0.74rem !important;
+    padding: 3px 10px !important;
   }
 
   .victory-center-hub {
-    flex: 1 1 auto !important;
-    padding: 10px 8px !important;
-    border-radius: 14px !important;
+    width: 100% !important;
+    padding: 12px 10px 14px !important;
+    border-radius: 18px !important;
     gap: 8px !important;
     box-sizing: border-box !important;
+  }
+
+  .match-stats-grid-2x2 {
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .match-metric-card {
+    padding: 6px 8px !important;
+    border-radius: 10px !important;
+  }
+
+  .match-metric-card h5 {
+    font-size: 0.68rem !important;
+  }
+
+  .match-metric-card p {
+    font-size: 1.15rem !important;
+  }
+
+  .victory-actions-row .btn-start-tug {
+    min-height: 46px !important;
+    font-size: 0.98rem !important;
+  }
+
+  .victory-actions-secondary-row {
+    gap: 5px !important;
+  }
+
+  .victory-actions-secondary-row .btn-compact {
+    min-height: 36px !important;
+    font-size: 0.68rem !important;
+    padding: 4px 2px !important;
   }
 
   .match-stats-grid {
@@ -4465,14 +4586,24 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
         </div>
       </div>
 
-      <!-- Main Landscape Stadium Grid (Player 1 Left | Center Hub | Player 2 Right) -->
-      <div class="victory-landscape-grid">
+      <!-- Main Portrait Stadium Flow (Dual Podium Top | Center Stats Hub Below) -->
+      <div class="victory-portrait-grid">
         
-        <!-- Left: Player 1 Avatar Card (ALWAYS PLAYER 1 ON LEFT) -->
-        <div class="avatar-result-slot winner-card-slot" id="victory-p1-slot">
-          <div class="slot-player-title" id="victory-p1-name">Player 1</div>
-          <div id="victory-p1-avatar"></div>
-          <span id="victory-p1-stamp" class="result-stamp winner">JUARA 🏆</span>
+        <!-- Dual Podium Row: Player 1 (Left) & Player 2 (Right) Side-by-Side -->
+        <div class="victory-podium-row">
+          <!-- Left: Player 1 Avatar Card (ALWAYS PLAYER 1 ON LEFT) -->
+          <div class="avatar-result-slot winner-card-slot" id="victory-p1-slot">
+            <div class="slot-player-title" id="victory-p1-name">Player 1</div>
+            <div id="victory-p1-avatar" class="avatar-result-svg-wrap"></div>
+            <span id="victory-p1-stamp" class="result-stamp winner">JUARA 🏆</span>
+          </div>
+
+          <!-- Right: Player 2 Avatar Card (ALWAYS PLAYER 2 ON RIGHT) -->
+          <div class="avatar-result-slot loser-card-slot" id="victory-p2-slot">
+            <div class="slot-player-title" id="victory-p2-name">Player 2</div>
+            <div id="victory-p2-avatar" class="avatar-result-svg-wrap"></div>
+            <span id="victory-p2-stamp" class="result-stamp loser">NICE TRY! 👍</span>
+          </div>
         </div>
 
         <!-- Center: Stadium Hub (KPI + 2x2 Stats Grid + Actions) -->
@@ -4519,13 +4650,6 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
               </button>
             </div>
           </div>
-        </div>
-
-        <!-- Right: Player 2 Avatar Card (ALWAYS PLAYER 2 ON RIGHT) -->
-        <div class="avatar-result-slot loser-card-slot" id="victory-p2-slot">
-          <div class="slot-player-title" id="victory-p2-name">Player 2</div>
-          <div id="victory-p2-avatar"></div>
-          <span id="victory-p2-stamp" class="result-stamp loser">NICE TRY! 👍</span>
         </div>
 
       </div>
@@ -6457,7 +6581,7 @@ function renderP1Question() {
     q.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-dual-answer';
-      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span>${opt}</span>`;
+      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
       btn.onclick = () => handleP1Answer(idx, btn, q);
       ansGrid.appendChild(btn);
     });
@@ -6632,7 +6756,7 @@ function renderP2Question() {
     q.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-dual-answer';
-      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span>${opt}</span>`;
+      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
       btn.onclick = () => handleP2Answer(idx, btn, q);
       ansGrid.appendChild(btn);
     });

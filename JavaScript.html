@@ -1843,7 +1843,7 @@ function renderP1Question() {
     q.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-dual-answer';
-      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span>${opt}</span>`;
+      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
       btn.onclick = () => handleP1Answer(idx, btn, q);
       ansGrid.appendChild(btn);
     });
@@ -2018,7 +2018,7 @@ function renderP2Question() {
     q.options.forEach((opt, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-dual-answer';
-      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span>${opt}</span>`;
+      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
       btn.onclick = () => handleP2Answer(idx, btn, q);
       ansGrid.appendChild(btn);
     });
