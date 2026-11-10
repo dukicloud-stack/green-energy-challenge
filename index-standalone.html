@@ -710,7 +710,7 @@ button { font-family: inherit; }
   align-items: center;
   gap: 16px;
   width: 100%;
-  margin-top: 14px;
+  margin-top: 28px;
   box-sizing: border-box;
 }
 
@@ -2207,7 +2207,37 @@ body.kiosk-portrait-sim #app-container {
 body.kiosk-portrait-sim .players-registration-container {
   display: flex !important;
   flex-direction: column !important;
-  gap: 12px !important;
+  gap: 18px !important;
+  margin-bottom: 24px !important;
+}
+
+body.kiosk-portrait-sim .input-touch-actions {
+  display: flex !important;
+  gap: 4px !important;
+  flex-shrink: 0 !important;
+}
+
+body.kiosk-portrait-sim .btn-touch-action {
+  padding: 5px 8px !important;
+  font-size: 0.68rem !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  gap: 3px !important;
+  border-width: 1px !important;
+}
+
+body.kiosk-portrait-sim .btn-touch-action .touch-icon {
+  font-size: 0.8rem !important;
+}
+
+body.kiosk-portrait-sim .btn-touch-action .touch-action-txt {
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+}
+
+body.kiosk-portrait-sim .input-touch-wrapper input {
+  font-size: 1.02rem !important;
+  padding: 4px 6px !important;
 }
 
 body.kiosk-portrait-sim .dual-questions-grid {
@@ -2294,81 +2324,38 @@ body.kiosk-portrait-sim .character-grid-mini {
 }
 
 body.kiosk-portrait-sim .char-ready-stage {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 6px !important;
-  width: 100% !important;
-  padding: 8px 10px !important;
-  margin: 10px 0 !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
-
-body.kiosk-portrait-sim .char-ready-stage .ready-hero-card {
-  min-width: 0 !important;
-  flex: 1 1 0 !important;
-  padding: 6px 8px !important;
-  gap: 6px !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-body.kiosk-portrait-sim .char-ready-stage .ready-hero-avatar {
-  width: 38px !important;
-  height: 38px !important;
-  flex-shrink: 0 !important;
-}
-
-body.kiosk-portrait-sim .char-ready-stage .ready-hero-card h4 {
-  font-size: 0.82rem !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-body.kiosk-portrait-sim .char-ready-stage .ready-vs-badge .vs-full-text {
   display: none !important;
-}
-
-body.kiosk-portrait-sim .char-ready-stage .ready-vs-badge .vs-short-text {
-  display: inline-block !important;
-  font-size: 0.82rem !important;
-  font-weight: 900 !important;
-  color: var(--navy-deep) !important;
-  background: #FFFFFF !important;
-  border: 1.5px solid var(--slate-border) !important;
-  padding: 4px 8px !important;
-  border-radius: var(--radius-full) !important;
-  white-space: nowrap !important;
 }
 
 body.kiosk-portrait-sim .char-actions-row {
   display: flex !important;
   flex-direction: column-reverse !important;
   align-items: stretch !important;
-  gap: 8px !important;
+  gap: 12px !important;
   width: 100% !important;
-  margin-top: 8px !important;
+  margin-top: 32px !important;
+  padding-top: 8px !important;
   box-sizing: border-box !important;
 }
 
 body.kiosk-portrait-sim .char-actions-row .btn-start-tug {
   width: 100% !important;
   min-width: 0 !important;
-  min-height: 50px !important;
-  font-size: 1rem !important;
-  padding: 12px 18px !important;
+  min-height: 52px !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  padding: 14px 20px !important;
   border-radius: var(--radius-full) !important;
+  box-shadow: 0 6px 20px rgba(226, 125, 0, 0.28) !important;
   box-sizing: border-box !important;
 }
 
 body.kiosk-portrait-sim .char-actions-row .btn-secondary {
   width: 100% !important;
   min-width: 0 !important;
-  min-height: 42px !important;
-  font-size: 0.88rem !important;
+  min-height: 44px !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
   padding: 10px 16px !important;
   border-radius: var(--radius-full) !important;
   box-sizing: border-box !important;
@@ -2479,22 +2466,26 @@ body.kiosk-portrait-sim .tug-battlefield-wrapper {
 body.kiosk-portrait-sim .reg-actions {
   display: flex !important;
   flex-direction: column-reverse !important;
-  gap: 8px !important;
+  gap: 12px !important;
   width: 100% !important;
-  margin-top: 6px !important;
+  margin-top: 22px !important;
 }
 
 body.kiosk-portrait-sim .reg-actions .btn-primary {
   width: 100% !important;
-  min-height: 50px !important;
-  font-size: 1rem !important;
+  min-height: 52px !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  border-radius: var(--radius-full) !important;
   justify-content: center !important;
 }
 
 body.kiosk-portrait-sim .reg-actions .btn-secondary {
   width: 100% !important;
-  min-height: 42px !important;
-  font-size: 0.88rem !important;
+  min-height: 44px !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  border-radius: var(--radius-full) !important;
   justify-content: center !important;
 }
 
@@ -2706,15 +2697,15 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   .players-registration-container {
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 18px !important;
     width: 100% !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 24px !important;
   }
 
   .player-card-panel {
     width: 100% !important;
-    padding: 14px 14px 16px !important;
-    border-radius: 16px !important;
+    padding: 16px 14px 18px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
     box-sizing: border-box !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04) !important;
@@ -2724,7 +2715,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 10px !important;
   }
 
   .player-card-header h3 {
@@ -2751,7 +2742,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     align-items: center !important;
     gap: 6px !important;
     padding: 4px 6px 4px 12px !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
     box-sizing: border-box !important;
     background: #FFFFFF !important;
   }
@@ -2759,37 +2750,48 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   .input-touch-wrapper input {
     flex: 1 1 auto !important;
     min-width: 0 !important;
-    font-size: 1rem !important;
+    font-size: 1.02rem !important;
     height: 44px !important;
-    padding: 6px 4px !important;
+    padding: 4px 6px !important;
     color: var(--navy-deep) !important;
   }
 
   .input-touch-actions {
     display: flex !important;
-    gap: 5px !important;
+    gap: 4px !important;
     flex-shrink: 0 !important;
   }
 
   .btn-touch-action {
-    padding: 7px 10px !important;
-    font-size: 0.76rem !important;
+    padding: 5px 8px !important;
+    font-size: 0.68rem !important;
+    height: 34px !important;
     border-radius: 8px !important;
-    gap: 4px !important;
+    gap: 3px !important;
+    border-width: 1px !important;
+  }
+
+  .btn-touch-action .touch-icon {
+    font-size: 0.8rem !important;
+  }
+
+  .btn-touch-action .touch-action-txt {
+    font-size: 0.68rem !important;
+    font-weight: 800 !important;
   }
 
   .reg-actions {
     display: flex !important;
     flex-direction: column-reverse !important;
-    gap: 8px !important;
+    gap: 12px !important;
     width: 100% !important;
-    margin-top: 4px !important;
+    margin-top: 22px !important;
   }
 
   .reg-actions .btn-primary {
     width: 100% !important;
-    min-height: 50px !important;
-    font-size: 1rem !important;
+    min-height: 52px !important;
+    font-size: 1.05rem !important;
     font-weight: 800 !important;
     padding: 0 18px !important;
     border-radius: var(--radius-full) !important;
@@ -2798,8 +2800,9 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
 
   .reg-actions .btn-secondary {
     width: 100% !important;
-    min-height: 42px !important;
-    font-size: 0.88rem !important;
+    min-height: 44px !important;
+    font-size: 0.92rem !important;
+    font-weight: 800 !important;
     padding: 0 16px !important;
     border-radius: var(--radius-full) !important;
     justify-content: center !important;
@@ -2814,8 +2817,9 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   .char-select-columns {
     display: flex !important;
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 18px !important;
     width: 100% !important;
+    margin-bottom: 12px !important;
   }
 
   .char-select-column {
@@ -2895,27 +2899,31 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
     display: flex !important;
     flex-direction: column-reverse !important;
     align-items: stretch !important;
-    gap: 8px !important;
+    gap: 12px !important;
     width: 100% !important;
-    margin-top: 8px !important;
+    margin-top: 32px !important;
+    padding-top: 8px !important;
     box-sizing: border-box !important;
   }
 
   .char-actions-row .btn-start-tug {
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 50px !important;
-    font-size: 1rem !important;
-    padding: 12px 18px !important;
+    min-height: 52px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    padding: 14px 20px !important;
     border-radius: var(--radius-full) !important;
+    box-shadow: 0 6px 20px rgba(226, 125, 0, 0.28) !important;
     box-sizing: border-box !important;
   }
 
   .char-actions-row .btn-secondary {
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 42px !important;
-    font-size: 0.88rem !important;
+    min-height: 44px !important;
+    font-size: 0.92rem !important;
+    font-weight: 800 !important;
     padding: 10px 16px !important;
     border-radius: var(--radius-full) !important;
     box-sizing: border-box !important;
@@ -3461,8 +3469,8 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   flex: 1;
   border: none !important;
   background: transparent !important;
-  padding: 10px 4px !important;
-  font-size: 1.15rem !important;
+  padding: 8px 6px !important;
+  font-size: 1.02rem !important;
   font-weight: 700 !important;
   color: var(--navy-deep) !important;
   outline: none !important;
@@ -3473,25 +3481,27 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
 .input-touch-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .btn-touch-action {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1.5px solid #CBD5E1;
+  gap: 4px;
+  padding: 5px 8px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E1;
   background: #F8FAFC;
   color: #334155;
   font-family: inherit;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  white-space: nowrap;
 }
 
 .btn-touch-action:hover {
@@ -3518,8 +3528,13 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
 }
 
 .touch-icon {
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   line-height: 1;
+}
+
+.touch-action-txt {
+  font-size: 0.72rem;
+  font-weight: 800;
 }
 
 /* Virtual Touch Keyboard Drawer */
