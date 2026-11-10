@@ -1008,13 +1008,14 @@ button { font-family: inherit; }
   border: none !important;
 }
 
-/* Header Banner (Horizontal Trophy + Title + Subtitle) */
+/* Header Banner (Horizontal Trophy + Title + Subtitle + Close Button) */
 .victory-header-banner {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 12px;
-  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
   margin-bottom: 2px;
 }
 
@@ -1031,9 +1032,12 @@ button { font-family: inherit; }
 }
 
 .victory-title-wrap {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .victory-title-wrap h2 {
@@ -1959,6 +1963,11 @@ button { font-family: inherit; }
     width: 54px !important;
     height: 54px !important;
   }
+  .btn-victory-modal-close {
+    width: 54px !important;
+    height: 54px !important;
+    font-size: 1.55rem !important;
+  }
   .victory-title-wrap h2 {
     font-size: 2.2rem !important;
   }
@@ -2446,7 +2455,7 @@ body.kiosk-portrait-sim .arena-player-score {
 }
 
 body.kiosk-portrait-sim .tug-battlefield-wrapper {
-  height: 125px !important;
+  height: 132px !important;
   width: 100% !important;
   margin: 4px 0 !important;
   border-radius: 14px !important;
@@ -3035,7 +3044,7 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
 
   /* Battlefield Rope on Mobile */
   .tug-battlefield-wrapper {
-    height: 125px !important;
+    height: 132px !important;
     width: 100% !important;
     margin: 4px 0 !important;
     border-radius: 14px !important;
@@ -3156,6 +3165,11 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   .victory-trophy-badge {
     width: 40px !important;
     height: 40px !important;
+  }
+  .btn-victory-modal-close {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 1.2rem !important;
   }
 
   .victory-header-banner h2 {
@@ -3998,11 +4012,10 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
 
 /* Victory Modal Close Button & Home Action CTA */
 .btn-victory-modal-close {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  width: 42px;
-  height: 42px;
+  position: static;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: #FFFFFF;
   border: 2.5px solid #CBD5E1;
@@ -4014,10 +4027,10 @@ body.kiosk-portrait-sim .virtual-keyboard-drawer.active {
   justify-content: center;
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 50;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   user-select: none;
   line-height: 1;
+  padding: 0;
 }
 
 .btn-victory-modal-close:hover {

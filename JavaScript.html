@@ -1461,16 +1461,16 @@ function drawBattlefield() {
 
   const offset = GAME.ropeOffset; // -4 to +4
   const markerX = 500 + offset * 45; // 500 is center, compact swing range
-  const ropeY = 137;
+  const ropeY = 104;
 
-  // Prominent rope connects from P1 fists to P2 fists at exact Y=137
-  const ropeD = `M 256 ${ropeY} L ${markerX} ${ropeY} L 744 ${ropeY}`;
+  // Prominent rope connects from P1 fists to P2 fists at exact Y=104
+  const ropeD = `M 226 ${ropeY} L ${markerX} ${ropeY} L 774 ${ropeY}`;
 
   const p1SVG = renderHeroArena(GAME.p1.charId, p1HeroState, 'right');
   const p2SVG = renderHeroArena(GAME.p2.charId, p2HeroState, 'left');
 
   // Generate jagged electric lightning path along the rope when pulled
-  const surgeTargetX = (offset < 0) ? 260 : 740;
+  const surgeTargetX = (offset < 0) ? 226 : 774;
   const surgeX1 = markerX;
   const surgeX2 = surgeTargetX;
   const midX1 = surgeX1 + (surgeX2 - surgeX1) * 0.35;
@@ -1529,13 +1529,13 @@ function drawBattlefield() {
       <polygon points="1,-11 -8,1 0,1 -2,12 8,-1 0,-1 3,-11" fill="url(#boltGrad)" stroke="#B45309" stroke-width="1.2" stroke-linejoin="round"/>
     </g>
 
-    <!-- P1 Vector Hero (Enlarged 1.42x, Centered at X=180, Y=100) -->
-    <g transform="translate(180, 100) scale(1.42)">
+    <!-- P1 Vector Hero (Elevated Y=68, Scale 1.25 for generous bottom clearance) -->
+    <g transform="translate(180, 68) scale(1.25)">
       ${p1SVG}
     </g>
 
-    <!-- P2 Vector Hero (Enlarged 1.42x, Centered at X=820, Y=100) -->
-    <g transform="translate(820, 100) scale(1.42)">
+    <!-- P2 Vector Hero (Elevated Y=68, Scale 1.25 for generous bottom clearance) -->
+    <g transform="translate(820, 68) scale(1.25)">
       ${p2SVG}
     </g>
   `;
