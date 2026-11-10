@@ -1518,6 +1518,33 @@ button { font-family: inherit; }
   font-weight: 600;
 }
 .leader-table tr:hover td { background: var(--blue-light); }
+.leaderboard-row-new {
+  background: rgba(34, 197, 94, 0.09) !important;
+  box-shadow: inset 4px 0 0 #22C55E;
+}
+.leaderboard-row-new td {
+  background: transparent !important;
+}
+.badge-new-match {
+  display: inline-block;
+  background: #22C55E;
+  color: #FFFFFF;
+  font-size: 0.68rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.35);
+  animation: pulse-soft 2s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.88; }
+}
+@media (max-width: 640px) {
+  .col-mode { display: none !important; }
+}
 
 /* Screen Centering & Max Widths */
 #arena-screen.active {

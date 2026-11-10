@@ -2156,6 +2156,9 @@ function triggerEndMatch(winner) {
   GAME.winnerTeam = winner;
   GAME.matchDuration = Math.round((Date.now() - GAME.startTime) / 1000);
 
+  // Save match record immediately so player names and scores are permanently stored
+  saveMatchRecord(winner);
+
   document.querySelectorAll('.btn-dual-answer').forEach(b => b.disabled = true);
 
   if (winner === 1) {
@@ -2289,21 +2292,7 @@ function showVictoryModal(winner) {
   if (modal) modal.classList.add('active');
   SFX.playCongratulationsTheme(winner);
 
-  // Submit to Google Sheets if running in Apps Script
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run.submitGameResult({
-      participantId: 'KCE-2P-' + Date.now(),
-      playerName: `${GAME.p1.name} vs ${GAME.p2.name}`,
-      character: `${GAME.p1.charId} & ${GAME.p2.charId}`,
-      teamColor: (winner === 1) ? '#3077B5' : '#3C976C',
-      gameMode: 'tug-of-war-2p-simultaneous',
-      finalScore: Math.max(GAME.p1.score, GAME.p2.score),
-      correctAnswers: GAME.p1.correct + GAME.p2.correct,
-      incorrectAnswers: GAME.p1.incorrect + GAME.p2.incorrect,
-      winner: (winner === 1) ? GAME.p1.name : (winner === 2 ? GAME.p2.name : 'Seri'),
-      durationSec: GAME.matchDuration
-    });
-  }
+  // Note: saveMatchRecord(winner) has already submitted the result to localStorage and Google Sheets
 }
 
 function closeVictoryModal() {
@@ -2334,8 +2323,127 @@ function backToHomeFromVictory() {
 }
 
 // ==========================================================================
-// 9. LEADERBOARD
+// 9. LEADERBOARD & MATCH RECORD PERSISTENCE
 // ==========================================================================
+
+const LEADERBOARD_STORAGE_KEY = 'KCE_LEADERBOARD_RECORDS_V2';
+
+/**
+ * Saves completed match result to localStorage and Google Sheets (if GAS available).
+ */
+function saveMatchRecord(winner) {
+  const p1Name = (GAME.p1 && GAME.p1.name && GAME.p1.name.trim()) ? GAME.p1.name.trim() : 'Player 1';
+  const p2Name = (GAME.p2 && GAME.p2.name && GAME.p2.name.trim()) ? GAME.p2.name.trim() : 'Player 2';
+  const p1Score = (GAME.p1 && typeof GAME.p1.score === 'number') ? GAME.p1.score : 0;
+  const p2Score = (GAME.p2 && typeof GAME.p2.score === 'number') ? GAME.p2.score : 0;
+  const duration = GAME.matchDuration || 30;
+
+  let winnerName = 'Seri';
+  let winnerLabel = 'Seri';
+  let winnerBadgeColor = '#F59E0B';
+  let opponentText = p1Name + ' (' + p1Score + ' Pts) vs ' + p2Name + ' (' + p2Score + ' Pts)';
+
+  if (winner === 1) {
+    winnerName = p1Name;
+    winnerLabel = 'Player 1';
+    winnerBadgeColor = '#0284C7';
+    opponentText = 'vs ' + p2Name + ' (' + p2Score + ' Pts)';
+  } else if (winner === 2) {
+    winnerName = p2Name;
+    winnerLabel = 'Player 2';
+    winnerBadgeColor = '#10B981';
+    opponentText = 'vs ' + p1Name + ' (' + p1Score + ' Pts)';
+  }
+
+  const highestScore = Math.max(p1Score, p2Score);
+
+  const now = new Date();
+  const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+  const dateFormatted = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ', ' + timeFormatted;
+
+  const newRecord = {
+    id: 'KCE-REC-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+    p1Name: p1Name,
+    p2Name: p2Name,
+    p1Score: p1Score,
+    p2Score: p2Score,
+    winnerName: winnerName,
+    winnerLabel: winnerLabel,
+    winnerBadgeColor: winnerBadgeColor,
+    opponentText: opponentText,
+    score: highestScore,
+    duration: duration,
+    date: dateFormatted,
+    timestamp: Date.now(),
+    isNew: true
+  };
+
+  // 1. Save to LocalStorage
+  try {
+    let records = [];
+    const raw = localStorage.getItem(LEADERBOARD_STORAGE_KEY);
+    if (raw) {
+      try {
+        records = JSON.parse(raw);
+        if (!Array.isArray(records)) records = [];
+      } catch(e) { records = []; }
+    }
+    // Remove isNew flag on all previous records
+    records.forEach(r => { r.isNew = false; });
+    // Add new record at front
+    records.unshift(newRecord);
+    // Limit to 50 records
+    if (records.length > 50) records = records.slice(0, 50);
+    localStorage.setItem(LEADERBOARD_STORAGE_KEY, JSON.stringify(records));
+  } catch(err) {
+    console.warn('Gagal menyimpan leaderboard ke localStorage:', err);
+  }
+
+  // 2. Also submit to Google Sheets if running in Google Apps Script
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    try {
+      google.script.run.submitGameResult({
+        participantId: 'KCE-2P-' + Date.now(),
+        playerName: p1Name + ' vs ' + p2Name,
+        character: (GAME.p1.charId || 'hero1') + ' & ' + (GAME.p2.charId || 'hero2'),
+        teamColor: (winner === 1) ? '#3077B5' : '#3C976C',
+        gameMode: 'tug-of-war-2p-simultaneous',
+        finalScore: highestScore,
+        correctAnswers: (GAME.p1.correct || 0) + (GAME.p2.correct || 0),
+        incorrectAnswers: (GAME.p1.incorrect || 0) + (GAME.p2.incorrect || 0),
+        winner: (winner === 1) ? (p1Name + ' (Player 1)') : (winner === 2 ? (p2Name + ' (Player 2)') : (p1Name + ' & ' + p2Name + ' (Seri)')),
+        durationSec: duration
+      });
+    } catch(errGAS) {
+      console.warn('Google Script submit error:', errGAS);
+    }
+  }
+
+  return newRecord;
+}
+
+/**
+ * Retrieves saved local leaderboard records sorted by score descending, duration ascending.
+ */
+function getLocalLeaderboardRecords() {
+  try {
+    const raw = localStorage.getItem(LEADERBOARD_STORAGE_KEY);
+    if (raw) {
+      const records = JSON.parse(raw);
+      if (Array.isArray(records) && records.length > 0) {
+        return records.sort((a, b) => {
+          if ((b.score || 0) !== (a.score || 0)) {
+            return (b.score || 0) - (a.score || 0);
+          }
+          return (a.duration || 0) - (b.duration || 0);
+        });
+      }
+    }
+  } catch(e) {
+    console.warn('Error reading local leaderboard:', e);
+  }
+  return [];
+}
 
 function openLeaderboard() {
   SFX.click();
@@ -2346,18 +2454,53 @@ function openLeaderboard() {
 function fetchLeaderboardData() {
   const tbody = document.getElementById('leaderboard-tbody');
   if (!tbody) return;
-  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">Memuat riwayat pertandingan...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:35px 20px; font-weight:600; color:var(--text-muted);">Memuat riwayat pertandingan...</td></tr>';
+
+  const localRecords = getLocalLeaderboardRecords();
 
   if (typeof google !== 'undefined' && google.script && google.script.run) {
     google.script.run
-      .withSuccessHandler(renderLeaderboardRows)
-      .withFailureHandler(() => renderLeaderboardRows(getFallbackLeaderboard()))
-      .getLeaderboard('ALL', 'tug-of-war-2p-simultaneous', 12);
+      .withSuccessHandler((gasData) => {
+        if (Array.isArray(gasData) && gasData.length > 0) {
+          const merged = mergeGasAndLocalRecords(gasData, localRecords);
+          renderLeaderboardRows(merged);
+        } else {
+          renderLeaderboardRows(localRecords);
+        }
+      })
+      .withFailureHandler(() => {
+        renderLeaderboardRows(localRecords);
+      })
+      .getLeaderboard('ALL', 'tug-of-war-2p-simultaneous', 20);
   } else {
     setTimeout(() => {
-      renderLeaderboardRows(getFallbackLeaderboard());
-    }, 400);
+      renderLeaderboardRows(localRecords);
+    }, 150);
   }
+}
+
+function mergeGasAndLocalRecords(gasList, localList) {
+  const map = new Map();
+  gasList.forEach(g => {
+    const key = g.winner + '_' + g.score + '_' + g.duration;
+    map.set(key, {
+      winnerName: g.winner || g.playerName || 'Pemain',
+      winnerLabel: (g.winner && g.winner.includes('Player 2')) ? 'Player 2' : ((g.winner && g.winner.includes('Player 1')) ? 'Player 1' : 'Pemenang'),
+      opponentText: g.playerName ? ('Duel: ' + g.playerName) : 'Duel Tarik Tambang',
+      score: g.score || 0,
+      duration: g.duration || 30,
+      date: g.date || 'Hari ini',
+      isNew: false
+    });
+  });
+  localList.forEach(l => {
+    const key = l.winnerName + '_' + l.score + '_' + l.duration;
+    map.set(key, l);
+  });
+  return Array.from(map.values()).sort((a, b) => {
+    if ((b.score || 0) !== (a.score || 0)) return (b.score || 0) - (a.score || 0);
+    return (a.duration || 0) - (b.duration || 0);
+  });
 }
 
 function renderLeaderboardRows(data) {
@@ -2365,28 +2508,82 @@ function renderLeaderboardRows(data) {
   if (!tbody) return;
 
   if (!data || data.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px;">Belum ada riwayat tanding. Jadilah yang pertama!</td></tr>';
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:45px 20px;">
+          <div style="font-size:2.8rem; margin-bottom:12px;">🏆</div>
+          <div style="font-size:1.18rem; font-weight:800; color:var(--cap-navy-deep); margin-bottom:6px;">Belum Ada Pertandingan Tersimpan</div>
+          <div style="font-size:0.95rem; color:var(--text-muted); max-width:420px; margin:0 auto 18px; line-height:1.5;">
+            Nama Player 1 dan Player 2 serta skor pemenang duel akan langsung otomatis tercatat di papan peringkat ini begitu pertandingan selesai!
+          </div>
+          <button class="btn-primary" onclick="showScreen('reg-screen')" style="min-height:48px; padding:0 24px; font-size:1rem; display:inline-flex; align-items:center; justify-content:center; margin:auto; border-radius:var(--radius-full); box-shadow:0 8px 20px rgba(47,64,126,0.3);">
+            ⚔️ MULAI PERTANDINGAN SEKARANG
+          </button>
+        </td>
+      </tr>
+    `;
     return;
   }
 
   tbody.innerHTML = '';
   data.forEach((row, idx) => {
-    let medal = `#${idx + 1}`;
-    if (idx === 0) medal = '🥇';
-    else if (idx === 1) medal = '🥈';
-    else if (idx === 2) medal = '🥉';
+    let medal = '#' + (idx + 1);
+    let medalBg = 'transparent';
+    let medalColor = 'var(--text-muted)';
+    if (idx === 0) { medal = '🥇'; medalBg = '#FEF3C7'; medalColor = '#B45309'; }
+    else if (idx === 1) { medal = '🥈'; medalBg = '#F1F5F9'; medalColor = '#475569'; }
+    else if (idx === 2) { medal = '🥉'; medalBg = '#FFEDD5'; medalColor = '#C2410C'; }
 
+    const isNewRecord = Boolean(row.isNew);
     const tr = document.createElement('tr');
+    if (isNewRecord) {
+      tr.className = 'leaderboard-row-new';
+    }
+
+    const winnerDisplayName = row.winnerName || row.winner || row.playerName || 'Pemain';
+    const opponentInfo = row.opponentText ? ('<div style="font-size:0.8rem; color:var(--text-muted); font-weight:500; margin-top:2px;">' + row.opponentText + '</div>') : '';
+
+    const newBadge = isNewRecord
+      ? '<span class="badge-new-match">BARU ✨</span>'
+      : '';
+
     tr.innerHTML = `
-      <td style="text-align:center; font-size:1.1rem; font-weight:900;">${medal}</td>
-      <td><strong>${row.winner || row.playerName || 'Pemain'}</strong></td>
-      <td><span style="background:var(--blue-light); color:var(--blue-primary); padding:4px 12px; border-radius:12px; font-weight:800; font-size:0.8rem;">Duel Serentak 2P</span></td>
-      <td><strong style="color:var(--green-energy); font-size:1.15rem;">${row.score} Pts</strong></td>
-      <td>${row.duration || 45}s</td>
-      <td style="color:var(--text-muted); font-size:0.85rem;">${row.date || 'Hari ini'}</td>
+      <td style="text-align:center; font-size:1.15rem; font-weight:900;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; background:${medalBg}; color:${medalColor};">${medal}</span>
+      </td>
+      <td>
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:4px;">
+          <strong style="font-size:1.02rem; color:var(--cap-navy-deep);">${winnerDisplayName}</strong>
+          ${newBadge}
+        </div>
+        ${opponentInfo}
+      </td>
+      <td class="col-mode">
+        <span style="background:var(--blue-light); color:var(--blue-primary); padding:4px 10px; border-radius:12px; font-weight:800; font-size:0.78rem; white-space:nowrap;">Tarik Tambang 2P</span>
+      </td>
+      <td>
+        <strong style="color:var(--green-energy); font-size:1.15rem; font-weight:900;">${row.score || 0} Pts</strong>
+      </td>
+      <td style="font-weight:700; color:var(--cap-navy-deep);">
+        ${row.duration || 30}s
+      </td>
+      <td style="color:var(--text-muted); font-size:0.82rem; white-space:nowrap;">
+        ${row.date || 'Hari ini'}
+      </td>
     `;
     tbody.appendChild(tr);
   });
+}
+
+function confirmResetLeaderboard() {
+  SFX.click();
+  const confirmed = confirm('Apakah Anda yakin ingin mereset/menghapus semua riwayat peringkat lokal di perangkat ini?');
+  if (confirmed) {
+    try {
+      localStorage.removeItem(LEADERBOARD_STORAGE_KEY);
+    } catch(e) {}
+    fetchLeaderboardData();
+  }
 }
 
 // ==========================================================================
@@ -2920,12 +3117,7 @@ function getFallbackQuestions() {
 }
 
 function getFallbackLeaderboard() {
-  return [
-    { winner: 'Budi Pratama (Player 1)', score: 600, duration: 42, date: 'Hari ini' },
-    { winner: 'Siti Rahma (Player 2)', score: 500, duration: 48, date: 'Hari ini' },
-    { winner: 'Rian & Aditya (Seri)', score: 400, duration: 60, date: 'Kemarin' },
-    { winner: 'Dewi Lestari (Player 1)', score: 400, duration: 38, date: 'Kemarin' }
-  ];
+  return getLocalLeaderboardRecords();
 }
 
 // ==========================================================================
@@ -3487,6 +3679,7 @@ if (typeof window !== 'undefined') {
   window.toggleAudio = toggleAudio;
   window.toggleFullscreen = toggleFullscreen;
   window.openLeaderboard = openLeaderboard;
+  window.confirmResetLeaderboard = confirmResetLeaderboard;
   window.submit2PlayerRegistration = submit2PlayerRegistration;
   window.confirmAndStartMatch = confirmAndStartMatch;
   window.exitMatchToHome = exitMatchToHome;
