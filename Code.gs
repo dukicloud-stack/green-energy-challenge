@@ -18,18 +18,32 @@ const ADMIN_PASSWORD_DEFAULT = 'KCEgreen2026!';
 function doGet(e) {
   const page = (e && e.parameter && e.parameter.p) ? e.parameter.p.toLowerCase() : 'game';
   
-  let template;
+  let output;
   if (page === 'admin') {
-    template = HtmlService.createTemplateFromFile('Admin');
-  } else {
     try {
-      template = HtmlService.createTemplateFromFile('index');
-    } catch(e) {
-      template = HtmlService.createTemplateFromFile('Index');
+      output = HtmlService.createTemplateFromFile('Admin').evaluate();
+    } catch(err) {
+      output = HtmlService.createHtmlOutputFromFile('Admin');
+    }
+  } else {
+    // 1. Try serving pre-bundled HTML directly (fastest, avoids template parse overhead)
+    // 2. Fall back to template evaluation if modular files (Index.html + include) are used
+    try {
+      output = HtmlService.createHtmlOutputFromFile('index');
+    } catch(e1) {
+      try {
+        output = HtmlService.createHtmlOutputFromFile('Index');
+      } catch(e2) {
+        try {
+          output = HtmlService.createTemplateFromFile('index').evaluate();
+        } catch(e3) {
+          output = HtmlService.createTemplateFromFile('Index').evaluate();
+        }
+      }
     }
   }
   
-  return template.evaluate()
+  return output
     .setTitle('Green Energy Challenge | PT Krakatau Chandra Energi (KCE)')
     .setFaviconUrl('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3CclipPath%20id%3D%22g%22%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2230%22%2F%3E%3C%2FclipPath%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%2230%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cg%20clip-path%3D%22url(%23g)%22%3E%3Cpath%20d%3D%22M%20-2%2015.3%20Q%202.5%2016.1%207%2018.1%20Q%2011.5%2018.6%2016%2018.9%20Q%2020.5%2018.7%2025%2017.1%20Q%2029.5%2016.3%2034%2014.2%20Q%2038.5%2013.7%2043%2013%20Q%2047.5%2013.1%2052%2014.5%20Q%2059%2016.1%2061%2017.4%20Q%2063.5%2017.5%2066%2018.6%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2028.5%20Q%202.5%2028.8%207%2028.8%20Q%2011.5%2028.4%2016%2026.5%20Q%2020.5%2025.7%2025%2023.8%20Q%2029.5%2023.3%2034%2023.1%20Q%2038.5%2023.4%2043%2025.1%20Q%2047.5%2025.8%2052%2027.9%20Q%2059%2028.8%2061%2029%20Q%2063.5%2029%2066%2028.3%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2038.5%20Q%202.5%2037.9%207%2035.4%20Q%2011.5%2034.5%2016%2032.4%20Q%2020.5%2032%2025%2032.3%20Q%2029.5%2032.8%2034%2035.1%20Q%2038.5%2036%2043%2038.3%20Q%2047.5%2038.8%2052%2038.9%20Q%2059%2037.9%2061%2036.4%20Q%2063.5%2036.3%2066%2034.4%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2214%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2047.1%20Q%202.5%2047.8%207%2048.9%20Q%2011.5%2049%2016%2048.1%20Q%2020.5%2047.5%2025%2045.3%20Q%2029.5%2044.6%2034%2043.2%20Q%2038.5%2043%2043%2043.6%20Q%2047.5%2044.2%2052%2046.3%20Q%2059%2047.7%2061%2048.7%20Q%2063.5%2048.7%2066%2049%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2058%20Q%202.5%2057.9%207%2056.6%20Q%2011.5%2055.9%2016%2053.7%20Q%2020.5%2053.1%2025%2052%20Q%2029.5%2052%2034%2053.1%20Q%2038.5%2053.7%2043%2055.9%20Q%2047.5%2056.6%2052%2057.9%20Q%2059%2057.9%2061%2057.2%20Q%2063.5%2057.2%2066%2055.9%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2064.6%20Q%202.5%2063.8%207%2061.7%20Q%2011.5%2061.2%2016%2060.5%20Q%2020.5%2060.6%2025%2062%20Q%2029.5%2062.7%2034%2064.9%20Q%2038.5%2065.5%2043%2066.5%20Q%2047.5%2066.5%2052%2065.3%20Q%2059%2063.9%2061%2062.5%20Q%2063.5%2062.4%2066%2061.1%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%2213%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2015.3%20Q%202.5%2016.1%207%2018.1%20Q%2011.5%2018.6%2016%2018.9%20Q%2020.5%2018.7%2025%2017.1%20Q%2029.5%2016.3%2034%2014.2%20Q%2038.5%2013.7%2043%2013%20Q%2047.5%2013.1%2052%2014.5%20Q%2059%2016.1%2061%2017.4%20Q%2063.5%2017.5%2066%2018.6%22%20fill%3D%22none%22%20stroke%3D%22%2347C1EA%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2028.5%20Q%202.5%2028.8%207%2028.8%20Q%2011.5%2028.4%2016%2026.5%20Q%2020.5%2025.7%2025%2023.8%20Q%2029.5%2023.3%2034%2023.1%20Q%2038.5%2023.4%2043%2025.1%20Q%2047.5%2025.8%2052%2027.9%20Q%2059%2028.8%2061%2029%20Q%2063.5%2029%2066%2028.3%22%20fill%3D%22none%22%20stroke%3D%22%233077B5%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2038.5%20Q%202.5%2037.9%207%2035.4%20Q%2011.5%2034.5%2016%2032.4%20Q%2020.5%2032%2025%2032.3%20Q%2029.5%2032.8%2034%2035.1%20Q%2038.5%2036%2043%2038.3%20Q%2047.5%2038.8%2052%2038.9%20Q%2059%2037.9%2061%2036.4%20Q%2063.5%2036.3%2066%2034.4%22%20fill%3D%22none%22%20stroke%3D%22%231E3A7A%22%20stroke-width%3D%2211%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2047.1%20Q%202.5%2047.8%207%2048.9%20Q%2011.5%2049%2016%2048.1%20Q%2020.5%2047.5%2025%2045.3%20Q%2029.5%2044.6%2034%2043.2%20Q%2038.5%2043%2043%2043.6%20Q%2047.5%2044.2%2052%2046.3%20Q%2059%2047.7%2061%2048.7%20Q%2063.5%2048.7%2066%2049%22%20fill%3D%22none%22%20stroke%3D%22%2347C1EA%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2058%20Q%202.5%2057.9%207%2056.6%20Q%2011.5%2055.9%2016%2053.7%20Q%2020.5%2053.1%2025%2052%20Q%2029.5%2052%2034%2053.1%20Q%2038.5%2053.7%2043%2055.9%20Q%2047.5%2056.6%2052%2057.9%20Q%2059%2057.9%2061%2057.2%20Q%2063.5%2057.2%2066%2055.9%22%20fill%3D%22none%22%20stroke%3D%22%233077B5%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M%20-2%2064.6%20Q%202.5%2063.8%207%2061.7%20Q%2011.5%2061.2%2016%2060.5%20Q%2020.5%2060.6%2025%2062%20Q%2029.5%2062.7%2034%2064.9%20Q%2038.5%2065.5%2043%2066.5%20Q%2047.5%2066.5%2052%2065.3%20Q%2059%2063.9%2061%2062.5%20Q%2063.5%2062.4%2066%2061.1%22%20fill%3D%22none%22%20stroke%3D%22%231E3A7A%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
