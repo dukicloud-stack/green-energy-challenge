@@ -140,7 +140,7 @@ function setupDatabase() {
     initSheet(ss, 'SETTINGS', ['Setting_Key', 'Setting_Value', 'Description'], [
       ['ADMIN_PASSWORD', ADMIN_PASSWORD_DEFAULT, 'Admin dashboard access credential'],
       ['QUIZ_QUESTION_COUNT', '10', 'Number of questions per standard quiz session'],
-      ['QUESTION_TIMER_SECONDS', '20', 'Time limit in seconds per question'],
+      ['QUESTION_TIMER_SECONDS', '10', 'Time limit in seconds per question'],
       ['BASE_CORRECT_POINTS', '100', 'Base points awarded for correct answer'],
       ['SPEED_BONUS_MAX', '50', 'Maximum speed bonus points'],
       ['STREAK_BONUS_POINTS', '25', 'Extra points awarded for streaks >= 3'],
@@ -167,7 +167,7 @@ function setupDatabase() {
     
     return {
       status: 'SUCCESS',
-      message: 'Database initialized successfully with 6 tables and 100 verified questions.',
+      message: 'Database initialized successfully with 6 tables and 110 verified questions.',
       spreadsheetUrl: ss.getUrl()
     };
   } catch (err) {
@@ -368,7 +368,7 @@ function validateAnswer(questionId, selectedOptionIndex, responseTimeSec, gameId
   let points = 0;
   if (isCorrect) {
     const basePoints = 100;
-    const timeLimit = 20;
+    const timeLimit = 10;
     const remainingTime = Math.max(0, timeLimit - (responseTimeSec || 0));
     const speedBonus = Math.round((remainingTime / timeLimit) * 50);
     points = basePoints + speedBonus;
@@ -706,7 +706,7 @@ function shuffleArray(arr) {
 }
 
 /**
- * SEED QUESTION BANK: 100 Verified Educational Questions
+ * SEED QUESTION BANK: 110 Verified Educational Questions
  * Formatted as: [ID, Category, Difficulty, Question, A, B, C, D, Correct, Explanation, Ref, Status, Active]
  */
 function getInitialQuestionBank() {
@@ -1819,6 +1819,118 @@ function getInitialQuestionBank() {
       'A',
       'Integrasi energi bersih KCE membuktikan bahwa keandalan tinggi dan kelestarian ekologis dapat berjalan harmonis menopang pertumbuhan industri nasional.',
       'KCE Master Plan 2030', 'VERIFIED', 'ACTIVE'
+    ],
+    // --- SOLAR POWER PLANTS EXPANSION [Q101 - Q105] ---
+    [
+      'Q101', 'Solar Power Plants', 'Easy',
+      'Pada PLTS, rangkaian beberapa modul surya yang dihubungkan secara seri sehingga membentuk satu jalur kelistrikan disebut...',
+      'String (Rangkaian Seri Modul)',
+      'Busbar Hidrolik',
+      'Rotor Generator',
+      'Penukar Panas (Heat Exchanger)',
+      'A',
+      'Modul surya yang disusun seri dalam satu string akan menjumlahkan tegangannya, sehingga tegangan string dapat disesuaikan dengan rentang kerja input inverter.',
+      'Solar Engineering Basics', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q102', 'Solar Power Plants', 'Medium',
+      'Apa dampak menghubungkan beberapa modul surya secara SERI dibanding PARALEL?',
+      'Tegangan total bertambah sedangkan arus tetap sama dengan satu modul',
+      'Arus total bertambah sedangkan tegangan tetap sama dengan satu modul',
+      'Daya modul otomatis menjadi nol',
+      'Frekuensi listrik berubah menjadi 100 Hz',
+      'A',
+      'Hubungan seri menjumlahkan tegangan (V) dengan arus (A) yang sama, sedangkan hubungan paralel menjumlahkan arus dengan tegangan yang sama.',
+      'Solar Components Handbook', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q103', 'Solar Power Plants', 'Medium',
+      'Selain panel surya dan inverter, komponen apa yang umumnya wajib ada pada sistem PLTS Off-Grid?',
+      'Baterai penyimpan energi dan solar charge controller',
+      'Meteran kWh ekspor-impor PLN saja',
+      'Turbin uap dan kondensor',
+      'Boiler batubara berkapasitas kecil',
+      'A',
+      'Sistem Off-Grid tidak terhubung ke jaringan PLN, sehingga membutuhkan baterai untuk menyimpan energi dan charge controller untuk mengatur pengisian baterai.',
+      'Off-Grid Solar Design Guide', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q104', 'Solar Power Plants', 'Hard',
+      'Penurunan produksi energi modul surya secara bertahap sepanjang umur pakainya disebut degradasi. Berapa kisaran degradasi tahunan modul silikon berkualitas?',
+      'Sekitar 0,5% - 0,7% per tahun',
+      'Sekitar 20% - 30% per tahun',
+      'Sekitar 50% per tahun',
+      'Tidak pernah terjadi degradasi sama sekali',
+      'A',
+      'Modul silikon berkualitas umumnya mengalami degradasi sekitar 0,5-0,7% per tahun, sehingga garansi performa linear 25-30 tahun masih menjamin output sekitar 80-87% dari kapasitas awal.',
+      'Solar Module Warranty Standards', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q105', 'Solar Power Plants', 'Medium',
+      'Untuk lokasi di Banten (sekitar 6° Lintang Selatan), ke arah mana panel surya sebaiknya dihadapkan agar produksi tahunan optimal?',
+      'Menghadap ke arah utara dengan kemiringan kecil',
+      'Menghadap ke arah selatan dengan kemiringan curam',
+      'Menghadap vertikal ke tanah',
+      'Menghadap ke arah barat dengan kemiringan 90 derajat',
+      'A',
+      'Di belahan bumi selatan, lintasan matahari condong ke utara, sehingga panel optimal menghadap utara. Dekat khatulistiwa kemiringan cukup kecil (sekitar 10-15 derajat) agar air hujan mengalir dan debu terbilas.',
+      'PV Siting & Orientation Guide', 'VERIFIED', 'ACTIVE'
+    ],
+    // --- CATEGORY 6: ELECTRIC SERVICES [Q106 - Q110] ---
+    [
+      'Q106', 'Electric Services', 'Easy',
+      'Sertifikat apakah yang diperlukan agar instalasi tenaga listrik baru dinyatakan laik dan boleh dioperasikan secara resmi di Indonesia?',
+      'Sertifikat Laik Operasi (SLO)',
+      'Sertifikat Kelulusan Ujian Sekolah',
+      'Sertifikat Keanggotaan Klub Olahraga',
+      'Sertifikat Hak Cipta Musik',
+      'A',
+      'SLO diterbitkan oleh lembaga inspeksi teknik terakreditasi setelah instalasi diperiksa dan diuji sesuai standar keselamatan ketenagalistrikan.',
+      'Regulasi Keselamatan Ketenagalistrikan', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q107', 'Electric Services', 'Medium',
+      'Apa tujuan utama inspeksi thermography (kamera inframerah) pada panel listrik, switchgear, maupun modul surya?',
+      'Mendeteksi titik panas (hotspot) akibat sambungan longgar atau komponen bermasalah tanpa harus memadamkan sistem',
+      'Mengukur kecepatan angin di sekitar instalasi',
+      'Menghitung jumlah karyawan di dalam gedung',
+      'Mengubah warna kabel menjadi lebih terang',
+      'A',
+      'Thermography adalah uji non-kontak yang memetakan suhu permukaan, sehingga hotspot dapat ditemukan dini sebelum berkembang menjadi kerusakan atau kebakaran.',
+      'Predictive Maintenance Handbook', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q108', 'Electric Services', 'Hard',
+      'Alat Megger (insulation resistance tester) pada jasa pengujian kelistrikan digunakan untuk...',
+      'Mengukur tahanan isolasi kabel, motor, dan trafo untuk memastikan isolasi masih baik',
+      'Mengukur kecerahan lampu penerangan',
+      'Mengukur kadar oksigen di udara',
+      'Menghitung tagihan listrik bulanan',
+      'A',
+      'Pengujian tahanan isolasi dengan tegangan DC tinggi mendeteksi degradasi isolasi sehingga kebocoran arus dan gangguan hubung singkat dapat dicegah.',
+      'Electrical Testing Standards', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q109', 'Electric Services', 'Medium',
+      'Mengapa banyak pelanggan industri memasang kapasitor bank untuk perbaikan faktor daya (power factor correction)?',
+      'Mengurangi daya reaktif sehingga efisiensi meningkat dan terhindar dari denda kelebihan kVARh',
+      'Menambah jumlah fasa listrik menjadi sepuluh',
+      'Mengubah listrik AC menjadi gas alam',
+      'Menghentikan seluruh konsumsi listrik pabrik',
+      'A',
+      'Beban induktif seperti motor menarik daya reaktif; kapasitor bank menyuplai daya reaktif lokal sehingga arus jaringan dan rugi-rugi berkurang serta faktor daya mendekati 1.',
+      'Industrial Power Quality Guide', 'VERIFIED', 'ACTIVE'
+    ],
+    [
+      'Q110', 'Electric Services', 'Easy',
+      'Apa perbedaan utama pemeliharaan preventif (preventive maintenance) dibanding pemeliharaan korektif?',
+      'Preventif dilakukan terjadwal sebelum kerusakan terjadi, sedangkan korektif dilakukan setelah terjadi kerusakan',
+      'Preventif hanya dilakukan setelah peralatan rusak total',
+      'Keduanya sama persis tanpa perbedaan',
+      'Preventif berarti peralatan dibiarkan sampai tidak berfungsi',
+      'A',
+      'Pemeliharaan preventif (inspeksi, pembersihan, pengujian berkala) menekan risiko gangguan mendadak, sedangkan korektif adalah perbaikan setelah kegagalan terjadi. Ini inti layanan O&M.',
+      'Asset Management Basics', 'VERIFIED', 'ACTIVE'
     ]
   ];
 }

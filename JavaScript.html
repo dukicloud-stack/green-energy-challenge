@@ -1,8 +1,11 @@
 <script>
 /**
- * GREEN ENERGY CHALLENGE - DUAL TUG OF WAR ENGINE (30s TIMER PER SOAL)
+ * GREEN ENERGY CHALLENGE - DUAL TUG OF WAR ENGINE (10s TIMER PER SOAL)
  * PT Krakatau Chandra Energi (KCE) - A member of Chandra Asri Group
  */
+
+const QUESTION_TIMER_SECONDS = 10;
+const QUESTION_URGENT_SECONDS = 3;
 
 const KCE_ASSETS = {
   congratulationsAudio: null
@@ -30,7 +33,7 @@ const GAME = {
     incorrect: 0,
     qIndex: 0,
     questions: [],
-    timerVal: 30,
+    timerVal: QUESTION_TIMER_SECONDS,
     timerInterval: null,
     canAnswer: true
   },
@@ -47,13 +50,13 @@ const GAME = {
     incorrect: 0,
     qIndex: 0,
     questions: [],
-    timerVal: 30,
+    timerVal: QUESTION_TIMER_SECONDS,
     timerInterval: null,
     canAnswer: true
   },
 
-  ropeOffset: 0,       // -4 (Blue Win) to +4 (Green Win)
-  winThreshold: 4,
+  ropeOffset: 0,       // -10 (Blue max lead) to +10 (Green max lead) across 10 rounds
+  winThreshold: 10,
   maxRounds: 10,
   startTime: 0,
   matchDuration: 0,
@@ -190,7 +193,7 @@ class AudioEngine {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
       if (isUrgent) {
-        // High alert warning tick when <= 5s
+        // High alert warning tick when <= 3s
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(1350, t);
         osc.frequency.exponentialRampToValueAtTime(1100, t + 0.06);
@@ -1441,13 +1444,16 @@ function renderHeroAvatarHTML(heroId, facing = 'right') {
 }
 
 let isElectricSurging = false;
+let electricSurgeDirection = 0;
 
 function triggerElectricSurge(targetDirection) {
   isElectricSurging = true;
+  electricSurgeDirection = targetDirection || 0;
   drawBattlefield();
   SFX.electricZap();
   setTimeout(() => {
     isElectricSurging = false;
+    electricSurgeDirection = 0;
     drawBattlefield();
   }, 420);
 }
@@ -1456,8 +1462,10 @@ function drawBattlefield() {
   const svg = document.getElementById('arena-battlefield-svg');
   if (!svg) return;
 
-  const offset = GAME.ropeOffset; // -4 to +4
-  const markerX = 500 + offset * 45; // 500 is center, compact swing range
+  const maxOffset = GAME.maxRounds || 10;
+  const clampedOffset = Math.max(-maxOffset, Math.min(maxOffset, GAME.ropeOffset));
+  const stepPx = 230 / maxOffset; // Keeps marker safely between fists (226..774) across 10-round sweep
+  const markerX = 500 + clampedOffset * stepPx;
   const ropeY = 104;
 
   // Prominent rope connects from P1 fists to P2 fists at exact Y=104
@@ -1466,8 +1474,9 @@ function drawBattlefield() {
   const p1SVG = renderHeroArena(GAME.p1.charId, p1HeroState, 'right');
   const p2SVG = renderHeroArena(GAME.p2.charId, p2HeroState, 'left');
 
-  // Generate jagged electric lightning path along the rope when pulled
-  const surgeTargetX = (offset < 0) ? 226 : 774;
+  // Generate jagged electric lightning path along the rope toward the pulling team
+  const surgeDir = electricSurgeDirection !== 0 ? electricSurgeDirection : (clampedOffset < 0 ? -1 : 1);
+  const surgeTargetX = (surgeDir < 0) ? 226 : 774;
   const surgeX1 = markerX;
   const surgeX2 = surgeTargetX;
   const midX1 = surgeX1 + (surgeX2 - surgeX1) * 0.35;
@@ -1544,14 +1553,9 @@ function showScreen(screenId) {
   if (screenId !== 'arena-screen') {
     try { if (typeof SFX !== 'undefined' && SFX) SFX.stopBattleBgm(); } catch(e) {}
     try { if (typeof SFX !== 'undefined' && SFX) SFX.stopCelebrationVoice(); } catch(e) {}
-    if (GAME.p1 && GAME.p1.timerInterval) {
-      clearInterval(GAME.p1.timerInterval);
-      GAME.p1.timerInterval = null;
-    }
-    if (GAME.p2 && GAME.p2.timerInterval) {
-      clearInterval(GAME.p2.timerInterval);
-      GAME.p2.timerInterval = null;
-    }
+    stopAllArenaTimers();
+    const prepOverlay = document.getElementById('arena-prep-overlay');
+    if (prepOverlay) prepOverlay.classList.remove('active');
     GAME.isGameOver = true;
     try { closeVictoryModal(); } catch(e) {}
 
@@ -1675,9 +1679,27 @@ function renderCharacterGrids() {
 // 6. ARENA MATCH INITIALIZATION & 3-2-1 CHARGING COUNTDOWN
 // ==========================================================================
 
+let prepCountdownInterval = null;
+
+function stopAllArenaTimers() {
+  if (prepCountdownInterval) {
+    clearInterval(prepCountdownInterval);
+    prepCountdownInterval = null;
+  }
+  if (GAME.p1 && GAME.p1.timerInterval) {
+    clearInterval(GAME.p1.timerInterval);
+    GAME.p1.timerInterval = null;
+  }
+  if (GAME.p2 && GAME.p2.timerInterval) {
+    clearInterval(GAME.p2.timerInterval);
+    GAME.p2.timerInterval = null;
+  }
+}
+
 function confirmAndStartMatch() {
   SFX.click();
   SFX.stopHomeBgm();
+  stopAllArenaTimers();
 
   GAME.ropeOffset = 0;
   GAME.isGameOver = false;
@@ -1708,7 +1730,18 @@ function confirmAndStartMatch() {
   if (p2ArenaEl) { p2ArenaEl.innerText = p2ArenaName; p2ArenaEl.title = p2ArenaName; }
   document.getElementById('arena-p1-score').innerText = '0';
   document.getElementById('arena-p2-score').innerText = '0';
-  document.getElementById('arena-round-indicator').innerText = 'Ronde 1 / 10';
+  document.getElementById('arena-round-indicator').innerText = `Ronde 1 / ${GAME.maxRounds}`;
+
+  ['p1', 'p2'].forEach(side => {
+    const tVal = document.getElementById(`${side}-timer-val`);
+    const tBadge = document.getElementById(`${side}-timer-badge`);
+    const fb = document.getElementById(`${side}-status-feedback`);
+    const grid = document.getElementById(`${side}-answers-grid`);
+    if (tVal) tVal.innerText = `${QUESTION_TIMER_SECONDS}s`;
+    if (tBadge) tBadge.classList.remove('urgent');
+    if (fb) { fb.className = 'q-status-feedback'; fb.innerText = ''; }
+    if (grid) grid.innerHTML = '';
+  });
 
   drawBattlefield();
 
@@ -1729,7 +1762,7 @@ function confirmAndStartMatch() {
   }
   SFX.countdownBeep(false);
 
-  const countdown = setInterval(() => {
+  prepCountdownInterval = setInterval(() => {
     count--;
     if (count > 0) {
       if (countEl) {
@@ -1750,7 +1783,8 @@ function confirmAndStartMatch() {
       }
       SFX.countdownBeep(true);
     } else {
-      clearInterval(countdown);
+      clearInterval(prepCountdownInterval);
+      prepCountdownInterval = null;
       if (overlay) overlay.classList.remove('active');
       startDualArenaDuel();
     }
@@ -1759,15 +1793,15 @@ function confirmAndStartMatch() {
 }
 
 // ==========================================================================
-// 7. SIMULTANEOUS DUAL QUESTION LOGIC WITH 30s TIMER PER SOAL
+// 7. SIMULTANEOUS DUAL QUESTION LOGIC WITH 10s TIMER PER SOAL (FULL 10 ROUNDS)
 // ==========================================================================
 
 function startDualArenaDuel() {
-  const allQs = getFallbackQuestions();
-  const half = Math.floor(allQs.length / 2);
+  const pool = shuffleArray([...getFallbackQuestions()]);
+  const half = Math.floor(pool.length / 2);
 
-  GAME.p1.questions = shuffleArray(allQs.slice(0, half));
-  GAME.p2.questions = shuffleArray(allQs.slice(half));
+  GAME.p1.questions = shuffleArray(pool.slice(0, half));
+  GAME.p2.questions = shuffleArray(pool.slice(half));
 
   GAME.startTime = Date.now();
   GAME.p1.canAnswer = true;
@@ -1776,6 +1810,7 @@ function startDualArenaDuel() {
   // Start exciting battle soundtrack!
   SFX.startBattleBgm();
 
+  updateArenaRoundIndicator();
   renderP1Question();
   startP1QuestionTimer();
 
@@ -1783,50 +1818,128 @@ function startDualArenaDuel() {
   startP2QuestionTimer();
 }
 
-// ----------------- PLAYER 1 (BLUE) QUESTION & TIMER -----------------
+function getPlayerSideMeta(side) {
+  const isP1 = (side === 'p1');
+  return {
+    side,
+    player: isP1 ? GAME.p1 : GAME.p2,
+    other: isP1 ? GAME.p2 : GAME.p1,
+    badgePrefix: isP1 ? 'P1' : 'P2',
+    pullDir: isP1 ? -1 : 1,
+    pullLabel: isP1 ? 'Player 1' : 'Player 2',
+    setSelfHero: (state) => { if (isP1) p1HeroState = state; else p2HeroState = state; },
+    setOtherHero: (state) => { if (isP1) p2HeroState = state; else p1HeroState = state; }
+  };
+}
 
-function startP1QuestionTimer() {
-  clearInterval(GAME.p1.timerInterval);
-  GAME.p1.timerVal = 30;
-  const timerValEl = document.getElementById('p1-timer-val');
-  const timerBadge = document.getElementById('p1-timer-badge');
+function updateArenaRoundIndicator() {
+  const roundEl = document.getElementById('arena-round-indicator');
+  if (!roundEl) return;
+  const currentRound = Math.min(GAME.maxRounds, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1);
+  roundEl.innerText = `Ronde ${currentRound} / ${GAME.maxRounds}`;
+}
 
-  if (timerValEl) timerValEl.innerText = '30s';
+function setAnswerGridDisabled(side, disabled) {
+  document.querySelectorAll(`#${side}-answers-grid .btn-dual-answer`).forEach(btn => {
+    btn.disabled = disabled;
+  });
+}
+
+function renderPlayerFinishedState(side) {
+  if (GAME.isGameOver) return;
+  const meta = getPlayerSideMeta(side);
+  clearInterval(meta.player.timerInterval);
+  meta.player.timerInterval = null;
+  meta.player.canAnswer = false;
+
+  const timerValEl = document.getElementById(`${side}-timer-val`);
+  const timerBadge = document.getElementById(`${side}-timer-badge`);
+  const qBadge = document.getElementById(`${side}-q-badge`);
+  const qText = document.getElementById(`${side}-q-text`);
+  const ansGrid = document.getElementById(`${side}-answers-grid`);
+  const feedback = document.getElementById(`${side}-status-feedback`);
+
+  if (timerValEl) timerValEl.innerText = `${GAME.maxRounds}/${GAME.maxRounds}`;
+  if (timerBadge) timerBadge.classList.remove('urgent');
+  if (qBadge) qBadge.innerText = `${meta.badgePrefix}: ${meta.player.name} (${GAME.maxRounds}/${GAME.maxRounds} ✓)`;
+  if (qText) qText.innerText = `Semua ${GAME.maxRounds} ronde selesai! Menunggu ${meta.other.name} menyelesaikan sisa soal...`;
+
+  if (ansGrid) {
+    ansGrid.innerHTML = `
+      <div class="q-finished-wait-box">
+        <div class="wait-icon">⏳</div>
+        <div class="wait-title">${meta.player.name} selesai ${GAME.maxRounds}/${GAME.maxRounds} soal!</div>
+        <div class="wait-sub">Skor sementara: ${meta.player.score} Poin (${meta.player.correct} benar). Menunggu lawan menyelesaikan semua ronde...</div>
+      </div>
+    `;
+  }
+
+  if (feedback) {
+    feedback.className = 'q-status-feedback info show';
+    feedback.innerText = `${GAME.maxRounds} ronde selesai! Pertandingan berlanjut hingga kedua pemain menyelesaikan ronde ke-${GAME.maxRounds}.`;
+  }
+}
+
+function startPlayerQuestionTimer(side) {
+  const meta = getPlayerSideMeta(side);
+  clearInterval(meta.player.timerInterval);
+  if (GAME.isGameOver || meta.player.qIndex >= GAME.maxRounds) return;
+
+  meta.player.timerVal = QUESTION_TIMER_SECONDS;
+  const timerValEl = document.getElementById(`${side}-timer-val`);
+  const timerBadge = document.getElementById(`${side}-timer-badge`);
+
+  if (timerValEl) timerValEl.innerText = `${QUESTION_TIMER_SECONDS}s`;
   if (timerBadge) timerBadge.classList.remove('urgent');
 
-  GAME.p1.timerInterval = setInterval(() => {
-    if (GAME.isGameOver) {
-      clearInterval(GAME.p1.timerInterval);
+  meta.player.timerInterval = setInterval(() => {
+    if (GAME.isGameOver || meta.player.qIndex >= GAME.maxRounds) {
+      clearInterval(meta.player.timerInterval);
+      meta.player.timerInterval = null;
       return;
     }
-    GAME.p1.timerVal--;
-    if (timerValEl) timerValEl.innerText = GAME.p1.timerVal + 's';
-    if (GAME.p1.timerVal <= 5 && timerBadge) timerBadge.classList.add('urgent');
-    SFX.timerTick(GAME.p1.timerVal <= 5 || GAME.p2.timerVal <= 5);
+    meta.player.timerVal--;
+    if (timerValEl) timerValEl.innerText = meta.player.timerVal + 's';
+    if (meta.player.timerVal <= QUESTION_URGENT_SECONDS && timerBadge) {
+      timerBadge.classList.add('urgent');
+    }
 
-    if (GAME.p1.timerVal <= 0) {
-      clearInterval(GAME.p1.timerInterval);
-      handleP1Timeout();
+    const p1Urgent = GAME.p1.qIndex < GAME.maxRounds && GAME.p1.timerVal <= QUESTION_URGENT_SECONDS;
+    const p2Urgent = GAME.p2.qIndex < GAME.maxRounds && GAME.p2.timerVal <= QUESTION_URGENT_SECONDS;
+    SFX.timerTick(p1Urgent || p2Urgent);
+
+    if (meta.player.timerVal <= 0) {
+      clearInterval(meta.player.timerInterval);
+      meta.player.timerInterval = null;
+      handlePlayerTimeout(side);
     }
   }, 1000);
 }
 
-function renderP1Question() {
+function renderPlayerQuestion(side) {
   if (GAME.isGameOver) return;
-  const qList = GAME.p1.questions;
-  const q = qList[GAME.p1.qIndex % qList.length];
+  const meta = getPlayerSideMeta(side);
+  if (meta.player.qIndex >= GAME.maxRounds) {
+    renderPlayerFinishedState(side);
+    return;
+  }
 
-  const qText = document.getElementById('p1-q-text');
-  const qCat = document.getElementById('p1-q-category');
-  const qBadge = document.getElementById('p1-q-badge');
-  const ansGrid = document.getElementById('p1-answers-grid');
-  const feedback = document.getElementById('p1-status-feedback');
+  const qList = meta.player.questions;
+  const q = qList[meta.player.qIndex % qList.length];
 
-  if (qBadge) qBadge.innerText = `P1: ${GAME.p1.name} (Soal #${GAME.p1.qIndex + 1})`;
-    if (qText) qText.innerText = q.question;
-  if (feedback) feedback.className = 'q-status-feedback';
+  const qText = document.getElementById(`${side}-q-text`);
+  const qBadge = document.getElementById(`${side}-q-badge`);
+  const ansGrid = document.getElementById(`${side}-answers-grid`);
+  const feedback = document.getElementById(`${side}-status-feedback`);
 
-  document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
+  if (qBadge) qBadge.innerText = `${meta.badgePrefix}: ${meta.player.name} (Soal ${meta.player.qIndex + 1}/${GAME.maxRounds})`;
+  if (qText) qText.innerText = q.question;
+  if (feedback) {
+    feedback.className = 'q-status-feedback';
+    feedback.innerText = '';
+  }
+
+  updateArenaRoundIndicator();
 
   if (ansGrid) {
     ansGrid.innerHTML = '';
@@ -1835,68 +1948,77 @@ function renderP1Question() {
       const btn = document.createElement('button');
       btn.className = 'btn-dual-answer';
       btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
-      btn.onclick = () => handleP1Answer(idx, btn, q);
+      btn.onclick = () => handlePlayerAnswer(side, idx, btn, q);
       ansGrid.appendChild(btn);
     });
   }
 }
 
-function handleP1Answer(chosenIdx, btnEl, q) {
-  if (!GAME.p1.canAnswer || GAME.isGameOver) return;
-  clearInterval(GAME.p1.timerInterval);
+function advancePlayerRound(side) {
+  if (GAME.isGameOver) return;
+  const meta = getPlayerSideMeta(side);
+  meta.player.qIndex++;
+  updateArenaRoundIndicator();
+
+  if (checkMatchProgress()) return;
+
+  if (meta.player.qIndex >= GAME.maxRounds) {
+    renderPlayerFinishedState(side);
+    return;
+  }
+
+  meta.player.canAnswer = true;
+  renderPlayerQuestion(side);
+  startPlayerQuestionTimer(side);
+}
+
+function handlePlayerAnswer(side, chosenIdx, btnEl, q) {
+  const meta = getPlayerSideMeta(side);
+  if (!meta.player.canAnswer || GAME.isGameOver || meta.player.qIndex >= GAME.maxRounds) return;
+
+  meta.player.canAnswer = false;
+  clearInterval(meta.player.timerInterval);
+  meta.player.timerInterval = null;
+  setAnswerGridDisabled(side, true);
 
   const isCorrect = (chosenIdx === q._correctIdx);
-  const feedback = document.getElementById('p1-status-feedback');
+  const feedback = document.getElementById(`${side}-status-feedback`);
 
   if (isCorrect) {
     SFX.correct();
     SFX.ropePull();
     btnEl.classList.add('correct');
 
-    GAME.p1.score += 100;
-    GAME.p1.pulls += 1;
-    GAME.p1.correct += 1;
-    GAME.ropeOffset -= 1; // Moves toward Blue!
+    meta.player.score += 100;
+    meta.player.pulls += 1;
+    meta.player.correct += 1;
+    GAME.ropeOffset += meta.pullDir;
 
-    document.getElementById('arena-p1-score').innerText = GAME.p1.score;
+    const scoreEl = document.getElementById(`arena-${side}-score`);
+    if (scoreEl) scoreEl.innerText = meta.player.score;
 
     if (feedback) {
       feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 1!';
+      feedback.innerText = `BENAR! (+100 Poin) Tali ditarik ke ${meta.pullLabel}!`;
     }
 
-    // Hero pose: P1 pulls, P2 stumbles slightly (does NOT fall!)
-    p1HeroState = 'pull';
-    p2HeroState = 'stumble';
-    triggerElectricSurge(-1);
+    meta.setSelfHero('pull');
+    meta.setOtherHero('stumble');
+    triggerElectricSurge(meta.pullDir);
     setTimeout(() => {
       if (!GAME.isGameOver) {
-        p2HeroState = 'pull';
+        meta.setOtherHero('pull');
         drawBattlefield();
       }
     }, 450);
 
-    // Win condition check
-    if (GAME.ropeOffset <= -GAME.winThreshold) {
-      triggerEndMatch(1);
-      return;
-    }
-
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        GAME.p1.qIndex++;
-        checkMatchProgress();
-        renderP1Question();
-        startP1QuestionTimer();
-      }
-    }, 400);
+    setTimeout(() => advancePlayerRound(side), 400);
   } else {
     SFX.wrong();
     btnEl.classList.add('incorrect');
-    GAME.p1.incorrect += 1;
+    meta.player.incorrect += 1;
 
-    // Highlight correct answer
-    const allBtns = document.querySelectorAll('#p1-answers-grid .btn-dual-answer');
+    const allBtns = document.querySelectorAll(`#${side}-answers-grid .btn-dual-answer`);
     if (allBtns[q._correctIdx]) allBtns[q._correctIdx].classList.add('correct');
 
     if (feedback) {
@@ -1904,243 +2026,70 @@ function handleP1Answer(chosenIdx, btnEl, q) {
       feedback.innerText = 'Kurang tepat! Tali bertahan.';
     }
 
-    p1HeroState = 'stumble';
+    meta.setSelfHero('stumble');
     drawBattlefield();
     setTimeout(() => {
       if (!GAME.isGameOver) {
-        p1HeroState = 'pull';
+        meta.setSelfHero('pull');
         drawBattlefield();
       }
     }, 450);
 
-    GAME.p1.canAnswer = false;
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        GAME.p1.qIndex++;
-        checkMatchProgress();
-        renderP1Question();
-        startP1QuestionTimer();
-        GAME.p1.canAnswer = true;
-      }
-    }, 700);
+    setTimeout(() => advancePlayerRound(side), 700);
   }
 }
 
-function handleP1Timeout() {
-  if (GAME.isGameOver) return;
-  SFX.wrong();
-  GAME.p1.incorrect += 1;
+function handlePlayerTimeout(side) {
+  const meta = getPlayerSideMeta(side);
+  if (GAME.isGameOver || !meta.player.canAnswer || meta.player.qIndex >= GAME.maxRounds) return;
 
-  const feedback = document.getElementById('p1-status-feedback');
+  meta.player.canAnswer = false;
+  setAnswerGridDisabled(side, true);
+  SFX.wrong();
+  meta.player.incorrect += 1;
+
+  const isLastQuestion = (meta.player.qIndex + 1 >= GAME.maxRounds);
+  const feedback = document.getElementById(`${side}-status-feedback`);
   if (feedback) {
     feedback.className = 'q-status-feedback incorrect show';
-    feedback.innerText = 'WAKTU 30 DETIK HABIS! Soal berganti.';
+    feedback.innerText = isLastQuestion
+      ? `WAKTU ${QUESTION_TIMER_SECONDS} DETIK HABIS! Soal terakhir selesai.`
+      : `WAKTU ${QUESTION_TIMER_SECONDS} DETIK HABIS! Soal berganti.`;
   }
 
-  p1HeroState = 'stumble';
+  meta.setSelfHero('stumble');
   drawBattlefield();
   setTimeout(() => {
     if (!GAME.isGameOver) {
-      p1HeroState = 'pull';
+      meta.setSelfHero('pull');
       drawBattlefield();
     }
   }, 450);
 
-  GAME.p1.canAnswer = false;
-  setTimeout(() => {
-    if (!GAME.isGameOver) {
-      GAME.p1.qIndex++;
-      checkMatchProgress();
-      renderP1Question();
-      startP1QuestionTimer();
-      GAME.p1.canAnswer = true;
-    }
-  }, 600);
+  setTimeout(() => advancePlayerRound(side), 600);
 }
 
-// ----------------- PLAYER 2 (GREEN) QUESTION & TIMER -----------------
+// Thin side-specific wrappers
+function startP1QuestionTimer() { startPlayerQuestionTimer('p1'); }
+function renderP1Question() { renderPlayerQuestion('p1'); }
+function handleP1Answer(chosenIdx, btnEl, q) { handlePlayerAnswer('p1', chosenIdx, btnEl, q); }
+function handleP1Timeout() { handlePlayerTimeout('p1'); }
 
-function startP2QuestionTimer() {
-  clearInterval(GAME.p2.timerInterval);
-  GAME.p2.timerVal = 30;
-  const timerValEl = document.getElementById('p2-timer-val');
-  const timerBadge = document.getElementById('p2-timer-badge');
-
-  if (timerValEl) timerValEl.innerText = '30s';
-  if (timerBadge) timerBadge.classList.remove('urgent');
-
-  GAME.p2.timerInterval = setInterval(() => {
-    if (GAME.isGameOver) {
-      clearInterval(GAME.p2.timerInterval);
-      return;
-    }
-    GAME.p2.timerVal--;
-    if (timerValEl) timerValEl.innerText = GAME.p2.timerVal + 's';
-    if (GAME.p2.timerVal <= 5 && timerBadge) timerBadge.classList.add('urgent');
-    SFX.timerTick(GAME.p1.timerVal <= 5 || GAME.p2.timerVal <= 5);
-
-    if (GAME.p2.timerVal <= 0) {
-      clearInterval(GAME.p2.timerInterval);
-      handleP2Timeout();
-    }
-  }, 1000);
-}
-
-function renderP2Question() {
-  if (GAME.isGameOver) return;
-  const qList = GAME.p2.questions;
-  const q = qList[GAME.p2.qIndex % qList.length];
-
-  const qText = document.getElementById('p2-q-text');
-  const qCat = document.getElementById('p2-q-category');
-  const qBadge = document.getElementById('p2-q-badge');
-  const ansGrid = document.getElementById('p2-answers-grid');
-  const feedback = document.getElementById('p2-status-feedback');
-
-  if (qBadge) qBadge.innerText = `P2: ${GAME.p2.name} (Soal #${GAME.p2.qIndex + 1})`;
-    if (qText) qText.innerText = q.question;
-  if (feedback) feedback.className = 'q-status-feedback';
-
-  document.getElementById('arena-round-indicator').innerText = `Ronde ${Math.min(10, Math.max(GAME.p1.qIndex, GAME.p2.qIndex) + 1)} / 10`;
-
-  if (ansGrid) {
-    ansGrid.innerHTML = '';
-    const letters = ['A', 'B', 'C', 'D'];
-    q.options.forEach((opt, idx) => {
-      const btn = document.createElement('button');
-      btn.className = 'btn-dual-answer';
-      btn.innerHTML = `<span class="dual-ans-letter">${letters[idx]}</span> <span class="dual-ans-text">${opt}</span>`;
-      btn.onclick = () => handleP2Answer(idx, btn, q);
-      ansGrid.appendChild(btn);
-    });
-  }
-}
-
-function handleP2Answer(chosenIdx, btnEl, q) {
-  if (!GAME.p2.canAnswer || GAME.isGameOver) return;
-  clearInterval(GAME.p2.timerInterval);
-
-  const isCorrect = (chosenIdx === q._correctIdx);
-  const feedback = document.getElementById('p2-status-feedback');
-
-  if (isCorrect) {
-    SFX.correct();
-    SFX.ropePull();
-    btnEl.classList.add('correct');
-
-    GAME.p2.score += 100;
-    GAME.p2.pulls += 1;
-    GAME.p2.correct += 1;
-    GAME.ropeOffset += 1; // Moves toward Green!
-
-    document.getElementById('arena-p2-score').innerText = GAME.p2.score;
-
-    if (feedback) {
-      feedback.className = 'q-status-feedback correct show';
-      feedback.innerText = 'BENAR! (+100 Poin) Tali ditarik ke Player 2!';
-    }
-
-    // Hero pose: P2 pulls, P1 stumbles slightly (does NOT fall!)
-    p2HeroState = 'pull';
-    p1HeroState = 'stumble';
-    drawBattlefield();
-
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        p1HeroState = 'pull';
-        drawBattlefield();
-      }
-    }, 450);
-
-    // Win condition check
-    if (GAME.ropeOffset >= GAME.winThreshold) {
-      triggerEndMatch(2);
-      return;
-    }
-
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        GAME.p2.qIndex++;
-        checkMatchProgress();
-        renderP2Question();
-        startP2QuestionTimer();
-      }
-    }, 400);
-  } else {
-    SFX.wrong();
-    btnEl.classList.add('incorrect');
-    GAME.p2.incorrect += 1;
-
-    // Highlight correct answer
-    const allBtns = document.querySelectorAll('#p2-answers-grid .btn-dual-answer');
-    if (allBtns[q._correctIdx]) allBtns[q._correctIdx].classList.add('correct');
-
-    if (feedback) {
-      feedback.className = 'q-status-feedback incorrect show';
-      feedback.innerText = 'Kurang tepat! Tali bertahan.';
-    }
-
-    p2HeroState = 'stumble';
-    triggerElectricSurge(-1);
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        p2HeroState = 'pull';
-        drawBattlefield();
-      }
-    }, 450);
-
-    GAME.p2.canAnswer = false;
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        GAME.p2.qIndex++;
-        checkMatchProgress();
-        renderP2Question();
-        startP2QuestionTimer();
-        GAME.p2.canAnswer = true;
-      }
-    }, 700);
-  }
-}
-
-function handleP2Timeout() {
-  if (GAME.isGameOver) return;
-  SFX.wrong();
-  GAME.p2.incorrect += 1;
-
-  const feedback = document.getElementById('p2-status-feedback');
-  if (feedback) {
-    feedback.className = 'q-status-feedback incorrect show';
-    feedback.innerText = 'WAKTU 30 DETIK HABIS! Soal berganti.';
-  }
-
-  p2HeroState = 'stumble';
-  triggerElectricSurge(-1);
-    setTimeout(() => {
-      if (!GAME.isGameOver) {
-        p2HeroState = 'pull';
-        drawBattlefield();
-      }
-    }, 450);
-
-  GAME.p2.canAnswer = false;
-  setTimeout(() => {
-    if (!GAME.isGameOver) {
-      GAME.p2.qIndex++;
-      checkMatchProgress();
-      renderP2Question();
-      startP2QuestionTimer();
-      GAME.p2.canAnswer = true;
-    }
-  }, 600);
-}
+function startP2QuestionTimer() { startPlayerQuestionTimer('p2'); }
+function renderP2Question() { renderPlayerQuestion('p2'); }
+function handleP2Answer(chosenIdx, btnEl, q) { handlePlayerAnswer('p2', chosenIdx, btnEl, q); }
+function handleP2Timeout() { handlePlayerTimeout('p2'); }
 
 function checkMatchProgress() {
+  if (GAME.isGameOver) return true;
   if (GAME.p1.qIndex >= GAME.maxRounds && GAME.p2.qIndex >= GAME.maxRounds) {
-    // Both completed 10 questions -> whoever has the rope on their side wins!
+    // Both completed all 10 rounds -> whoever has the rope on their side wins!
     if (GAME.ropeOffset < 0) triggerEndMatch(1);
     else if (GAME.ropeOffset > 0) triggerEndMatch(2);
     else triggerEndMatch(0);
+    return true;
   }
+  return false;
 }
 
 // ==========================================================================
@@ -2148,6 +2097,7 @@ function checkMatchProgress() {
 // ==========================================================================
 
 function triggerEndMatch(winner) {
+  if (GAME.isGameOver) return;
   GAME.isGameOver = true;
   clearInterval(GAME.p1.timerInterval);
   clearInterval(GAME.p2.timerInterval);
@@ -2305,14 +2255,9 @@ function exitMatchToHome() {
   SFX.click();
   SFX.stopBattleBgm();
   SFX.stopCelebrationVoice();
-  if (GAME.p1 && GAME.p1.timerInterval) {
-    clearInterval(GAME.p1.timerInterval);
-    GAME.p1.timerInterval = null;
-  }
-  if (GAME.p2 && GAME.p2.timerInterval) {
-    clearInterval(GAME.p2.timerInterval);
-    GAME.p2.timerInterval = null;
-  }
+  stopAllArenaTimers();
+  const prepOverlay = document.getElementById('arena-prep-overlay');
+  if (prepOverlay) prepOverlay.classList.remove('active');
   GAME.isGameOver = true;
   closeVictoryModal();
   showScreen('welcome-screen');
@@ -2336,7 +2281,7 @@ function saveMatchRecord(winner) {
   const p2Name = (GAME.p2 && GAME.p2.name && GAME.p2.name.trim()) ? GAME.p2.name.trim() : 'Player 2';
   const p1Score = (GAME.p1 && typeof GAME.p1.score === 'number') ? GAME.p1.score : 0;
   const p2Score = (GAME.p2 && typeof GAME.p2.score === 'number') ? GAME.p2.score : 0;
-  const duration = GAME.matchDuration || 30;
+  const duration = GAME.matchDuration || 1;
 
   let winnerName = 'Seri';
   let winnerLabel = 'Seri';
@@ -2561,7 +2506,7 @@ function renderLeaderboardRows(data) {
       ? '<span class="badge-new-match">BARU ✨</span>'
       : '';
 
-    const durationText = row.duration ? (row.duration + 's') : '30s';
+    const durationText = row.duration ? (row.duration + 's') : '-';
     const dateText = row.date || 'Hari ini';
 
     tr.innerHTML = `
@@ -2624,26 +2569,6 @@ function getFallbackQuestions() {
     ]
   },
   {
-    "category": "Wilayah Operasi KCE",
-    "question": "Berapakah luas Kawasan Industri Krakatau (KIK) di Cilegon yang dilayani pasokan listriknya oleh KCE?",
-    "correct": "Lebih dari 2.600 Hektare",
-    "wrongs": [
-      "Sekitar 200 Hektare",
-      "Hanya 50 Hektare",
-      "Lebih dari 50.000 Hektare"
-    ]
-  },
-  {
-    "category": "Izin Ketenagalistrikan",
-    "question": "Izin ketenagalistrikan resmi yang dimiliki KCE untuk menyediakan listrik terintegrasi di kawasan industri adalah?",
-    "correct": "Izin Usaha Penyediaan Tenaga Listrik (IUPTL) Terintegrasi",
-    "wrongs": [
-      "Izin Edar Genset Mandiri",
-      "Sertifikat Pengecer Listrik Umum",
-      "Izin Impor Bahan Bakar Minyak"
-    ]
-  },
-  {
     "category": "Visi Perusahaan KCE",
     "question": "Apakah visi utama PT Krakatau Chandra Energi (KCE)?",
     "correct": "Menjadi perusahaan penyedia energi dan bisnis terkait yang terkemuka di Indonesia",
@@ -2651,46 +2576,6 @@ function getFallbackQuestions() {
       "Menjadi produsen baja lembaran terbesar di Asia Tenggara",
       "Menjadi distributor batubara termal utama",
       "Menjadi operator bandar udara internasional"
-    ]
-  },
-  {
-    "category": "Brand Hashtag KCE",
-    "question": "Apakah tagline dan hashtag resmi Chandra Asri Group yang diusung oleh KCE dalam transisi energi?",
-    "correct": "#YourGrowthPartner",
-    "wrongs": [
-      "#BajaTerbaikKita",
-      "#SemuaBisaBeliListrik",
-      "#ListrikMurahTanpaBatas"
-    ]
-  },
-  {
-    "category": "Sejarah KCE",
-    "question": "Pada tanggal berapakah unit ketenagalistrikan resmi berdiri mandiri dengan nama PT Krakatau Daya Listrik (KDL)?",
-    "correct": "28 Februari 1996",
-    "wrongs": [
-      "17 Agustus 1945",
-      "1 Januari 2010",
-      "10 November 2005"
-    ]
-  },
-  {
-    "category": "Sejarah PLTU Awal",
-    "question": "Sebelum beralih ke pembangkit gas, fasilitas pembangkit awal 400 MW yang diresmikan Presiden Soeharto pada 1979 adalah?",
-    "correct": "Pembangkit Listrik Tenaga Uap (PLTU)",
-    "wrongs": [
-      "Pembangkit Listrik Tenaga Panas Bumi (PLTP)",
-      "Pembangkit Listrik Tenaga Nuklir (PLTN)",
-      "Pembangkit Listrik Tenaga Angin (PLTB)"
-    ]
-  },
-  {
-    "category": "Modernisasi PLTGU 2015",
-    "question": "Pada tahun 2015, KCE melakukan lompatan efisiensi energi dengan mengoperasikan pembangkit ramah lingkungan berjenis?",
-    "correct": "Pembangkit Listrik Tenaga Gas dan Uap (PLTGU / CCPP) 120 MW",
-    "wrongs": [
-      "PLTU Batubara Terbuka 1.000 MW",
-      "Pembangkit Diesel Portabel 10 MW",
-      "Pembangkit Gambut Konvensional"
     ]
   },
   {
@@ -2734,26 +2619,6 @@ function getFallbackQuestions() {
     ]
   },
   {
-    "category": "Emisi Gas Alam",
-    "question": "Dibandingkan batubara konvensional, gas alam pada PLTGU KCE menghasilkan emisi karbon sekitar berapa persen lebih rendah?",
-    "correct": "Sekitar 40% - 50% lebih rendah",
-    "wrongs": [
-      "Hanya 2% lebih rendah",
-      "Sama persis dengan batubara",
-      "100% tanpa menghasilkan molekul apapun"
-    ]
-  },
-  {
-    "category": "Tegangan Transmisi",
-    "question": "Berapa level tegangan transmisi listrik utama yang dikelola KCE untuk keandalan kawasan industri?",
-    "correct": "150 kV (Kilovolt / Tegangan Tinggi)",
-    "wrongs": [
-      "220 Volt (Tegangan Rumah Tangga)",
-      "12 Volt (Tegangan Aki)",
-      "500 kV (Saluran Udara Ekstra Tinggi)"
-    ]
-  },
-  {
     "category": "Underground Cable",
     "question": "KCE menggunakan sistem kabel bawah tanah (underground cable) di beberapa zona industri dengan tujuan?",
     "correct": "Meningkatkan estetika, keandalan cuaca ekstrim, dan meminimalkan gangguan induksi petir",
@@ -2774,93 +2639,13 @@ function getFallbackQuestions() {
     ]
   },
   {
-    "category": "Sistem SCADA KCE",
-    "question": "Sistem komputasi otomatis yang digunakan KCE untuk memonitor jaringan listrik secara real-time adalah?",
-    "correct": "SCADA (Supervisory Control and Data Acquisition)",
-    "wrongs": [
-      "PABX Telepon Kabel",
-      "GPS Pelacak Kendaraan Truk",
-      "Mesin Kasir POS Elektronik"
-    ]
-  },
-  {
-    "category": "Kapasitas Kumulatif PLTS",
-    "question": "Berapakah estimasi kapasitas kumulatif terpasang PLTS dalam portofolio pengembangan energi bersih KCE saat ini?",
-    "correct": "Sekitar 11 MWp (Megawatt-peak)",
-    "wrongs": [
-      "Kurang dari 0,1 MWp",
-      "Sekitar 250 MWp",
-      "5.000 MWp"
-    ]
-  },
-  {
-    "category": "PLTS Krakatau Posco",
-    "question": "Berapa kapasitas total PLTS Atap yang dibangun KCE di gedung kantor dan pabrik PT Krakatau Posco?",
-    "correct": "1,2 MWp (Megawatt-peak)",
-    "wrongs": [
-      "0,05 MWp",
-      "15 MWp",
-      "120 MWp"
-    ]
-  },
-  {
-    "category": "Lokasi PLTS Krakatau Posco",
-    "question": "Di area fasilitas mana sajakah modul PLTS Atap Krakatau Posco terpasang oleh KCE?",
-    "correct": "Atap Main Office dan Coil Yard Hot Rolling Plant",
-    "wrongs": [
-      "Di dalam ruang bawah tanah boiler",
-      "Di menara cerobong asap blast furnace",
-      "Di dasar kolam pendingin terak baja"
-    ]
-  },
-  {
     "category": "PLTS Ground-Mounted KCE",
     "question": "Proyek PLTS yang dibangun di atas permukaan tanah terbuka di area operasional KCE disebut?",
-    "correct": "PLTS Ground-Mounted (Solar Farm)",
+    "correct": "PLTS Ground-Mounted",
     "wrongs": [
       "PLTS Bawah Tanah",
       "PLTS Satelit Orbit",
       "PLTS Menara Suar"
-    ]
-  },
-  {
-    "category": "Kapasitas Solar Farm KCE",
-    "question": "Berapa kapasitas proyek PLTS Ground-Mounted yang telah dirampungkan KCE untuk kebutuhan industri?",
-    "correct": "4,7 MWp dengan ekspansi tambahan 1 MWp mandiri",
-    "wrongs": [
-      "50 kWp",
-      "100 MWp",
-      "800 MWp"
-    ]
-  },
-  {
-    "category": "PLTS Terapung Waduk Nadra",
-    "question": "Proyek energi surya terapung (Floating Solar PV) KCE di Waduk Nadra dirancang bekerjasama dengan?",
-    "correct": "PT Krakatau Tirta Industri (KTI)",
-    "wrongs": [
-      "Perum Perhutani Jawa Barat",
-      "Dinas Kebersihan Kota Bandung",
-      "Kementerian Kelautan dan Perikanan"
-    ]
-  },
-  {
-    "category": "Kapasitas Rencana Floating Solar",
-    "question": "Berapakah potensi kapasitas rencana pengembangan PLTS Terapung Waduk Nadra?",
-    "correct": "Hingga mencapai 32 MWp",
-    "wrongs": [
-      "Hanya 0,5 MWp",
-      "Lebih dari 1.000 MWp",
-      "3.200 MWp"
-    ]
-  },
-  {
-    "category": "Keuntungan PLTS Terapung",
-    "question": "Apa keunggulan teknis utama memasang panel surya terapung di atas permukaan waduk/danau?",
-    "correct": "Efek pendinginan air meningkatkan efisiensi panel serta mengurangi penguapan air waduk",
-    "wrongs": [
-      "Panel surya dapat berenang mengikuti arah angin kencang",
-      "Tidak memerlukan kabel penyalur listrik ke darat",
-      "Mampu menghasilkan listrik tanpa membutuhkan sinar matahari"
     ]
   },
   {
@@ -2871,16 +2656,6 @@ function getFallbackQuestions() {
       "Klien mendapatkan listrik gratis seumur hidup tanpa membayar apapun",
       "Klien wajib membeli seluruh panel sebelum proyek dimulai",
       "Klien harus meminjam uang secara tunai ke bank komersial"
-    ]
-  },
-  {
-    "category": "Skema Sewa PLTS (Leasing)",
-    "question": "Pada skema Sewa PLTS (Solar Lease) KCE, bagaimana mekanisme pembayaran pelanggan industri?",
-    "correct": "Pelanggan membayar biaya sewa berkala yang tetap selama masa kontrak pemanfaatan sistem surya",
-    "wrongs": [
-      "Pelanggan membayar dengan barter hasil produksi pabrik",
-      "Pembayaran hanya dilakukan jika cuaca hujan sepanjang bulan",
-      "Pelanggan diwajibkan membeli saham KCE secara langsung"
     ]
   },
   {
@@ -2924,16 +2699,6 @@ function getFallbackQuestions() {
     ]
   },
   {
-    "category": "Bahan Baku Sel Surya",
-    "question": "Material semikonduktor yang paling umum digunakan sebagai bahan utama pembuatan sel surya fotovoltaik adalah?",
-    "correct": "Silikon (Silicon - Si)",
-    "wrongs": [
-      "Aluminium murni",
-      "Tembaga murni",
-      "Plastik polietilena"
-    ]
-  },
-  {
     "category": "Fungsi Inverter PLTS",
     "question": "Apakah fungsi krusial dari perangkat Inverter dalam instalasi PLTS KCE?",
     "correct": "Mengubah arus searah (DC) dari panel surya menjadi arus bolak-balik (AC) standar industri",
@@ -2951,26 +2716,6 @@ function getFallbackQuestions() {
       "Hanya beroperasi tanpa terhubung ke kabel transmisi manapun",
       "Hanya bisa menyala menggunakan baterai kering isi ulang",
       "Membutuhkan bahan bakar solar cadangan setiap 2 jam"
-    ]
-  },
-  {
-    "category": "Sistem BESS (Battery Storage)",
-    "question": "Perangkat penyimpan energi kimia skala besar yang dipadukan dengan PLTS untuk stabilitas pasokan disebut?",
-    "correct": "BESS (Battery Energy Storage System)",
-    "wrongs": [
-      "UPS Kantor Mini",
-      "Kapasitor Bank Statis",
-      "Flywheel Mekanikal Manual"
-    ]
-  },
-  {
-    "category": "Panel Surya Monokristalin",
-    "question": "Dibandingkan polikristalin, panel surya tipe Monokristalin memiliki ciri khas yaitu?",
-    "correct": "Warna sel hitam pekat seragam dengan efisiensi konversi energi yang lebih tinggi",
-    "wrongs": [
-      "Warna biru bercorak marmer dengan harga sangat murah",
-      "Terbuat dari kaca daur ulang transparan",
-      "Hanya mampu menghasilkan tegangan 1,5 Volt"
     ]
   },
   {
@@ -3011,106 +2756,6 @@ function getFallbackQuestions() {
       "Piala Adipura Kencana",
       "Sertifikat Pembangkit Paling Cepat",
       "Piagam Efisiensi BBM"
-    ]
-  },
-  {
-    "category": "Sertifikasi SMK3",
-    "question": "KCE telah memperoleh sertifikasi Sistem Manajemen Keselamatan dan Kesehatan Kerja (SMK3) pada kategori?",
-    "correct": "Tingkat Lanjutan (Advanced Level)",
-    "wrongs": [
-      "Tingkat Pemula Tanpa Audit",
-      "Tingkat Percobaan Sementara",
-      "Tingkat Dasar Tanpa Verifikasi"
-    ]
-  },
-  {
-    "category": "Peringkat PROPER KLH",
-    "question": "Peringkat PROPER dari Kementerian Lingkungan Hidup yang berhasil dipertahankan KCE atas kepatuhan lingkungan adalah?",
-    "correct": "PROPER Biru",
-    "wrongs": [
-      "PROPER Hitam",
-      "PROPER Abu-Abu",
-      "PROPER Jingga"
-    ]
-  },
-  {
-    "category": "Target Net Zero Emission",
-    "question": "Kapan target komitmen nasional Indonesia untuk mencapai Net Zero Emission (NZE) yang didukung penuh oleh KCE?",
-    "correct": "Tahun 2060 atau lebih cepat",
-    "wrongs": [
-      "Tahun 2025",
-      "Tahun 2150",
-      "Tahun 3000"
-    ]
-  },
-  {
-    "category": "Definisi Dekarbonisasi",
-    "question": "Apakah yang dimaksud dengan istilah Dekarbonisasi pada sektor industri energi?",
-    "correct": "Proses pengurangan atau penghapusan emisi gas rumah kaca (khususnya CO2) dari proses pembangkitan dan konsumsi energi",
-    "wrongs": [
-      "Pemisahan unsur karbon dari bijih besi menjadi baja tahan karat",
-      "Penyulingan minyak pelumas bekas menjadi solar",
-      "Pembersihan sisa pembakaran pada cerobong pabrik"
-    ]
-  },
-  {
-    "category": "Audit Energi Industri",
-    "question": "Layanan audit energi yang ditawarkan KCE kepada tenant industri bertujuan untuk?",
-    "correct": "Mengidentifikasi peluang penghematan energi dan merekomendasikan solusi efisiensi berbiaya efektif",
-    "wrongs": [
-      "Menghitung pajak tahunan perusahaan",
-      "Memeriksa kehadiran karyawan pabrik",
-      "Menentukan harga jual produk konsumen"
-    ]
-  },
-  {
-    "category": "Sertifikat Energi Terbarukan (REC)",
-    "question": "Instrumen internasional yang membuktikan bahwa 1 MWh listrik dihasilkan dari sumber terbarukan disebut?",
-    "correct": "Renewable Energy Certificate (REC)",
-    "wrongs": [
-      "Surat Izin Penggunaan Surya (SIPS)",
-      "Kwitansi Pembayaran Listrik Bulanan",
-      "Sertifikat Hak Milik Lahan Panel"
-    ]
-  },
-  {
-    "category": "Target Bauran EBT Nasional",
-    "question": "Berapakah target bauran Energi Baru Terbarukan (EBT) nasional dalam Kebijakan Energi Nasional (KEN)?",
-    "correct": "23% pada tahun 2025 dan terus meningkat di tahun-tahun berikutnya",
-    "wrongs": [
-      "5% pada tahun 2030",
-      "100% pada tahun 2024",
-      "0% karena tetap mengandalkan minyak bumi"
-    ]
-  },
-  {
-    "category": "Energi Surya di Indonesia",
-    "question": "Mengapa Indonesia memiliki potensi energi surya yang luar biasa besar sepanjang tahun?",
-    "correct": "Terletak di garis khatulistiwa dengan penyinaran matahari rata-rata 4,8 kWh/m2 per hari",
-    "wrongs": [
-      "Karena Indonesia memiliki 4 musim salju dan gugur",
-      "Karena tidak pernah terjadi pergantian siang dan malam",
-      "Karena Indonesia memiliki wilayah gurun pasir terluas"
-    ]
-  },
-  {
-    "category": "Prinsip Keandalan Daya KCE",
-    "question": "Bagi industri petrokimia dan baja di Cilegon, mengapa stabilitas pasokan listrik KCE sangat kritikal?",
-    "correct": "Penurunan tegangan (voltage dip) seketika dapat memicu *trip* mesin produksi bernilai miliaran rupiah",
-    "wrongs": [
-      "Supaya lampu penerangan jalan tidak padam di sore hari",
-      "Hanya agar meteran listrik berputar stabil",
-      "Supaya tidak perlu membayar biaya abonemen"
-    ]
-  },
-  {
-    "category": "Sinergi Chandra Asri Group",
-    "question": "Keberadaan KCE di dalam ekosistem Chandra Asri Group memperkuat peran grup sebagai?",
-    "correct": "Perusahaan solusi energi dan kimia terintegrasi terkemuka di Asia Tenggara",
-    "wrongs": [
-      "Perusahaan ekspedisi pengiriman paket ritel kilat",
-      "Penyedia telekomunikasi satelit seluler",
-      "Manufaktur perangkat komputer jinjing"
     ]
   }
 ];

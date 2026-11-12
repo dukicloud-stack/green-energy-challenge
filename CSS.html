@@ -704,7 +704,7 @@ button { font-family: inherit; }
 }
 
 /* ==========================================================================
-   ARENA SCREEN: BATTLEFIELD + 30-SECOND INDEPENDENT TIMERS PER SOAL
+   ARENA SCREEN: BATTLEFIELD + 10-SECOND INDEPENDENT TIMERS PER SOAL
    ========================================================================== */
 
 .arena-top-bar {
@@ -801,7 +801,7 @@ button { font-family: inherit; }
   display: block;
 }
 
-/* Dual Question Pods with 30s Timer per Soal */
+/* Dual Question Pods with 10s Timer per Soal */
 .dual-questions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -839,7 +839,7 @@ button { font-family: inherit; }
 .q-player-badge.blue { background: var(--blue-light); color: var(--navy-deep); }
 .q-player-badge.green { background: var(--green-light); color: var(--navy-deep); }
 
-/* 30-Second Timer Badge per Soal */
+/* 10-Second Timer Badge per Soal */
 .q-timer-badge {
   display: inline-flex;
   align-items: center;
@@ -959,6 +959,38 @@ button { font-family: inherit; }
   color: #FFFFFF;
 }
 
+.q-finished-wait-box {
+  grid-column: 1 / -1;
+  min-height: 112px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--light-grey);
+  border: 2px dashed var(--slate-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  color: var(--navy-deep);
+}
+
+.q-finished-wait-box .wait-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.q-finished-wait-box .wait-title {
+  font-weight: 900;
+  font-size: 0.96rem;
+}
+
+.q-finished-wait-box .wait-sub {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 .q-status-feedback {
   margin-top: 8px;
   padding: 8px 12px;
@@ -971,6 +1003,7 @@ button { font-family: inherit; }
 .q-status-feedback.show { display: block; }
 .q-status-feedback.correct { background: var(--green-light); color: var(--green-deep); border: 1.5px solid rgba(60,151,108,0.3); }
 .q-status-feedback.incorrect { background: #FFF2F2; color: var(--red-accent); border: 1.5px solid rgba(211,49,43,0.3); }
+.q-status-feedback.info { background: var(--blue-light); color: var(--navy-deep); border: 1.5px solid rgba(67,117,189,0.28); }
 
 /* Victory Modal - Full Landscape Stadium Layout (Zero Vertical Scroll) */
 .overlay-modal {
